@@ -1,5 +1,4 @@
-from llama_index.core import VectorStoreIndex, SimpleDirectoryReader
-from llama_index.embeddings.huggingface import HuggingFaceEmbedding
+from llama_index.core import SimpleDirectoryReader
 from huggingface_hub import InferenceClient
 from dotenv import load_dotenv
 from pathlib import Path
@@ -14,7 +13,7 @@ if not TOKEN:
     raise ValueError("❌ 找不到 HuggingFace TOKEN，請確認 .env 檔案設定。")
 
 # 設定 InferenceClient
-client = InferenceClient(api_key=TOKEN)  # 若使用第三方提供者，添加 provider="featherless-ai"
+client = InferenceClient(provider="fireworks-ai",api_key=TOKEN)
 
 def load_questions(data_dir="data"):
     if not os.path.exists(data_dir):
@@ -39,18 +38,19 @@ def load_questions(data_dir="data"):
             continue
     
     if not all_questions:
-        raise ValueError("❌ 無有效問題數據。")
+        raise ValueValueError("❌ 無有效問題數據。")
     
     return all_questions
 
 def ask_next_question(questions, previous_answer=None, previous_question=None):
     if previous_answer and previous_question:
-        prompt = f"根據以下問題和回答，生成一個簡潔（20字以內）的相關面試問題（自然語言）。若回答模糊，生成簡單問題：\n問題: {previous_question}\n回答: {previous_answer}"
+        prompt = f"根據以下問題和回答，生成一個簡潔（40字以內）、#zh-TW、與面試相關且多樣化的問題。若回答模糊，生成新穎問題並避免重複：\n對話歷史: {previous_question}\n回答: {previous_answer}"
         try:
             completion = client.chat.completions.create(
-                model="HuggingFaceH4/zephyr-7b-beta",
+                model="meta-llama/Llama-3.3-70B-Instruct",
                 messages=[{"role": "user", "content": prompt}],
-                max_tokens=20
+                max_tokens=20,
+                temperature=0.7
             )
             return completion.choices[0].message.content.strip()
         except Exception as e:
