@@ -1,5 +1,5 @@
 /vscode
 /venv
-/data/interview_question.txt
-/data/interview_point.txt
+/data/interview_questions.txt
+/data/interview_points.txt
 *.pyc
