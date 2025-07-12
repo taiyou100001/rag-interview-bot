@@ -45,11 +45,12 @@ def load_questions(data_dir="data"):
 
 def ask_next_question(questions, previous_answer=None, previous_question=None):
     if previous_answer and previous_question:
-        prompt = f"根據以下問題和回答，生成一個相關的面試問題（自然語言）:\n問題: {previous_question}\n回答: {previous_answer}"
+        prompt = f"根據以下問題和回答，生成一個簡潔（20字以內）的相關面試問題（自然語言）。若回答模糊，生成簡單問題：\n問題: {previous_question}\n回答: {previous_answer}"
         try:
             completion = client.chat.completions.create(
                 model="HuggingFaceH4/zephyr-7b-beta",
-                messages=[{"role": "user", "content": prompt}]
+                messages=[{"role": "user", "content": prompt}],
+                max_tokens=20
             )
             return completion.choices[0].message.content.strip()
         except Exception as e:
