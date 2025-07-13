@@ -44,12 +44,11 @@ def load_questions(data_dir="data"):
 
 def ask_next_question(questions, previous_answer=None, previous_question=None):
     if previous_answer and previous_question:
-        prompt = f"根據以下問題和回答，生成一個簡潔（40字以內）、#zh-TW、與面試相關且多樣化的問題。若回答模糊，生成新穎問題並避免重複：\n對話歷史: {previous_question}\n回答: {previous_answer}"
+        prompt = f"你是一個面試官，根據以下問題和回答，生成一個繁體中文、簡潔（20字以內）、與面試相關的完整問句，避免陳述句或冗長回應。例如：'如何處理工作壓力？'：\n問題: {previous_question}\n回答: {previous_answer}"
         try:
             completion = client.chat.completions.create(
                 model="meta-llama/Llama-3.3-70B-Instruct",
                 messages=[{"role": "user", "content": prompt}],
-                max_tokens=20,
                 temperature=0.7
             )
             return completion.choices[0].message.content.strip()
