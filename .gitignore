@@ -3,3 +3,4 @@
 /bin
 /bin/.env
 *.pyc
+/data/marketing_planner.json
