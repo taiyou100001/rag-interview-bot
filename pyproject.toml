@@ -6,6 +6,7 @@ readme = "README.md"
 requires-python = ">=3.13"
 dependencies = [
     "einops>=0.8.1",
+    "langdetect>=1.0.9",
     "llama-index>=0.12.48",
     "llama-index-embeddings-huggingface>=0.5.5",
     "llama-index-llms-huggingface>=0.5.0",
