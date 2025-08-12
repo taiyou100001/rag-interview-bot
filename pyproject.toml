@@ -6,11 +6,15 @@ readme = "README.md"
 requires-python = ">=3.13"
 dependencies = [
     "einops>=0.8.1",
+    "faiss-cpu>=1.11.0.post1",
     "langdetect>=1.0.9",
     "llama-index>=0.12.48",
+    "llama-index-core>=0.12.48",
     "llama-index-embeddings-huggingface>=0.5.5",
     "llama-index-llms-huggingface>=0.5.0",
     "python-dotenv>=1.1.1",
+    "sentence-transformers>=5.0.0",
+    "torch>=2.7.1",
     "transformers>=4.53.2",
 ]
 
