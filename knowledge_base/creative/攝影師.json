@@ -1,0 +1,92 @@
+{
+  "position": "攝影師",
+  "industry": "創意",
+  "skill_areas": [
+    {
+      "area": "攝影技巧",
+      "importance": "核心",
+      "key_concepts": [
+        "光學原理",
+        "相機操作",
+        "鏡頭選擇"
+      ],
+      "evaluation_points": [
+        "拍攝技巧",
+        "光效控制",
+        "色彩管理"
+      ],
+      "example_scenarios": [
+        "戶外拍攝",
+        "室內拍攝",
+        "產品拍攝"
+      ]
+    },
+    {
+      "area": "創意表達",
+      "importance": "重要",
+      "key_concepts": [
+        "視覺語言",
+        "故事敘事",
+        "情感傳遞"
+      ],
+      "evaluation_points": [
+        "作品概念",
+        "照片編排",
+        "照片呈現"
+      ],
+      "example_scenarios": [
+        "拍攝人物",
+        "拍攝景色",
+        "拍攝產品"
+      ]
+    },
+    {
+      "area": "軟體操作",
+      "importance": "加分",
+      "key_concepts": [
+        "Adobe Lightroom",
+        "Adobe Photoshop",
+        "攝影軟體"
+      ],
+      "evaluation_points": [
+        "照片編輯",
+        "圖像處理",
+        "色彩校正"
+      ],
+      "example_scenarios": [
+        "照片修復",
+        "照片增強",
+        "照片效果"
+      ]
+    }
+  ],
+  "interview_dimensions": [
+    {
+      "dimension": "創意能力",
+      "stages": [
+        "概念提出",
+        "拍攝實踐",
+        "作品呈現"
+      ],
+      "description": "評估候選人的創造力和想像力"
+    },
+    {
+      "dimension": "技術能力",
+      "stages": [
+        "相機操作",
+        "光效控制",
+        "照片編輯"
+      ],
+      "description": "評估候選人的攝影技巧和軟體操作能力"
+    },
+    {
+      "dimension": "溝通能力",
+      "stages": [
+        "與客戶溝通",
+        "與團隊合作",
+        "呈現作品"
+      ],
+      "description": "評估候選人的溝通技巧和團隊合作能力"
+    }
+  ]
+}

@@ -1,0 +1,86 @@
+{
+  "position": "會計師",
+  "industry": "商業",
+  "skill_areas": [
+    {
+      "area": "財務分析與預測",
+      "importance": "核心",
+      "key_concepts": [
+        "財務報表分析",
+        "成本控制",
+        "預算管理"
+      ],
+      "evaluation_points": [
+        "能夠準確分析財務報表",
+        "能夠有效控制成本",
+        "能夠建立合理的預算"
+      ],
+      "example_scenarios": [
+        "公司營運不善，需要進行財務分析與預測"
+      ]
+    },
+    {
+      "area": "稅務規劃與管理",
+      "importance": "重要",
+      "key_concepts": [
+        "稅法知識",
+        "稅務策略",
+        "稅務申報"
+      ],
+      "evaluation_points": [
+        "能夠瞭解相關稅法",
+        "能夠制定合理的稅務策略",
+        "能夠準確完成稅務申報"
+      ],
+      "example_scenarios": [
+        "公司需要進行稅務規劃與管理"
+      ]
+    },
+    {
+      "area": "會計系統與技術",
+      "importance": "加分",
+      "key_concepts": [
+        "會計軟體",
+        "數據分析工具",
+        "雲端儲存"
+      ],
+      "evaluation_points": [
+        "能夠熟練使用會計軟體",
+        "能夠有效運用數據分析工具",
+        "能夠管理雲端儲存"
+      ],
+      "example_scenarios": [
+        "公司需要進行財務報表的電子化"
+      ]
+    }
+  ],
+  "interview_dimensions": [
+    {
+      "dimension": "專業知識",
+      "stages": [
+        "初級",
+        "中級",
+        "高級"
+      ],
+      "description": "評估會計師對於財務分析、稅務規劃與管理等領域的專業知識"
+    },
+    {
+      "dimension": "溝通能力",
+      "stages": [
+        "初級",
+        "中級",
+        "高級"
+      ],
+      "description": "評估會計師在溝通財務資訊時的能力"
+    },
+    {
+      "dimension": "團隊合作",
+      "stages": [
+        "初級",
+        "中級",
+        "高級"
+      ],
+      "description": "評估會計師與其他部門的團隊合作能力"
+    }
+  ]
+}

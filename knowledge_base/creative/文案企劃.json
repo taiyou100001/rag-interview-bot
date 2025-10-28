@@ -1,0 +1,86 @@
+{
+  "position": "文案企劃",
+  "industry": "創意",
+  "skill_areas": [
+    {
+      "area": "語言能力",
+      "importance": "核心",
+      "key_concepts": [
+        "中文寫作",
+        "英文寫作",
+        "口頭溝通"
+      ],
+      "evaluation_points": [
+        "文案內容的表達力",
+        "文字的流暢度"
+      ],
+      "example_scenarios": [
+        "撰寫產品介紹文案",
+        "與客戶進行溝通"
+      ]
+    },
+    {
+      "area": "創意能力",
+      "importance": "重要",
+      "key_concepts": [
+        "想像力",
+        "創新思維",
+        "設計感"
+      ],
+      "evaluation_points": [
+        "文案的獨特性",
+        "對市場趨勢的理解"
+      ],
+      "example_scenarios": [
+        "開發新的產品宣傳策略",
+        "創作品牌形象"
+      ]
+    },
+    {
+      "area": "溝通能力",
+      "importance": "加分",
+      "key_concepts": [
+        "團隊合作",
+        "客戶溝通",
+        "口頭表達"
+      ],
+      "evaluation_points": [
+        "與同事的協調性",
+        "對客戶需求的理解"
+      ],
+      "example_scenarios": [
+        "與設計師進行文案設計討論",
+        "與客戶進行產品功能說明"
+      ]
+    }
+  ],
+  "interview_dimensions": [
+    {
+      "dimension": "創意思維",
+      "stages": [
+        "初步溝通",
+        "概念提出",
+        "方案呈現"
+      ],
+      "description": "評估候選人對文案企劃的創意思維能力，包括想像力、創新思維和設計感等"
+    },
+    {
+      "dimension": "語言表達",
+      "stages": [
+        "口頭溝通",
+        "文字寫作",
+        "呈現技巧"
+      ],
+      "description": "評估候選人對文案企劃的語言表達能力，包括中文寫作、英文寫作和口頭溝通等"
+    },
+    {
+      "dimension": "團隊合作",
+      "stages": [
+        "與同事協調",
+        "與客戶溝通",
+        "方案呈現"
+      ],
+      "description": "評估候選人對文案企劃的團隊合作能力，包括與同事的協調性和對客戶需求的理解等"
+    }
+  ]
+}

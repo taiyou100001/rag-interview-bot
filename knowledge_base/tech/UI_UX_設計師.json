@@ -1,0 +1,100 @@
+{
+  "position": "UI/UX 設計師",
+  "industry": "科技",
+  "skill_areas": [
+    {
+      "area": "設計原則",
+      "importance": "核心",
+      "key_concepts": [
+        "人機介面設計",
+        "視覺設計",
+        "交互設計"
+      ],
+      "evaluation_points": [
+        "能夠將使用者需求轉化為設計方案",
+        "能夠創造易用和美觀的產品"
+      ],
+      "example_scenarios": [
+        "設計一個簡單的網頁版聊天室",
+        "設計一個移動應用程式"
+      ]
+    },
+    {
+      "area": "UI 設計",
+      "importance": "重要",
+      "key_concepts": [
+        "視覺設計",
+        "色彩設計",
+        "排版設計"
+      ],
+      "evaluation_points": [
+        "能夠創造美觀和一致性的設計方案",
+        "能夠將品牌識別融入設計中"
+      ],
+      "example_scenarios": [
+        "設計一個公司的Logo",
+        "設計一個產品的包裝"
+      ]
+    },
+    {
+      "area": "UX 設計",
+      "importance": "重要",
+      "key_concepts": [
+        "交互設計",
+        "使用者經驗",
+        "人機介面設計"
+      ],
+      "evaluation_points": [
+        "能夠創造易用和順暢的產品體驗",
+        "能夠將使用者需求轉化為設計方案"
+      ],
+      "example_scenarios": [
+        "設計一個簡單的網頁版聊天室",
+        "設計一個移動應用程式"
+      ]
+    },
+    {
+      "area": "設計工具",
+      "importance": "加分",
+      "key_concepts": [
+        "Sketch",
+        "Figma",
+        "Adobe XD"
+      ],
+      "evaluation_points": [
+        "能夠熟練使用設計工具",
+        "能夠創造高質量的設計方案"
+      ],
+      "example_scenarios": [
+        "使用 Sketch 設計一個簡單的網頁版聊天室",
+        "使用 Figma 設計一個移動應用程式"
+      ]
+    }
+  ],
+  "interview_dimensions": [
+    {
+      "dimension": "設計能力",
+      "stages": [
+        "初步評估",
+        "深入評估"
+      ],
+      "description": "評估候選人對於設計原則、UI 設計和 UX 設計的理解"
+    },
+    {
+      "dimension": "溝通能力",
+      "stages": [
+        "初步評估",
+        "深入評估"
+      ],
+      "description": "評估候選人能否與團隊成員有效溝通並將設計方案傳達給使用者"
+    },
+    {
+      "dimension": "創新思維",
+      "stages": [
+        "初步評估",
+        "深入評估"
+      ],
+      "description": "評估候選人對於創新的理解和應用能力"
+    }
+  ]
+}

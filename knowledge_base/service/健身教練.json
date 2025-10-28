@@ -1,0 +1,83 @@
+{
+  "position": "健身教練",
+  "industry": "服務業",
+  "skill_areas": [
+    {
+      "area": "運動知識",
+      "importance": "核心",
+      "key_concepts": [
+        "體重訓練",
+        "力量訓練",
+        "柔韌性訓練"
+      ],
+      "evaluation_points": [
+        "能夠設計合理的訓練計畫",
+        "了解不同肌肉群的功能"
+      ],
+      "example_scenarios": [
+        "教導新手如何進行正確的舉重動作"
+      ]
+    },
+    {
+      "area": "溝通技巧",
+      "importance": "重要",
+      "key_concepts": [
+        "有效的溝通",
+        "同理心",
+        "情緒管理"
+      ],
+      "evaluation_points": [
+        "能夠與會員建立良好的關係",
+        "了解會員的需求和期望"
+      ],
+      "example_scenarios": [
+        "如何處理會員的投訴或不滿"
+      ]
+    },
+    {
+      "area": "團隊合作",
+      "importance": "加分",
+      "key_concepts": [
+        "協調能力",
+        "領導力",
+        "團隊精神"
+      ],
+      "evaluation_points": [
+        "能夠與其他教練和員工有效地合作",
+        "了解團隊的目標和任務"
+      ],
+      "example_scenarios": [
+        "如何參與團隊的計畫和活動"
+      ]
+    }
+  ],
+  "interview_dimensions": [
+    {
+      "dimension": "專業知識",
+      "stages": [
+        "初級",
+        "中級",
+        "高級"
+      ],
+      "description": "評估候選人的運動知識和實踐能力"
+    },
+    {
+      "dimension": "溝通技巧",
+      "stages": [
+        "初級",
+        "中級",
+        "高級"
+      ],
+      "description": "評估候選人的溝通技巧和同理心"
+    },
+    {
+      "dimension": "團隊合作",
+      "stages": [
+        "初級",
+        "中級",
+        "高級"
+      ],
+      "description": "評估候選人的團隊合作能力和領導力"
+    }
+  ]
+}

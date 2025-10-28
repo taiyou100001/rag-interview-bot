@@ -1,0 +1,89 @@
+{
+  "position": "軟體工程師",
+  "industry": "科技",
+  "skill_areas": [
+    {
+      "area": "程式設計",
+      "importance": "核心",
+      "key_concepts": [
+        "Java",
+        "Python",
+        "C++",
+        "JavaScript"
+      ],
+      "evaluation_points": [
+        "程式碼結構",
+        "變數命名",
+        "函數定義"
+      ],
+      "example_scenarios": [
+        "實現簡單的排序算法",
+        "設計一個基本的網頁"
+      ]
+    },
+    {
+      "area": "資料結構",
+      "importance": "重要",
+      "key_concepts": [
+        "陣列",
+        "鏈表",
+        "堆疊",
+        "隊列"
+      ],
+      "evaluation_points": [
+        "資料插入與刪除",
+        "查找元素的效率"
+      ],
+      "example_scenarios": [
+        "實現一個基本的查詢系統",
+        "設計一個簡單的排序器"
+      ]
+    },
+    {
+      "area": "軟體工程",
+      "importance": "加分",
+      "key_concepts": [
+        "敏捷開發",
+        "版本控制",
+        "測試驅動開發"
+      ],
+      "evaluation_points": [
+        "程式碼重用性",
+        "系統穩定性"
+      ],
+      "example_scenarios": [
+        "實現一個基本的 CI/CD 流程",
+        "設計一個簡單的測試框架"
+      ]
+    }
+  ],
+  "interview_dimensions": [
+    {
+      "dimension": "程式設計能力",
+      "stages": [
+        "程式碼寫作",
+        "程式碼優化",
+        "程式碼測試"
+      ],
+      "description": "評估候選人的程式設計能力，包括程式碼的結構、變數命名、函數定義等"
+    },
+    {
+      "dimension": "問題解決能力",
+      "stages": [
+        "情境描述",
+        "問題分析",
+        "解決方案"
+      ],
+      "description": "評估候選人的問題解決能力，包括對問題的分析和解決方案的提出"
+    },
+    {
+      "dimension": "溝通能力",
+      "stages": [
+        "簡報",
+        "團隊合作",
+        "客戶溝通"
+      ],
+      "description": "評估候選人的溝通能力，包括對程式設計的簡報、與團隊的合作和與客戶的溝通"
+    }
+  ]
+}

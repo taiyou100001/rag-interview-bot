@@ -1,0 +1,86 @@
+{
+  "position": "警察",
+  "industry": "法律",
+  "skill_areas": [
+    {
+      "area": "溝通技巧",
+      "importance": "核心",
+      "key_concepts": [
+        "有效溝通",
+        "清晰表達",
+        "聽力與觀察"
+      ],
+      "evaluation_points": [
+        "能夠清楚地傳達指令和資訊",
+        "能夠傾聽並理解他人的需求"
+      ],
+      "example_scenarios": [
+        "在緊急情況下如何有效溝通",
+        "如何與民眾交談"
+      ]
+    },
+    {
+      "area": "判斷力",
+      "importance": "重要",
+      "key_concepts": [
+        "批判性思考",
+        "分析能力",
+        "決策"
+      ],
+      "evaluation_points": [
+        "能夠快速分析情況並做出決定",
+        "能夠評估風險和結果"
+      ],
+      "example_scenarios": [
+        "如何處理重大案件",
+        "如何評估證據"
+      ]
+    },
+    {
+      "area": "團隊合作",
+      "importance": "加分",
+      "key_concepts": [
+        "協調能力",
+        "溝通技巧",
+        "同事支持"
+      ],
+      "evaluation_points": [
+        "能夠與他人協作並分享知識",
+        "能夠提供支持和幫助"
+      ],
+      "example_scenarios": [
+        "如何與隊友合作處理案件",
+        "如何與其他部門合作"
+      ]
+    }
+  ],
+  "interview_dimensions": [
+    {
+      "dimension": "專業能力",
+      "stages": [
+        "基本知識",
+        "應用技巧",
+        "創新思維"
+      ],
+      "description": "評估警察的專業能力，包括基本知識、應用技巧和創新思維"
+    },
+    {
+      "dimension": "溝通與合作",
+      "stages": [
+        "溝通技巧",
+        "團隊合作",
+        "領導力"
+      ],
+      "description": "評估警察的溝通與合作能力，包括溝通技巧、團隊合作和領導力"
+    },
+    {
+      "dimension": "道德與責任",
+      "stages": [
+        "道德判斷",
+        "法律知識",
+        "社會責任"
+      ],
+      "description": "評估警察的道德與責任能力，包括道德判斷、法律知識和社會責任"
+    }
+  ]
+}

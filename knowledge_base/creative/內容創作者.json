@@ -1,0 +1,77 @@
+{
+  "position": "內容創作者",
+  "industry": "創意",
+  "skill_areas": [
+    {
+      "area": "文案撰寫",
+      "importance": "核心",
+      "key_concepts": [
+        "故事敘事",
+        "品牌語言",
+        "市場分析"
+      ],
+      "evaluation_points": [
+        "能否產生吸引人的內容?",
+        "是否符合品牌形象?"
+      ],
+      "example_scenarios": [
+        "撰寫產品介紹文案",
+        "創作社群貼文"
+      ]
+    },
+    {
+      "area": "視覺設計",
+      "importance": "重要",
+      "key_concepts": [
+        "色彩搭配",
+        "圖形設計",
+        "平面設計"
+      ],
+      "evaluation_points": [
+        "是否符合品牌風格?",
+        "能否有效傳達訊息?"
+      ],
+      "example_scenarios": [
+        "設計產品包裝",
+        "創作社群宣傳海報"
+      ]
+    },
+    {
+      "area": "內容策略",
+      "importance": "加分",
+      "key_concepts": [
+        "內容市場化",
+        "品牌故事串連",
+        "數據分析"
+      ],
+      "evaluation_points": [
+        "能否提高內容曝光率?",
+        "是否符合品牌營銷目標?"
+      ],
+      "example_scenarios": [
+        "規劃社群內容推送",
+        "分析產品銷售數據"
+      ]
+    }
+  ],
+  "interview_dimensions": [
+    {
+      "dimension": "創意力",
+      "stages": [
+        "提出新點子",
+        "實踐設計方案",
+        "評估結果"
+      ],
+      "description": "能否提供創新的內容想法?"
+    },
+    {
+      "dimension": "溝通能力",
+      "stages": [
+        "與團隊溝通",
+        "與客戶溝通",
+        "撰寫報告"
+      ],
+      "description": "能否有效與他人溝通內容需求?"
+    }
+  ]
+}

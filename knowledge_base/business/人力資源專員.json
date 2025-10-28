@@ -1,0 +1,86 @@
+{
+  "position": "人力資源專員",
+  "industry": "商業",
+  "skill_areas": [
+    {
+      "area": "人才管理",
+      "importance": "核心",
+      "key_concepts": [
+        "招聘策略",
+        "人才發展規劃",
+        "績效評估"
+      ],
+      "evaluation_points": [
+        "招聘過程的有效性",
+        "人才培養的成效"
+      ],
+      "example_scenarios": [
+        "新員工入職後的適應期",
+        "老員工的轉型與升遷"
+      ]
+    },
+    {
+      "area": "薪資福利",
+      "importance": "重要",
+      "key_concepts": [
+        "薪資設計",
+        "福利方案",
+        "績效獎勵"
+      ],
+      "evaluation_points": [
+        "薪資結構的合理性",
+        "福利方案的完善度"
+      ],
+      "example_scenarios": [
+        "員工薪資的調整與變動",
+        "公司福利政策的宣導與執行"
+      ]
+    },
+    {
+      "area": "工作環境",
+      "importance": "加分",
+      "key_concepts": [
+        "工作空間設計",
+        "員工福利",
+        "公司文化"
+      ],
+      "evaluation_points": [
+        "工作環境的舒適度",
+        "員工福利的完善度"
+      ],
+      "example_scenarios": [
+        "新辦公室的設計與布置",
+        "公司文化的建立與傳承"
+      ]
+    }
+  ],
+  "interview_dimensions": [
+    {
+      "dimension": "專業知識",
+      "stages": [
+        "招聘策略",
+        "薪資福利",
+        "工作環境"
+      ],
+      "description": "評估候選人對人才管理、薪資福利和工作環境的理解與應用能力"
+    },
+    {
+      "dimension": "溝通技巧",
+      "stages": [
+        "口頭溝通",
+        "書面溝通",
+        "團隊合作"
+      ],
+      "description": "評估候選人在溝通方面的能力，包括口頭溝通、書面溝通和團隊合作"
+    },
+    {
+      "dimension": "分析與決策",
+      "stages": [
+        "問題分析",
+        "資訊收集",
+        "決策執行"
+      ],
+      "description": "評估候選人在分析與決策方面的能力，包括問題分析、資訊收集和決策執行"
+    }
+  ]
+}

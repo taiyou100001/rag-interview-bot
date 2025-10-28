@@ -1,0 +1,80 @@
+{
+  "position": "法務人員",
+  "industry": "法律",
+  "skill_areas": [
+    {
+      "area": "合同法知識",
+      "importance": "核心",
+      "key_concepts": [
+        "契約的成立、履行和終止",
+        "契約的變更和解除"
+      ],
+      "evaluation_points": [
+        "能夠分析和評估合同條款",
+        "能夠提供合同法相關的建議"
+      ],
+      "example_scenarios": [
+        "公司與供應商簽訂供貨合約時",
+        "員工離職後如何處理契約"
+      ]
+    },
+    {
+      "area": "訴訟法知識",
+      "importance": "重要",
+      "key_concepts": [
+        "民事訴訟程序",
+        "刑事訴訟程序"
+      ],
+      "evaluation_points": [
+        "能夠分析和評估訴訟案件的可行性",
+        "能夠提供訴訟法相關的建議"
+      ],
+      "example_scenarios": [
+        "公司與競爭對手發生糾紛時",
+        "員工被起訴時"
+      ]
+    },
+    {
+      "area": "法律文書撰寫",
+      "importance": "加分",
+      "key_concepts": [
+        "法律文件的格式和內容",
+        "法律文件的審核和修改"
+      ],
+      "evaluation_points": [
+        "能夠撰寫清晰、準確的法律文件",
+        "能夠審核和修改他人的法律文件"
+      ],
+      "example_scenarios": [
+        "公司需要簽訂合同時",
+        "律師事務所需要編輯法律文書"
+      ]
+    }
+  ],
+  "interview_dimensions": [
+    {
+      "dimension": "專業知識",
+      "stages": [
+        "了解法規和政策",
+        "分析和評估案件"
+      ],
+      "description": "考察候選人對法律知識的掌握程度"
+    },
+    {
+      "dimension": "溝通能力",
+      "stages": [
+        "與客戶溝通",
+        "與同事合作"
+      ],
+      "description": "考察候選人在溝通方面的能力"
+    },
+    {
+      "dimension": "分析和解決問題",
+      "stages": [
+        "分析案件",
+        "提供建議"
+      ],
+      "description": "考察候選人對法律問題的分析和解決能力"
+    }
+  ]
+}

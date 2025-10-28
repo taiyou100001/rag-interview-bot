@@ -1,0 +1,90 @@
+{
+  "position": "前端工程師",
+  "industry": "科技",
+  "skill_areas": [
+    {
+      "area": "HTML/CSS",
+      "importance": "核心",
+      "key_concepts": [
+        "盒模型",
+        "Flexbox",
+        "Grid"
+      ],
+      "evaluation_points": [
+        "能夠正確使用盒模型和 Flexbox 布局",
+        "能夠有效利用 CSS 選擇器來樣式化元素"
+      ],
+      "example_scenarios": [
+        "設計一個響應式網頁，需要使用 Flexbox 和 Grid"
+      ]
+    },
+    {
+      "area": "JavaScript",
+      "importance": "核心",
+      "key_concepts": [
+        "變數和資料類型",
+        "控制結構",
+        "函數"
+      ],
+      "evaluation_points": [
+        "能夠正確使用 JavaScript 變數和資料類型",
+        "能夠有效利用控制結構來實現邏輯判斷"
+      ],
+      "example_scenarios": [
+        "寫一個功能，需要使用 JavaScript 來檢查表單輸入"
+      ]
+    },
+    {
+      "area": "前端框架",
+      "importance": "重要",
+      "key_concepts": [
+        "React",
+        "Vue.js",
+        "Angular"
+      ],
+      "evaluation_points": [
+        "能夠正確使用 React 或 Vue.js 建立應用程式",
+        "能夠有效利用 Angular 來管理應用程式的生命週期"
+      ],
+      "example_scenarios": [
+        "設計一個單頁應用程式，需要使用 React 或 Vue.js"
+      ]
+    },
+    {
+      "area": "前端工具",
+      "importance": "加分",
+      "key_concepts": [
+        "Webpack",
+        "Babel",
+        "ESLint"
+      ],
+      "evaluation_points": [
+        "能夠正確使用 Webpack 來打包應用程式",
+        "能夠有效利用 Babel 來轉換 JavaScript 代碼"
+      ],
+      "example_scenarios": [
+        "設定一個前端工具鏈，需要使用 Webpack 和 Babel"
+      ]
+    }
+  ],
+  "interview_dimensions": [
+    {
+      "dimension": "技術能力",
+      "stages": [
+        "基礎知識",
+        "實踐經驗",
+        "創新思想"
+      ],
+      "description": "評估候選人對前端技術的理解和應用"
+    },
+    {
+      "dimension": "溝通能力",
+      "stages": [
+        "語言表達",
+        "團隊合作",
+        "問題解決"
+      ],
+      "description": "評估候選人在溝通和協作方面的能力"
+    }
+  ]
+}

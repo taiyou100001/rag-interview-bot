@@ -1,0 +1,76 @@
+{
+  "position": "DevOps 工程師",
+  "industry": "科技",
+  "skill_areas": [
+    {
+      "area": "自動化工具",
+      "importance": "核心",
+      "key_concepts": [
+        "Ansible",
+        "SaltStack",
+        "Puppet"
+      ],
+      "evaluation_points": [
+        "能夠使用 Ansible 部署應用程式",
+        "能夠使用 SaltStack 管理虛擬機器"
+      ],
+      "example_scenarios": [
+        "情境: 使用 Ansible 部署 Kubernetes 叢集"
+      ]
+    },
+    {
+      "area": "容器化",
+      "importance": "重要",
+      "key_concepts": [
+        "Docker",
+        "Kubernetes",
+        "Containerization"
+      ],
+      "evaluation_points": [
+        "能夠使用 Docker 建置和管理容器",
+        "能夠使用 Kubernetes 部署和管理叢集"
+      ],
+      "example_scenarios": [
+        "情境: 使用 Docker 部署 Web 服務",
+        "情境: 使用 Kubernetes 部署微服務"
+      ]
+    },
+    {
+      "area": "持續整合與持續交付",
+      "importance": "加分",
+      "key_concepts": [
+        "Jenkins",
+        "Travis CI",
+        "CircleCI"
+      ],
+      "evaluation_points": [
+        "能夠使用 Jenkins 建置和管理 CI/CD 流程",
+        "能夠使用 Travis CI 或 CircleCI 部署應用程式"
+      ],
+      "example_scenarios": [
+        "情境: 使用 Jenkins 部署應用程式",
+        "情境: 使用 Travis CI 部署 Web 服務"
+      ]
+    }
+  ],
+  "interview_dimensions": [
+    {
+      "dimension": "技術能力",
+      "stages": [
+        "基礎知識",
+        "實踐經驗",
+        "創新思維"
+      ],
+      "description": "評估候選人對 DevOps 的技術能力，包括基礎知識、實踐經驗和創新思維"
+    },
+    {
+      "dimension": "溝通協作",
+      "stages": [
+        "溝通技巧",
+        "團隊合作",
+        "領導力"
+      ],
+      "description": "評估候選人對 DevOps 的溝通協作能力，包括溝通技巧、團隊合作和領導力"
+    }
+  ]
+}

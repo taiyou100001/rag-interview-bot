@@ -1,0 +1,77 @@
+{
+  "position": "客服專員",
+  "industry": "服務業",
+  "skill_areas": [
+    {
+      "area": "溝通技巧",
+      "importance": "核心",
+      "key_concepts": [
+        "有效溝通",
+        "聽力與表達",
+        "問題解決"
+      ],
+      "evaluation_points": [
+        "能夠清晰地傳達資訊",
+        "善用非口頭溝通工具"
+      ],
+      "example_scenarios": [
+        "客戶詢問產品功能",
+        "處理顧客投訴"
+      ]
+    },
+    {
+      "area": "問題解決",
+      "importance": "重要",
+      "key_concepts": [
+        "分析問題",
+        "提供解決方案",
+        "跟進結果"
+      ],
+      "evaluation_points": [
+        "能夠快速找到問題的根源",
+        "提供合理的解決方案"
+      ],
+      "example_scenarios": [
+        "客戶詢問產品故障原因",
+        "處理顧客退貨申請"
+      ]
+    },
+    {
+      "area": "自我管理",
+      "importance": "加分",
+      "key_concepts": [
+        "時間管理",
+        "壓力管理",
+        "工作效率"
+      ],
+      "evaluation_points": [
+        "能夠有效地安排工作時間",
+        "善用工具提升工作效率"
+      ],
+      "example_scenarios": [
+        "處理大量客服查詢",
+        "完成緊急任務"
+      ]
+    }
+  ],
+  "interview_dimensions": [
+    {
+      "dimension": "溝通技巧",
+      "stages": [
+        "初步評估",
+        "深入訪問",
+        "結論"
+      ],
+      "description": "評估候選人能否有效地與客戶溝通"
+    },
+    {
+      "dimension": "問題解決能力",
+      "stages": [
+        "情境描述",
+        "問題分析",
+        "解決方案提供"
+      ],
+      "description": "評估候選人能否快速找到問題的根源並提供合理的解決方案"
+    }
+  ]
+}

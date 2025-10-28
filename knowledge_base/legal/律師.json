@@ -1,0 +1,75 @@
+{
+  "position": "律師",
+  "industry": "法律",
+  "skill_areas": [
+    {
+      "area": "法律知識",
+      "importance": "核心",
+      "key_concepts": [
+        "刑法",
+        "民法",
+        "商法",
+        "訴訟程序"
+      ],
+      "evaluation_points": [
+        "能夠正確地運用法律規則和原則",
+        "能夠分析和評估法律案件的合理性"
+      ],
+      "example_scenarios": [
+        "一名被告因犯有刑事罪行而被檢察官起訴，律師需要為其辯護"
+      ]
+    },
+    {
+      "area": "溝通技巧",
+      "importance": "重要",
+      "key_concepts": [
+        "溝通技巧",
+        "與客戶溝通",
+        "與法官溝通"
+      ],
+      "evaluation_points": [
+        "能夠清晰地向客戶解釋法律情況",
+        "能夠有效地與法官溝通和協商"
+      ],
+      "example_scenarios": [
+        "律師需要向一名不懂法律的客戶解釋其權益"
+      ]
+    },
+    {
+      "area": "時間管理",
+      "importance": "加分",
+      "key_concepts": [
+        "案件管理",
+        "時間管理",
+        "工作效率"
+      ],
+      "evaluation_points": [
+        "能夠有效地管理多個案件和時間",
+        "能夠提高工作效率"
+      ],
+      "example_scenarios": [
+        "律師需要在短期內完成多個案件的處理"
+      ]
+    }
+  ],
+  "interview_dimensions": [
+    {
+      "dimension": "法律知識",
+      "stages": [
+        "初步評估",
+        "深入分析",
+        "結論"
+      ],
+      "description": "評估律師對法律規則和原則的理解"
+    },
+    {
+      "dimension": "溝通技巧",
+      "stages": [
+        "與客戶溝通",
+        "與法官溝通",
+        "呈堂辯護"
+      ],
+      "description": "評估律師的溝通技巧和表達能力"
+    }
+  ]
+}
