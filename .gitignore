@@ -26,6 +26,7 @@ myenv/
 venv/
 ENV/
 env/
+.venv/
 
 # IDE
 .vscode/
@@ -35,8 +36,10 @@ env/
 *~
 
 # 環境變數（重要！包含 API 金鑰）
+bin/
 .env
 azure.env
+huggingFace.env
 
 # OCR 輸出檔案
 ocr_output*.json
