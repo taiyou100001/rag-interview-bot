@@ -1,8 +1,20 @@
 # main.py (完整版 - 自動偵測 RAG 可用性)
 import os
 from dotenv import load_dotenv
+from database import init_db, authenticate_user, create_user
 
-load_dotenv()
+init_db()
+email = input("Email: ")
+password = input("Password: ")
+user = authenticate_user(email, password)
+if not user:
+    # 註冊邏輯...
+    user = create_user(username=input("Username: "), email=email, password=password)
+
+# 強制從 bin/azure.env 載入（相對於專案根目錄）
+project_root = os.path.dirname(os.path.abspath(__file__))  # src/
+bin_path = os.path.join(project_root, '..', 'bin', 'azure.env')
+load_dotenv(bin_path)
 
 def main():
     os.environ["TOKENIZERS_PARALLELISM"] = "false"

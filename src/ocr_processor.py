@@ -12,8 +12,10 @@ from azure.cognitiveservices.vision.computervision.models import OperationStatus
 from msrest.authentication import CognitiveServicesCredentials
 from dotenv import load_dotenv
 
-load_dotenv()
-
+# 強制從 bin/azure.env 載入（相對於專案根目錄）
+project_root = os.path.dirname(os.path.abspath(__file__))  # 根目錄
+bin_path = os.path.join(project_root, 'bin', 'azure.env')
+load_dotenv(bin_path)
 
 class OCRConfig:
     """OCR 配置類"""
