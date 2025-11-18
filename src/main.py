@@ -29,8 +29,10 @@ def main():
     
     try:
         print("\n檢查知識庫...")
-        from knowledge_rag import KnowledgeRAGEngine
-        rag_engine = KnowledgeRAGEngine()
+        # from knowledge_rag import KnowledgeRAGEngine
+        # rag_engine = KnowledgeRAGEngine()
+        from rag_engine import RAGEngine
+        rag_engine = RAGEngine()  # ← 自動載入 + FAISS + Redis 快取
         use_rag = True
         print("✓ 知識庫已載入，使用 RAG 增強模式")
     except ImportError as e:

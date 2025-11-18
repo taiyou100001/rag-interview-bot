@@ -1,5 +1,7 @@
 # agents.py (完整增強版 - 加入問題去重)
 import ollama
+import re
+from typing import List
 
 MODEL = "llama3.1:8b"
 
@@ -131,7 +133,7 @@ class KnowledgeBasedQuestionAgent(BaseAgent):
             # 決定考核重點
             focus = self._determine_focus(len(history))
             
-            # 從知識庫檢索相關知識
+            # 從知識庫檢索相關知識（加入 Redis 錯誤容錯）
             try:
                 knowledge = self.knowledge_engine.get_relevant_knowledge(
                     query=f"{job} {focus}",
@@ -139,8 +141,8 @@ class KnowledgeBasedQuestionAgent(BaseAgent):
                     top_k=2
                 )
             except Exception as e:
-                print(f"知識庫檢索失敗: {e}")
-                knowledge = []
+                print(f"知識庫檢索失敗（Redis 可能未啟動，已自動降級）: {e}")
+                knowledge = []  # 降級為無知識庫模式
             
             # 建構知識上下文
             knowledge_context = self._build_knowledge_context(knowledge)
@@ -168,7 +170,7 @@ class KnowledgeBasedQuestionAgent(BaseAgent):
 2. 問題要具體、可評估
 3. 適合口頭回答
 4. 使用繁體中文（台灣用語）
-5. 直接輸出問題，無前言
+5. 直接輸出一個問題，無前言
 6. 問題要與之前的問題不同
 
 請生成面試問題："""
@@ -181,7 +183,10 @@ class KnowledgeBasedQuestionAgent(BaseAgent):
                 return None
             
             # 檢查是否與歷史問題重複
-            if not self.knowledge_engine.is_question_similar(question, history):
+            if len(history) == 0 or not any(
+                self._simple_similarity(question, h["question"]) > 0.85
+                for h in history[-3:]
+            ):
                 return question
             
             print(f"  (問題重複，重新生成... 第 {attempts + 1} 次)")
@@ -189,6 +194,19 @@ class KnowledgeBasedQuestionAgent(BaseAgent):
         
         # 如果都重複，還是返回最後一個
         return question
+    
+    # === 修正點 2：新增遺失的 _simple_similarity 方法 ===
+    def _simple_similarity(self, s1: str, s2: str) -> float:
+        """簡單字面重疊相似度（避免依賴 Redis 或外部套件）"""
+        if not s1 or not s2:
+            return 0.0
+        s1_set = set(s1.replace(" ", "").replace("？", "").replace("，", "").replace("。", ""))
+        s2_set = set(s2.replace(" ", "").replace("？", "").replace("，", "").replace("。", ""))
+        if not s1_set and not s2_set:
+            return 1.0
+        intersection = s1_set.intersection(s2_set)
+        union = s1_set.union(s2_set)
+        return len(intersection) / len(union) if union else 0.0
     
     def _determine_focus(self, count):
         """決定考核重點"""

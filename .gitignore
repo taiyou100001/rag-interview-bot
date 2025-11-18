@@ -78,3 +78,5 @@ test_*.py
 
 # 使用者檔案
 app.db
+
+api_server.py
