@@ -1,0 +1,80 @@
+{
+  "position": "英文家教",
+  "industry": "教育",
+  "skill_areas": [
+    {
+      "area": "語言教學能力",
+      "importance": "核心",
+      "key_concepts": [
+        "英語教學方法",
+        "課程設計",
+        "教材選擇"
+      ],
+      "evaluation_points": [
+        "教學效果",
+        "學生反饋",
+        "教學態度"
+      ],
+      "example_scenarios": [
+        "如何設計一個有效的英語教學計畫?",
+        "如何與學生溝通和建議"
+      ]
+    },
+    {
+      "area": "溝通技巧",
+      "importance": "重要",
+      "key_concepts": [
+        "溝通技巧",
+        "聽力訓練",
+        "口語練習"
+      ],
+      "evaluation_points": [
+        "教學效果",
+        "學生反饋",
+        "教學態度"
+      ],
+      "example_scenarios": [
+        "如何與學生進行有效的溝通?",
+        "如何幫助學生提高聽力和口語能力"
+      ]
+    },
+    {
+      "area": "教學資源管理",
+      "importance": "加分",
+      "key_concepts": [
+        "教材選擇",
+        "課程設計",
+        "教學材料準備"
+      ],
+      "evaluation_points": [
+        "教學效果",
+        "學生反饋",
+        "教學態度"
+      ],
+      "example_scenarios": [
+        "如何選擇適合的教材?",
+        "如何設計一個有效的英語教學計畫?"
+      ]
+    }
+  ],
+  "interview_dimensions": [
+    {
+      "dimension": "教學能力",
+      "stages": [
+        "面試初步評估",
+        "教學演練",
+        "實際教學"
+      ],
+      "description": "評估面試者對英語教學的理解和應用能力"
+    },
+    {
+      "dimension": "溝通技巧",
+      "stages": [
+        "口語交談",
+        "聽力訓練",
+        "教學態度"
+      ],
+      "description": "評估面試者與學生溝通的技巧和態度"
+    }
+  ]
+}

@@ -1,0 +1,75 @@
+{
+  "position": "導遊",
+  "industry": "服務業",
+  "skill_areas": [
+    {
+      "area": "溝通技巧",
+      "importance": "核心",
+      "key_concepts": [
+        "有效溝通",
+        "口語表達",
+        "非口語溝通"
+      ],
+      "evaluation_points": [
+        "能夠清晰地傳達旅遊資訊",
+        "善於應對旅客的問題和意見"
+      ],
+      "example_scenarios": [
+        "與旅客討論行程安排",
+        "解釋景點的歷史和文化"
+      ]
+    },
+    {
+      "area": "領導力",
+      "importance": "重要",
+      "key_concepts": [
+        "團隊合作",
+        "決策能力",
+        "激勵他人"
+      ],
+      "evaluation_points": [
+        "能夠有效地指揮旅遊團",
+        "善於與其他導遊和工作人員合作"
+      ],
+      "example_scenarios": [
+        "在緊急情況下做出快速決策",
+        "鼓勵旅客參與活動"
+      ]
+    },
+    {
+      "area": "服務態度",
+      "importance": "加分",
+      "key_concepts": [
+        "微笑服務",
+        "熱情接待",
+        "專業知識"
+      ],
+      "evaluation_points": [
+        "能夠提供優質的服務",
+        "善於與旅客建立良好的關係"
+      ],
+      "example_scenarios": [
+        "為旅客提供幫助和建議",
+        "保持良好的工作態度"
+      ]
+    }
+  ],
+  "interview_dimensions": [
+    {
+      "dimension": "溝通能力",
+      "stages": [
+        "初步面試",
+        "第二輪面試"
+      ],
+      "description": "評估導遊的溝通技巧和表達能力"
+    },
+    {
+      "dimension": "領導力和團隊合作",
+      "stages": [
+        "實習或培訓",
+        "正式工作"
+      ],
+      "description": "評估導遊的領導力和與他人合作的能力"
+    }
+  ]
+}

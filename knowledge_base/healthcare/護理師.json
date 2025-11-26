@@ -1,0 +1,74 @@
+{
+  "position": "護理師",
+  "industry": "醫療保健",
+  "skill_areas": [
+    {
+      "area": "病人照護",
+      "importance": "核心",
+      "key_concepts": [
+        "病人需求理解",
+        "個性化照護",
+        "安全管理"
+      ],
+      "evaluation_points": [
+        "評估病人的情況和需求",
+        "提供適當的照護和支持"
+      ],
+      "example_scenarios": [
+        "一位老年病人需要協助洗澡"
+      ]
+    },
+    {
+      "area": "醫療團隊合作",
+      "importance": "重要",
+      "key_concepts": [
+        "溝通技巧",
+        "合作精神",
+        "問題解決"
+      ],
+      "evaluation_points": [
+        "與其他醫護人員有效溝通和協作",
+        "共同解決病人的問題"
+      ],
+      "example_scenarios": [
+        "一位病人需要多個部門的照護"
+      ]
+    },
+    {
+      "area": "護理實踐",
+      "importance": "加分",
+      "key_concepts": [
+        "護理知識",
+        "技術操作",
+        "質量控制"
+      ],
+      "evaluation_points": [
+        "掌握相關的護理知識和技能",
+        "執行護理程序和技術操作"
+      ],
+      "example_scenarios": [
+        "一位病人需要進行手術前的準備"
+      ]
+    }
+  ],
+  "interview_dimensions": [
+    {
+      "dimension": "專業性",
+      "stages": [
+        "自我介紹",
+        "核心技能展示",
+        "案例分享"
+      ],
+      "description": "評估護理師的專業知識和實踐能力"
+    },
+    {
+      "dimension": "溝通技巧",
+      "stages": [
+        "與病人溝通",
+        "與醫護人員溝通",
+        "解決問題"
+      ],
+      "description": "評估護理師的溝通技巧和團隊合作能力"
+    }
+  ]
+}

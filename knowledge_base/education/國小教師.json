@@ -1,0 +1,74 @@
+{
+  "position": "國小教師",
+  "industry": "教育",
+  "skill_areas": [
+    {
+      "area": "課程設計與執行",
+      "importance": "核心",
+      "key_concepts": [
+        "學習目標設定",
+        "課程計畫",
+        "教學方法"
+      ],
+      "evaluation_points": [
+        "課程內容是否符合學習目標",
+        "教學方法的創新性"
+      ],
+      "example_scenarios": [
+        "如何設計一個有效的課程計畫",
+        "如何應對學生學習困難的情況"
+      ]
+    },
+    {
+      "area": "教學與評估",
+      "importance": "重要",
+      "key_concepts": [
+        "教學方法",
+        "評估工具",
+        "反饋機制"
+      ],
+      "evaluation_points": [
+        "教學方法的有效性",
+        "評估工具的準確性"
+      ],
+      "example_scenarios": [
+        "如何設計一個有意義的評估活動",
+        "如何提供適當的反饋給學生"
+      ]
+    },
+    {
+      "area": "班級管理與溝通",
+      "importance": "加分",
+      "key_concepts": [
+        "班級規範",
+        "溝通技巧",
+        "家長關係"
+      ],
+      "evaluation_points": [
+        "班級管理的有效性",
+        "溝通技巧的適應性"
+      ],
+      "example_scenarios": [
+        "如何建立一個良好的班級氣氛",
+        "如何與家長溝通"
+      ]
+    }
+  ],
+  "interview_dimensions": [
+    {
+      "dimension": "教學能力",
+      "stages": [
+        "課程設計與執行",
+        "教學與評估"
+      ],
+      "description": "評估候選人對於教學的理解和實踐能力"
+    },
+    {
+      "dimension": "班級管理與溝通",
+      "stages": [
+        "班級管理與溝通"
+      ],
+      "description": "評估候選人對於班級管理和溝通的理解和實踐能力"
+    }
+  ]
+}

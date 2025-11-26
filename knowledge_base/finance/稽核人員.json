@@ -1,0 +1,83 @@
+{
+  "position": "稽核人員",
+  "industry": "金融",
+  "skill_areas": [
+    {
+      "area": "財務分析",
+      "importance": "核心",
+      "key_concepts": [
+        "會計原則",
+        "財務報表分析",
+        "成本控制"
+      ],
+      "evaluation_points": [
+        "財務數據的準確性",
+        "財務分析報告的呈現"
+      ],
+      "example_scenarios": [
+        "公司財務狀況不佳，需要進行財務分析"
+      ]
+    },
+    {
+      "area": "稽核流程",
+      "importance": "重要",
+      "key_concepts": [
+        "稽核程序",
+        "稽核工具",
+        "稽核報告"
+      ],
+      "evaluation_points": [
+        "稽核程序的執行",
+        "稽核報告的呈現"
+      ],
+      "example_scenarios": [
+        "公司需要進行年度稽核，稽核人員需要設計稽核計畫"
+      ]
+    },
+    {
+      "area": "溝通協調",
+      "importance": "加分",
+      "key_concepts": [
+        "溝通技巧",
+        "協調能力",
+        "團隊合作"
+      ],
+      "evaluation_points": [
+        "與其他部門的溝通",
+        "稽核報告的呈現"
+      ],
+      "example_scenarios": [
+        "公司需要進行跨部門的合作，稽核人員需要與其他部門溝通"
+      ]
+    }
+  ],
+  "interview_dimensions": [
+    {
+      "dimension": "工作態度",
+      "stages": [
+        "自我介紹",
+        "工作經歷",
+        "期望薪水"
+      ],
+      "description": "評估候選人對工作的態度和熱情"
+    },
+    {
+      "dimension": "專業知識",
+      "stages": [
+        "財務分析",
+        "稽核流程",
+        "溝通協調"
+      ],
+      "description": "評估候選人在財務分析、稽核流程和溝通協調方面的專業知識"
+    },
+    {
+      "dimension": "問題解決",
+      "stages": [
+        "案例分析",
+        "情境思考",
+        "創新思維"
+      ],
+      "description": "評估候選人在財務分析、稽核流程和溝通協調方面的問題解決能力"
+    }
+  ]
+}

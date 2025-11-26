@@ -1,0 +1,86 @@
+{
+  "position": "銀行櫃員",
+  "industry": "金融",
+  "skill_areas": [
+    {
+      "area": "客戶服務",
+      "importance": "核心",
+      "key_concepts": [
+        "人格化服務",
+        "專業知識",
+        "溝通技巧"
+      ],
+      "evaluation_points": [
+        "與客戶建立信任關係",
+        "提供個性化服務"
+      ],
+      "example_scenarios": [
+        "客戶詢問帳務問題",
+        "客戶要求幫助完成交易"
+      ]
+    },
+    {
+      "area": "金錢管理",
+      "importance": "重要",
+      "key_concepts": [
+        "帳務管理",
+        "資金流動",
+        "風險評估"
+      ],
+      "evaluation_points": [
+        "正確處理客戶帳務",
+        "提供合適的貸款選擇"
+      ],
+      "example_scenarios": [
+        "客戶詢問帳務問題",
+        "客戶要求幫助完成交易"
+      ]
+    },
+    {
+      "area": "團隊合作",
+      "importance": "加分",
+      "key_concepts": [
+        "溝通技巧",
+        "協調能力",
+        "時效性"
+      ],
+      "evaluation_points": [
+        "與同事有效溝通",
+        "協助完成工作任務"
+      ],
+      "example_scenarios": [
+        "客戶詢問帳務問題",
+        "客戶要求幫助完成交易"
+      ]
+    }
+  ],
+  "interview_dimensions": [
+    {
+      "dimension": "專業知識",
+      "stages": [
+        "階段一:基本知識",
+        "階段二:應用知識",
+        "階段三:創新思考"
+      ],
+      "description": "評估櫃員對銀行業務的理解和應用能力"
+    },
+    {
+      "dimension": "溝通技巧",
+      "stages": [
+        "階段一:口頭溝通",
+        "階段二:書面溝通",
+        "階段三:非語言溝通"
+      ],
+      "description": "評估櫃員的溝通能力和技巧"
+    },
+    {
+      "dimension": "團隊合作",
+      "stages": [
+        "階段一:協調能力",
+        "階段二:時效性",
+        "階段三:創新思維"
+      ],
+      "description": "評估櫃員的團隊合作能力和態度"
+    }
+  ]
+}

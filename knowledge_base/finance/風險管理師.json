@@ -1,0 +1,69 @@
+{
+  "position": "風險管理師",
+  "industry": "金融",
+  "skill_areas": [
+    {
+      "area": "風險識別與評估",
+      "importance": "核心",
+      "key_concepts": [
+        "風險特性",
+        "風險類型",
+        "風險衡量"
+      ],
+      "evaluation_points": [
+        "能夠正確識別和評估風險的重要性"
+      ],
+      "example_scenarios": [
+        "公司財務報表中發現不符規定之會計處理"
+      ]
+    },
+    {
+      "area": "風險管理策略",
+      "importance": "重要",
+      "key_concepts": [
+        "風險轉移",
+        "風險減少",
+        "風險接受"
+      ],
+      "evaluation_points": [
+        "能夠提出合理的風險管理策略"
+      ],
+      "example_scenarios": [
+        "公司決定將風險轉移到保險公司"
+      ]
+    },
+    {
+      "area": "風險監控與報告",
+      "importance": "加分",
+      "key_concepts": [
+        "風險監控",
+        "風險報告",
+        "風險跟蹤"
+      ],
+      "evaluation_points": [
+        "能夠有效監控和報告風險"
+      ],
+      "example_scenarios": [
+        "公司定期進行風險評估和報告"
+      ]
+    }
+  ],
+  "interview_dimensions": [
+    {
+      "dimension": "專業知識",
+      "stages": [
+        "階段1: 風險識別與評估",
+        "階段2: 風險管理策略"
+      ],
+      "description": "評估候選人對風險管理的專業知識"
+    },
+    {
+      "dimension": "溝通能力",
+      "stages": [
+        "階段1: 團隊合作",
+        "階段2: 客戶溝通"
+      ],
+      "description": "評估候選人在團隊合作和客戶溝通中的表現"
+    }
+  ]
+}

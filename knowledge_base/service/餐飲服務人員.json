@@ -1,0 +1,75 @@
+{
+  "position": "餐飲服務人員",
+  "industry": "服務業",
+  "skill_areas": [
+    {
+      "area": "溝通技巧",
+      "importance": "核心",
+      "key_concepts": [
+        "有效溝通",
+        "良好的口語表達能力",
+        "客戶需求理解"
+      ],
+      "evaluation_points": [
+        "能夠與客戶友善交流",
+        "能夠清晰地解釋菜單和服務項目"
+      ],
+      "example_scenarios": [
+        "客戶要求修改餐點，如何處理?",
+        "客服人員需要向客戶介紹新品項"
+      ]
+    },
+    {
+      "area": "團隊合作",
+      "importance": "重要",
+      "key_concepts": [
+        "積極參與團隊",
+        "良好的溝通和協調能力"
+      ],
+      "evaluation_points": [
+        "能夠與同事有效地溝通和協作",
+        "能夠承擔團隊任務中的責任"
+      ],
+      "example_scenarios": [
+        "餐廳內部有緊急情況，如何處理?",
+        "需要與其他部門合作完成客戶需求"
+      ]
+    },
+    {
+      "area": "服務態度",
+      "importance": "加分",
+      "key_concepts": [
+        "熱情的服務",
+        "良好的客戶關係管理"
+      ],
+      "evaluation_points": [
+        "能夠提供優質的服務體驗",
+        "能夠建立長期的客戶關係"
+      ],
+      "example_scenarios": [
+        "客戶對餐點有不滿，如何處理?",
+        "需要為客戶提供特別的服務"
+      ]
+    }
+  ],
+  "interview_dimensions": [
+    {
+      "dimension": "溝通技巧",
+      "stages": [
+        "初步評估",
+        "深入訪問",
+        "最後評估"
+      ],
+      "description": "通過面試，評估候選人在溝通技巧方面的表現"
+    },
+    {
+      "dimension": "團隊合作",
+      "stages": [
+        "情景模擬",
+        "案例分析",
+        "個人經歷"
+      ],
+      "description": "通過面試，評估候選人在團隊合作方面的表現"
+    }
+  ]
+}

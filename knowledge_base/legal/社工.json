@@ -1,0 +1,77 @@
+{
+  "position": "社工",
+  "industry": "法律",
+  "skill_areas": [
+    {
+      "area": "溝通技巧",
+      "importance": "核心",
+      "key_concepts": [
+        "有效溝通",
+        "聽力與表達",
+        "非語言溝通"
+      ],
+      "evaluation_points": [
+        "能夠清晰地傳達意見",
+        "善於傾聽並反饋"
+      ],
+      "example_scenarios": [
+        "與法官溝通案件情況",
+        "與家長溝通兒童需求"
+      ]
+    },
+    {
+      "area": "問題解決",
+      "importance": "重要",
+      "key_concepts": [
+        "分析問題",
+        "創造解決方案",
+        "評估結果"
+      ],
+      "evaluation_points": [
+        "能夠分析並識別問題的根本原因",
+        "能夠提供有效的解決方案"
+      ],
+      "example_scenarios": [
+        "處理家庭暴力案件",
+        "協助兒童適應新環境"
+      ]
+    },
+    {
+      "area": "團隊合作",
+      "importance": "加分",
+      "key_concepts": [
+        "與他人溝通",
+        "分工合作",
+        "共同目標"
+      ],
+      "evaluation_points": [
+        "能夠有效地與同事協作",
+        "能夠承擔團隊任務"
+      ],
+      "example_scenarios": [
+        "與律師、法官合作處理案件",
+        "參與社區服務活動"
+      ]
+    }
+  ],
+  "interview_dimensions": [
+    {
+      "dimension": "專業知識",
+      "stages": [
+        "了解法律原則",
+        "分析案件資料",
+        "提供建議"
+      ],
+      "description": "評估候選人對法律知識的理解和應用能力"
+    },
+    {
+      "dimension": "溝通技巧",
+      "stages": [
+        "與他人溝通",
+        "聽力與表達",
+        "非語言溝通"
+      ],
+      "description": "評估候選人在溝通方面的能力和態度"
+    }
+  ]
+}

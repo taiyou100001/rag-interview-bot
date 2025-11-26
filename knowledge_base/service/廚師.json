@@ -1,0 +1,77 @@
+{
+  "position": "廚師",
+  "industry": "服務業",
+  "skill_areas": [
+    {
+      "area": "烹飪技術",
+      "importance": "核心",
+      "key_concepts": [
+        "菜式創新",
+        "食材選擇",
+        "烹調技巧"
+      ],
+      "evaluation_points": [
+        "料理的味道和口感",
+        "菜單的創新性和多樣性"
+      ],
+      "example_scenarios": [
+        "客人要求特殊飲食，如何處理？",
+        "餐廳菜單需要更新"
+      ]
+    },
+    {
+      "area": "團隊合作",
+      "importance": "重要",
+      "key_concepts": [
+        "溝通技巧",
+        "協調能力",
+        "團隊精神"
+      ],
+      "evaluation_points": [
+        "與同事的溝通和合作",
+        "在忙碌的情況下保持冷靜"
+      ],
+      "example_scenarios": [
+        "廚房內需要緊急處理食材的問題，如何分配工作？",
+        "客人對菜式有意見，如何處理"
+      ]
+    },
+    {
+      "area": "安全衛生",
+      "importance": "加分",
+      "key_concepts": [
+        "食品安全",
+        "廚房衛生",
+        "個人防護"
+      ],
+      "evaluation_points": [
+        "保持餐廳的清潔和衛生",
+        "確保食材的安全性"
+      ],
+      "example_scenarios": [
+        "發現有異常味道或臭味，如何處理？",
+        "客人要求特殊需求，如何處理"
+      ]
+    }
+  ],
+  "interview_dimensions": [
+    {
+      "dimension": "技術能力",
+      "stages": [
+        "初步評估",
+        "實際操作",
+        "結果評估"
+      ],
+      "description": "評估候選人的烹飪技術和創新能力"
+    },
+    {
+      "dimension": "溝通技巧",
+      "stages": [
+        "口頭溝通",
+        "書面溝通",
+        "團隊合作"
+      ],
+      "description": "評估候選人的溝通技巧和團隊合作能力"
+    }
+  ]
+}

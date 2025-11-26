@@ -1,0 +1,72 @@
+{
+  "position": "後端工程師",
+  "industry": "科技",
+  "skill_areas": [
+    {
+      "area": "程式設計",
+      "importance": "核心",
+      "key_concepts": [
+        "程式語言",
+        "資料結構",
+        "演算法"
+      ],
+      "evaluation_points": [
+        "程式碼品質",
+        "程式設計技巧"
+      ],
+      "example_scenarios": [
+        "實作程式設計任務"
+      ]
+    },
+    {
+      "area": "資料庫管理",
+      "importance": "重要",
+      "key_concepts": [
+        "資料庫設計",
+        "SQL語言",
+        "資料庫安全性"
+      ],
+      "evaluation_points": [
+        "資料庫性能",
+        "資料庫安全性"
+      ],
+      "example_scenarios": [
+        "實作資料庫設計任務"
+      ]
+    },
+    {
+      "area": "系統整合",
+      "importance": "加分",
+      "key_concepts": [
+        "API設計",
+        "微服務架構",
+        "容器化"
+      ],
+      "evaluation_points": [
+        "系統整合能力",
+        "系統可靠性"
+      ],
+      "example_scenarios": [
+        "實作系統整合任務"
+      ]
+    }
+  ],
+  "interview_dimensions": [
+    {
+      "dimension": "程式設計技巧",
+      "stages": [
+        "程式碼撰寫",
+        "程式設計思考"
+      ],
+      "description": "評估候選人對程式設計的理解和實踐能力"
+    },
+    {
+      "dimension": "資料庫管理",
+      "stages": [
+        "資料庫設計",
+        "資料庫安全性"
+      ],
+      "description": "評估候選人對資料庫管理的理解和實踐能力"
+    }
+  ]
+}

@@ -1,0 +1,69 @@
+{
+  "position": "專利工程師",
+  "industry": "法律",
+  "skill_areas": [
+    {
+      "area": "專利法規範",
+      "importance": "核心",
+      "key_concepts": [
+        "專利法的適用範圍",
+        "專利權的保護",
+        "專利侵權的處理"
+      ],
+      "evaluation_points": [
+        "能夠正確地應用專利法規範",
+        "能夠分析和評估專利案件"
+      ],
+      "example_scenarios": [
+        "公司是否有權要求對方停止侵權行為"
+      ]
+    },
+    {
+      "area": "技術文獻撰寫",
+      "importance": "重要",
+      "key_concepts": [
+        "技術文獻的撰寫格式",
+        "專利申請文件的撰寫內容"
+      ],
+      "evaluation_points": [
+        "能夠撰寫清晰、準確的技術文獻",
+        "能夠編輯和校正技術文獻"
+      ],
+      "example_scenarios": [
+        "如何撰寫一份有效的專利申請文件"
+      ]
+    },
+    {
+      "area": "溝通與協調",
+      "importance": "加分",
+      "key_concepts": [
+        "專利工程師與律師之間的溝通",
+        "公司內部團隊的協調"
+      ],
+      "evaluation_points": [
+        "能夠有效地與律師和其他團隊成員溝通",
+        "能夠協調公司內部的資源和人員"
+      ],
+      "example_scenarios": [
+        "如何與律師溝通專利案件的進展"
+      ]
+    }
+  ],
+  "interview_dimensions": [
+    {
+      "dimension": "專業知識",
+      "stages": [
+        "階段1: 專利法規範",
+        "階段2: 技術文獻撰寫"
+      ],
+      "description": "評估候選人的專業知識和技能"
+    },
+    {
+      "dimension": "溝通與協調",
+      "stages": [
+        "階段3: 溝通與協調"
+      ],
+      "description": "評估候選人在溝通和協調方面的能力"
+    }
+  ]
+}
