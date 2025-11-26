@@ -1,0 +1,87 @@
+{
+  "position": "QA 測試工程師",
+  "industry": "科技",
+  "skill_areas": [
+    {
+      "area": "軟件測試方法",
+      "importance": "核心",
+      "key_concepts": [
+        "黑盒測試",
+        "白盒測試",
+        "灰盒測試",
+        "等效分類法"
+      ],
+      "evaluation_points": [
+        "能夠正確地執行測試案例",
+        "能夠識別和報告缺陷"
+      ],
+      "example_scenarios": [
+        "實際情境中的黑盒測試應用",
+        "實際情境中的白盒測試應用"
+      ]
+    },
+    {
+      "area": "自動化測試",
+      "importance": "重要",
+      "key_concepts": [
+        "Selenium",
+        "Appium",
+        "TestNG"
+      ],
+      "evaluation_points": [
+        "能夠設計和執行有效的自動化測試案例",
+        "能夠維護和更新自動化測試程式"
+      ],
+      "example_scenarios": [
+        "實際情境中的 Selenium 自動化測試應用",
+        "實際情境中的 Appium 自動化測試應用"
+      ]
+    },
+    {
+      "area": "測試工具",
+      "importance": "加分",
+      "key_concepts": [
+        "JIRA",
+        "TestRail",
+        "Zephyr"
+      ],
+      "evaluation_points": [
+        "能夠有效地使用測試工具管理和追蹤缺陷",
+        "能夠識別和報告缺陷的相關資訊"
+      ],
+      "example_scenarios": [
+        "實際情境中的 JIRA 測試工具應用",
+        "實際情境中的 TestRail 測試工具應用"
+      ]
+    }
+  ],
+  "interview_dimensions": [
+    {
+      "dimension": "軟件測試知識",
+      "stages": [
+        "基本知識",
+        "進階知識",
+        "領導力"
+      ],
+      "description": "評估候選人對軟件測試的基本知識、進階知識和領導力的理解"
+    },
+    {
+      "dimension": "實踐能力",
+      "stages": [
+        "執行能力",
+        "創新能力",
+        "溝通能力"
+      ],
+      "description": "評估候選人在軟件測試實踐中的執行能力、創新能力和溝通能力"
+    },
+    {
+      "dimension": "團隊合作",
+      "stages": [
+        "協調能力",
+        "領導力",
+        "適應性"
+      ],
+      "description": "評估候選人在軟件測試團隊中的協調能力、領導力和適應性"
+    }
+  ]
+}

@@ -1,0 +1,80 @@
+{
+  "position": "醫檢師",
+  "industry": "醫療保健",
+  "skill_areas": [
+    {
+      "area": "臨床實踐",
+      "importance": "核心",
+      "key_concepts": [
+        "病人評估",
+        "診斷與治療",
+        "藥物管理"
+      ],
+      "evaluation_points": [
+        "能夠正確地評估病人的健康狀況",
+        "能夠提供適當的診斷與治療方案"
+      ],
+      "example_scenarios": [
+        "一位老年病人出現多重合併症，需要進行綜合評估"
+      ]
+    },
+    {
+      "area": "檢驗技術",
+      "importance": "重要",
+      "key_concepts": [
+        "血液檢查",
+        "尿液檢查",
+        "影像學檢查"
+      ],
+      "evaluation_points": [
+        "能夠正確地進行檢驗程序",
+        "能夠解釋檢驗結果"
+      ],
+      "example_scenarios": [
+        "一位病人需要進行血液檢查，需要了解檢查的目的與風險"
+      ]
+    },
+    {
+      "area": "溝通技巧",
+      "importance": "加分",
+      "key_concepts": [
+        "有效溝通",
+        "病人教育",
+        "團隊合作"
+      ],
+      "evaluation_points": [
+        "能夠與病人有效溝通",
+        "能夠提供適當的病人教育"
+      ],
+      "example_scenarios": [
+        "一位病人需要了解自己的檢查結果，需要進行適當的溝通"
+      ]
+    }
+  ],
+  "interview_dimensions": [
+    {
+      "dimension": "臨床實踐能力",
+      "stages": [
+        "評估病人的健康狀況",
+        "提供診斷與治療方案"
+      ],
+      "description": "能夠正確地評估病人的健康狀況，並提供適當的診斷與治療方案"
+    },
+    {
+      "dimension": "檢驗技術能力",
+      "stages": [
+        "進行檢驗程序",
+        "解釋檢驗結果"
+      ],
+      "description": "能夠正確地進行檢驗程序，並能夠解釋檢驗結果"
+    },
+    {
+      "dimension": "溝通技巧",
+      "stages": [
+        "與病人有效溝通",
+        "提供適當的病人教育"
+      ],
+      "description": "能夠與病人有效溝通，並提供適當的病人教育"
+    }
+  ]
+}

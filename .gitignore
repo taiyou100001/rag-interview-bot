@@ -1,6 +1,82 @@
-/vscode
-/.venv
-/bin
-/bin/.env
-*.pyc
-/data/marketing_planner.json
+# .gitignore
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# 虛擬環境
+myenv/
+venv/
+ENV/
+env/
+.venv/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# 環境變數（重要！包含 API 金鑰）
+bin/
+.env
+azure.env
+huggingFace.env
+
+# OCR 輸出檔案
+ocr_output*.json
+resume_structured*.json
+
+# 除錯檔案
+debug_*.html
+
+# 履歷檔案（隱私）
+resume/
+*.pdf
+*.jpg
+*.jpeg
+*.png
+
+# 爬蟲輸出
+output/
+knowledge_scraper/output/
+
+# 臨時檔案
+*.tmp
+*.log
+
+# 知識庫資料（可選：如果太大可以不上傳）
+# knowledge_base/
+
+# Scrapy
+.scrapy/
+
+# 作業系統
+.DS_Store
+Thumbs.db
+
+# 測試檔案
+test_*.py
+
+# 使用者檔案
+app.db
+
+api_server.py

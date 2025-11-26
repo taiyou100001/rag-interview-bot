@@ -1,0 +1,80 @@
+{
+  "position": "零售門市人員",
+  "industry": "服務業",
+  "skill_areas": [
+    {
+      "area": "客戶服務",
+      "importance": "核心",
+      "key_concepts": [
+        "微笑服務",
+        "積極主動",
+        "耐心傾聽"
+      ],
+      "evaluation_points": [
+        "與客戶建立良好關係",
+        "解決客戶問題",
+        "提供優質服務"
+      ],
+      "example_scenarios": [
+        "客戶抱怨商品不滿意",
+        "客戶詢問購買相關事宜"
+      ]
+    },
+    {
+      "area": "銷售技巧",
+      "importance": "重要",
+      "key_concepts": [
+        "了解客戶需求",
+        "推薦商品",
+        "促進銷售"
+      ],
+      "evaluation_points": [
+        "了解客戶購物習慣",
+        "提供合適的商品建議",
+        "達成銷售目標"
+      ],
+      "example_scenarios": [
+        "客戶詢問有關新品",
+        "客戶想要購買特定品牌"
+      ]
+    },
+    {
+      "area": "團隊合作",
+      "importance": "加分",
+      "key_concepts": [
+        "與同事溝通",
+        "協助同事",
+        "共同達成目標"
+      ],
+      "evaluation_points": [
+        "與同事建立良好關係",
+        "提供幫助",
+        "參與團隊活動"
+      ],
+      "example_scenarios": [
+        "同事需要幫忙處理客戶問題",
+        "團隊要完成銷售任務"
+      ]
+    }
+  ],
+  "interview_dimensions": [
+    {
+      "dimension": "溝通技巧",
+      "stages": [
+        "初步接觸",
+        "問題解決",
+        "關係建立"
+      ],
+      "description": "評估候選人在與客戶或同事溝通的能力"
+    },
+    {
+      "dimension": "適應性",
+      "stages": [
+        "面試",
+        "實習",
+        "正式工作"
+      ],
+      "description": "評估候選人對不同工作環境和壓力的適應能力"
+    }
+  ]
+}

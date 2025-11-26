@@ -1,0 +1,99 @@
+{
+  "position": "產品經理",
+  "industry": "科技",
+  "skill_areas": [
+    {
+      "area": "市場分析與策略",
+      "importance": "核心",
+      "key_concepts": [
+        "市場需求分析",
+        "競爭對手分析",
+        "產品定位"
+      ],
+      "evaluation_points": [
+        "能夠準確地識別市場趨勢和需求",
+        "能夠制定有效的市場策略"
+      ],
+      "example_scenarios": [
+        "公司要進軍新的市場，需要進行市場需求分析"
+      ]
+    },
+    {
+      "area": "產品設計與開發",
+      "importance": "重要",
+      "key_concepts": [
+        "用戶經驗設計",
+        "產品功能設計",
+        "技術選型"
+      ],
+      "evaluation_points": [
+        "能夠創造高品質的用戶體驗",
+        "能夠有效地管理產品開發流程"
+      ],
+      "example_scenarios": [
+        "公司要開發新一代的手機應用程式"
+      ]
+    },
+    {
+      "area": "測試與優化",
+      "importance": "加分",
+      "key_concepts": [
+        "單元測試",
+        "集成測試",
+        "A/B 測試"
+      ],
+      "evaluation_points": [
+        "能夠有效地識別和解決程式錯誤",
+        "能夠通過 A/B 測試來優化產品"
+      ],
+      "example_scenarios": [
+        "公司要針對新功能進行 A/B 測試"
+      ]
+    },
+    {
+      "area": "資料分析與報告",
+      "importance": "核心",
+      "key_concepts": [
+        "數據蒐集",
+        "數據分析",
+        "報表設計"
+      ],
+      "evaluation_points": [
+        "能夠準確地分析和呈現數據",
+        "能夠制定有效的數據分析策略"
+      ],
+      "example_scenarios": [
+        "公司要進行市場份額分析"
+      ]
+    }
+  ],
+  "interview_dimensions": [
+    {
+      "dimension": "領導力",
+      "stages": [
+        "解釋產品目標和戰略",
+        "指導團隊進行產品開發",
+        "評估產品成效"
+      ],
+      "description": "能夠有效地領導團隊，制定並實施產品策略"
+    },
+    {
+      "dimension": "溝通力",
+      "stages": [
+        "與客戶溝通需求",
+        "與工程師溝通技術問題",
+        "與管理層報告產品進度"
+      ],
+      "description": "能夠有效地與不同人群溝通，建立良好的關係"
+    },
+    {
+      "dimension": "創新力",
+      "stages": [
+        "識別市場空白和機會",
+        "設計創新的解決方案",
+        "評估產品的商業潛力"
+      ],
+      "description": "能夠創造新的價值，開拓新的市場和業務"
+    }
+  ]
+}

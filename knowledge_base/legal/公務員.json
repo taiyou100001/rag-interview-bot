@@ -1,0 +1,90 @@
+{
+  "position": "公務員",
+  "industry": "法律",
+  "skill_areas": [
+    {
+      "area": "法律知識",
+      "importance": "核心",
+      "key_concepts": [
+        "刑法",
+        "民法",
+        "商法",
+        "行政法"
+      ],
+      "evaluation_points": [
+        "對法律規則的理解",
+        "適用法律於實際情況"
+      ],
+      "example_scenarios": [
+        "處理刑事案件",
+        "解決民事糾紛"
+      ]
+    },
+    {
+      "area": "溝通技巧",
+      "importance": "重要",
+      "key_concepts": [
+        "口頭溝通",
+        "書面溝通",
+        "聽力",
+        "表達"
+      ],
+      "evaluation_points": [
+        "與他人有效溝通",
+        "呈現清晰的意見"
+      ],
+      "example_scenarios": [
+        "與律師或檢察官溝通",
+        "撰寫報告或文件"
+      ]
+    },
+    {
+      "area": "問題解決",
+      "importance": "加分",
+      "key_concepts": [
+        "分析",
+        "評估",
+        "創新",
+        "實踐"
+      ],
+      "evaluation_points": [
+        "識別並解決問題",
+        "提供創新的解決方案"
+      ],
+      "example_scenarios": [
+        "處理緊急事件",
+        "改善工作流程"
+      ]
+    }
+  ],
+  "interview_dimensions": [
+    {
+      "dimension": "專業知識",
+      "stages": [
+        "基本知識",
+        "應用知識",
+        "創新思維"
+      ],
+      "description": "評估候選人對法律領域的理解和應用能力"
+    },
+    {
+      "dimension": "溝通技巧",
+      "stages": [
+        "口頭溝通",
+        "書面溝通",
+        "聽力",
+        "表達"
+      ],
+      "description": "評估候選人在與他人溝通方面的能力"
+    },
+    {
+      "dimension": "團隊合作",
+      "stages": [
+        "領導",
+        "協調",
+        "參與"
+      ],
+      "description": "評估候選人在團隊合作中的能力和態度"
+    }
+  ]
+}

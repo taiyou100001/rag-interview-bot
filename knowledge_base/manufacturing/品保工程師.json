@@ -1,0 +1,89 @@
+{
+  "position": "品保工程師",
+  "industry": "製造",
+  "skill_areas": [
+    {
+      "area": "品質管理",
+      "importance": "核心",
+      "key_concepts": [
+        "ISO 9001",
+        "六西格瑪",
+        "產品缺陷分析"
+      ],
+      "evaluation_points": [
+        "建立品質管理系統",
+        "實施六西格瑪方法",
+        "優化生產流程"
+      ],
+      "example_scenarios": [
+        "新產品上市前進行品質檢查",
+        "識別並解決生產線上的問題"
+      ]
+    },
+    {
+      "area": "製造工程",
+      "importance": "重要",
+      "key_concepts": [
+        "製造設計",
+        "生產流程優化",
+        "設備維護"
+      ],
+      "evaluation_points": [
+        "設計合理的生產流程",
+        "確保設備正常運作",
+        "降低生產成本"
+      ],
+      "example_scenarios": [
+        "改善生產效率",
+        "減少產品缺陷"
+      ]
+    },
+    {
+      "area": "數據分析",
+      "importance": "加分",
+      "key_concepts": [
+        "資料收集",
+        "統計分析",
+        "可視化呈現"
+      ],
+      "evaluation_points": [
+        "建立有效的數據收集系統",
+        "進行深入的數據分析",
+        "提供清晰的報告"
+      ],
+      "example_scenarios": [
+        "識別生產線上的問題",
+        "評估新產品的市場需求"
+      ]
+    }
+  ],
+  "interview_dimensions": [
+    {
+      "dimension": "技術能力",
+      "stages": [
+        "基本知識",
+        "應用技巧",
+        "創新思維"
+      ],
+      "description": "評估候選人對品保工程師職務的技術能力"
+    },
+    {
+      "dimension": "溝通能力",
+      "stages": [
+        "語言表達",
+        "聽力理解",
+        "團隊合作"
+      ],
+      "description": "評估候選人在溝通方面的能力"
+    },
+    {
+      "dimension": "問題解決",
+      "stages": [
+        "識別問題",
+        "分析原因",
+        "提出方案"
+      ],
+      "description": "評估候選人對問題的分析和解決能力"
+    }
+  ]
+}

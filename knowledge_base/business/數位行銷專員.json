@@ -1,0 +1,83 @@
+{
+  "position": "數位行銷專員",
+  "industry": "商業",
+  "skill_areas": [
+    {
+      "area": "數位行銷策略",
+      "importance": "核心",
+      "key_concepts": [
+        "數位行銷目標設定",
+        "市場分析",
+        "競爭對手分析"
+      ],
+      "evaluation_points": [
+        "能夠建立合理的數位行銷目標",
+        "了解市場趨勢和競爭情況"
+      ],
+      "example_scenarios": [
+        "公司欲推出新產品，需要設計適當的數位行銷策略"
+      ]
+    },
+    {
+      "area": "社群媒體管理",
+      "importance": "重要",
+      "key_concepts": [
+        "社群媒體平台選擇",
+        "內容創造和發布",
+        "粉絲互動"
+      ],
+      "evaluation_points": [
+        "能夠有效地運用社群媒體平台",
+        "設計吸引人的內容和活動"
+      ],
+      "example_scenarios": [
+        "公司欲在Facebook上建立品牌形象"
+      ]
+    },
+    {
+      "area": "數位行銷工具",
+      "importance": "加分",
+      "key_concepts": [
+        "Google Analytics",
+        "Adobe Campaign",
+        "Hootsuite"
+      ],
+      "evaluation_points": [
+        "能夠有效地使用數位行銷工具",
+        "了解各工具的功能和應用"
+      ],
+      "example_scenarios": [
+        "公司欲分析網站流量和購物車率"
+      ]
+    }
+  ],
+  "interview_dimensions": [
+    {
+      "dimension": "專業知識",
+      "stages": [
+        "基本知識",
+        "應用知識",
+        "創新思維"
+      ],
+      "description": "評估候選人對數位行銷的基本知識、應用能力和創新思維"
+    },
+    {
+      "dimension": "實踐能力",
+      "stages": [
+        "策略設計",
+        "內容創造",
+        "分析評估"
+      ],
+      "description": "評估候選人在實際工作中運用數位行銷策略、創造內容和分析結果的能力"
+    },
+    {
+      "dimension": "溝通協作",
+      "stages": [
+        "與客戶溝通",
+        "與團隊合作",
+        "與管理層報告"
+      ],
+      "description": "評估候選人在溝通和協作方面的能力，包括與客戶、團隊和管理層的互動"
+    }
+  ]
+}

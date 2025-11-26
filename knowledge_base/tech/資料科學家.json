@@ -1,0 +1,92 @@
+{
+  "position": "資料科學家",
+  "industry": "科技",
+  "skill_areas": [
+    {
+      "area": "數據分析",
+      "importance": "核心",
+      "key_concepts": [
+        "統計學",
+        "機器學習",
+        "深度學習"
+      ],
+      "evaluation_points": [
+        "資料的清理與處理",
+        "模型的建立與訓練",
+        "結果的解釋與呈現"
+      ],
+      "example_scenarios": [
+        "如何分析客戶購買行為",
+        "如何預測產品銷售量",
+        "如何識別潛在的市場趨勢"
+      ]
+    },
+    {
+      "area": "資料視覺化",
+      "importance": "重要",
+      "key_concepts": [
+        "Tableau",
+        "Power BI",
+        "D3.js"
+      ],
+      "evaluation_points": [
+        "資料的可視化與呈現",
+        "故事的構建與傳達",
+        "結果的解釋與說明"
+      ],
+      "example_scenarios": [
+        "如何用圖表展示銷售數據",
+        "如何用地圖顯示客戶分布",
+        "如何用時序圖展示產品趨勢"
+      ]
+    },
+    {
+      "area": "機器學習",
+      "importance": "加分",
+      "key_concepts": [
+        "Supervised Learning",
+        "Unsupervised Learning",
+        "深度學習"
+      ],
+      "evaluation_points": [
+        "模型的建立與訓練",
+        "結果的解釋與呈現",
+        "模型的優化與改進"
+      ],
+      "example_scenarios": [
+        "如何建立預測客戶購買行為的模型",
+        "如何識別潛在的市場趨勢",
+        "如何建構推薦系統"
+      ]
+    }
+  ],
+  "interview_dimensions": [
+    {
+      "dimension": "業務理解",
+      "stages": [
+        "了解公司業務與需求",
+        "分析資料與問題",
+        "提出解決方案"
+      ],
+      "description": "評估候選人的業務理解能力，包括對公司業務的瞭解、對資料的分析以及提出有效的解決方案"
+    },
+    {
+      "dimension": "技術能力",
+      "stages": [
+        "了解核心技能領域",
+        "展示實際案例與經驗",
+        "回答技術問題"
+      ],
+      "description": "評估候選人的技術能力，包括對核心技能領域的瞭解、展示實際案例與經驗以及回答技術問題"
+    },
+    {
+      "dimension": "溝通能力",
+      "stages": [
+        "傳達結果與意見",
+        "說明資料與分析",
+        "與團隊合作"
+      ],
+      "description": "評估候選人的溝通能力，包括對結果的傳達、對資料的說明以及與團隊的合作"
+    }
+  ]
+}

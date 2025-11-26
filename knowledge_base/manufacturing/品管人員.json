@@ -1,0 +1,72 @@
+{
+  "position": "品管人員",
+  "industry": "製造",
+  "skill_areas": [
+    {
+      "area": "品質管理",
+      "importance": "核心",
+      "key_concepts": [
+        "ISO 9001",
+        "TQM",
+        "PDCA"
+      ],
+      "evaluation_points": [
+        "建立品質管理系統",
+        "實施改善計畫"
+      ],
+      "example_scenarios": [
+        "產品質量不合格，如何處理？"
+      ]
+    },
+    {
+      "area": "測試與驗證",
+      "importance": "重要",
+      "key_concepts": [
+        "功能性測試",
+        "性能測試",
+        "穩定性測試"
+      ],
+      "evaluation_points": [
+        "測試計畫的建立",
+        "測試結果的分析"
+      ],
+      "example_scenarios": [
+        "產品發生故障，如何進行故障分析？"
+      ]
+    },
+    {
+      "area": "資料分析",
+      "importance": "加分",
+      "key_concepts": [
+        "SPC",
+        "控制圖",
+        "變異數分析"
+      ],
+      "evaluation_points": [
+        "資料的收集與整理",
+        "資料的分析與呈現"
+      ],
+      "example_scenarios": [
+        "產品生產線的效率如何提高？"
+      ]
+    }
+  ],
+  "interview_dimensions": [
+    {
+      "dimension": "品質管理能力",
+      "stages": [
+        "了解組織的品質目標與要求",
+        "建立並實施品質管理系統"
+      ],
+      "description": "評估候選人的品質管理理念和實踐能力"
+    },
+    {
+      "dimension": "溝通協調能力",
+      "stages": [
+        "與跨部門的溝通",
+        "與員工的溝通"
+      ],
+      "description": "評估候選人的溝通技巧和團隊合作能力"
+    }
+  ]
+}

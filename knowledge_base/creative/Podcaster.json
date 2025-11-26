@@ -1,0 +1,77 @@
+{
+  "position": "Podcaster",
+  "industry": "創意",
+  "skill_areas": [
+    {
+      "area": "內容策劃",
+      "importance": "核心",
+      "key_concepts": [
+        "主題選擇",
+        "節目格式",
+        "內容創造"
+      ],
+      "evaluation_points": [
+        "能否針對聽眾需求提供有意義的內容?",
+        "是否能夠保持節目的新鮮度?"
+      ],
+      "example_scenarios": [
+        "如何設計一個吸引人的主題?",
+        "如何與嘉賓進行有效的訪談?"
+      ]
+    },
+    {
+      "area": "播音技巧",
+      "importance": "重要",
+      "key_concepts": [
+        "語音表達",
+        "節目流暢度",
+        "聲音效果"
+      ],
+      "evaluation_points": [
+        "是否能夠清晰地傳達訊息?",
+        "是否能夠保持節目的節奏?"
+      ],
+      "example_scenarios": [
+        "如何在訪談中保持自然的語氣?",
+        "如何使用音效來增強節目的吸引力?"
+      ]
+    },
+    {
+      "area": "技術能力",
+      "importance": "加分",
+      "key_concepts": [
+        "錄音軟體",
+        "音頻編輯",
+        "播客平台"
+      ],
+      "evaluation_points": [
+        "是否能夠熟練地使用錄音軟體?",
+        "是否能夠有效地進行音頻編輯?"
+      ],
+      "example_scenarios": [
+        "如何使用 Audacity 進行錄音和編輯?",
+        "如何上傳節目到 Spotify 或 Apple Podcasts?"
+      ]
+    }
+  ],
+  "interview_dimensions": [
+    {
+      "dimension": "創意與想像力",
+      "stages": [
+        "初步交流",
+        "案例分享",
+        "最後評估"
+      ],
+      "description": "評估候選人的創造力和想法的能力"
+    },
+    {
+      "dimension": "溝通技巧",
+      "stages": [
+        "口頭表達",
+        "書面表達",
+        "團隊合作"
+      ],
+      "description": "評估候選人的溝通技巧和團隊合作能力"
+    }
+  ]
+}

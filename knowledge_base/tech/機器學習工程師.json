@@ -1,0 +1,77 @@
+{
+  "position": "機器學習工程師",
+  "industry": "科技",
+  "skill_areas": [
+    {
+      "area": "數據前處理",
+      "importance": "核心",
+      "key_concepts": [
+        "資料清潔",
+        "資料缺失",
+        "資料格式轉換"
+      ],
+      "evaluation_points": [
+        "能夠有效地清潔和準備數據",
+        "能夠處理大型數據集"
+      ],
+      "example_scenarios": [
+        "如何處理缺失值?",
+        "如何進行資料的標準化?"
+      ]
+    },
+    {
+      "area": "機器學習模型",
+      "importance": "重要",
+      "key_concepts": [
+        "線性回歸",
+        "決策樹",
+        "隨機森林"
+      ],
+      "evaluation_points": [
+        "能夠選擇合適的模型",
+        "能夠進行模型評估和優化"
+      ],
+      "example_scenarios": [
+        "如何選擇適合的模型?",
+        "如何進行模型的 hyperparameter tuning?"
+      ]
+    },
+    {
+      "area": "深度學習",
+      "importance": "加分",
+      "key_concepts": [
+        "卷積神經網路",
+        "自我迴歸",
+        "生成式對抗網路"
+      ],
+      "evaluation_points": [
+        "能夠設計和實現深度學習模型",
+        "能夠進行深度學習模型的優化"
+      ],
+      "example_scenarios": [
+        "如何設計一個卷積神經網路?",
+        "如何進行自我迴歸的訓練?"
+      ]
+    }
+  ],
+  "interview_dimensions": [
+    {
+      "dimension": "技術能力",
+      "stages": [
+        "基本知識",
+        "應用實踐",
+        "創新思考"
+      ],
+      "description": "評估候選人的技術能力和實踐能力"
+    },
+    {
+      "dimension": "溝通協作",
+      "stages": [
+        "溝通技巧",
+        "團隊合作",
+        "領導力"
+      ],
+      "description": "評估候選人的溝通和協作能力"
+    }
+  ]
+}

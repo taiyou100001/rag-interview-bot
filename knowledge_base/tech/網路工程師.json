@@ -1,0 +1,86 @@
+{
+  "position": "網路工程師",
+  "industry": "科技",
+  "skill_areas": [
+    {
+      "area": "網路架構設計",
+      "importance": "核心",
+      "key_concepts": [
+        "TCP/IP 協定",
+        "OSI 模型",
+        "網路拓撲設計"
+      ],
+      "evaluation_points": [
+        "能夠根據需求設計合理的網路架構",
+        "了解不同網路設備的功能和應用"
+      ],
+      "example_scenarios": [
+        "實現公司內部網路的升級改造",
+        "設計一套適合企業需求的網路安全方案"
+      ]
+    },
+    {
+      "area": "網路安全",
+      "importance": "重要",
+      "key_concepts": [
+        "防火牆配置",
+        "入侵檢測系統",
+        "密碼管理"
+      ],
+      "evaluation_points": [
+        "能夠根據公司需求設定合理的防火牆規則",
+        "了解入侵檢測系統的功能和應用"
+      ],
+      "example_scenarios": [
+        "實現公司網路安全方案的升級改造",
+        "設計一套適合企業需求的密碼管理系統"
+      ]
+    },
+    {
+      "area": "雲端計算",
+      "importance": "加分",
+      "key_concepts": [
+        "AWS",
+        "Azure",
+        "Google Cloud"
+      ],
+      "evaluation_points": [
+        "能夠根據公司需求選擇合適的雲端平台",
+        "了解雲端計算的優點和應用"
+      ],
+      "example_scenarios": [
+        "實現公司業務系統的雲端化",
+        "設計一套適合企業需求的雲端儲存方案"
+      ]
+    }
+  ],
+  "interview_dimensions": [
+    {
+      "dimension": "技術能力",
+      "stages": [
+        "初級",
+        "中級",
+        "高級"
+      ],
+      "description": "評估候選人對網路工程師相關技術的掌握程度"
+    },
+    {
+      "dimension": "實踐經驗",
+      "stages": [
+        "少於 3 年",
+        "3-5 年",
+        "超過 5 年"
+      ],
+      "description": "評估候選人在網路工程領域的工作經歷和實踐能力"
+    },
+    {
+      "dimension": "溝通能力",
+      "stages": [
+        "一般",
+        "良好",
+        "優秀"
+      ],
+      "description": "評估候選人對技術問題的溝通能力和表達方式"
+    }
+  ]
+}

@@ -1,0 +1,83 @@
+{
+  "position": "營運經理",
+  "industry": "商業",
+  "skill_areas": [
+    {
+      "area": "策略規劃",
+      "importance": "核心",
+      "key_concepts": [
+        "市場分析",
+        "競爭力評估",
+        "業務發展戰略"
+      ],
+      "evaluation_points": [
+        "能夠提供具體的商業建議",
+        "能夠分析市場趨勢和變化"
+      ],
+      "example_scenarios": [
+        "公司營收下滑，需要進行業務重整"
+      ]
+    },
+    {
+      "area": "人力資源管理",
+      "importance": "重要",
+      "key_concepts": [
+        "員工培訓",
+        "績效評估",
+        "薪酬福利"
+      ],
+      "evaluation_points": [
+        "能夠有效地管理員工績效",
+        "能夠提供適合的員工培訓計畫"
+      ],
+      "example_scenarios": [
+        "公司需要進行員工調整，營運經理需負責協助"
+      ]
+    },
+    {
+      "area": "財務管理",
+      "importance": "加分",
+      "key_concepts": [
+        "預算控制",
+        "成本分析",
+        "資金籌措"
+      ],
+      "evaluation_points": [
+        "能夠有效地控制公司預算",
+        "能夠提供具體的財務建議"
+      ],
+      "example_scenarios": [
+        "公司需要進行重大投資，營運經理需負責評估風險"
+      ]
+    }
+  ],
+  "interview_dimensions": [
+    {
+      "dimension": "領導力",
+      "stages": [
+        "面試前",
+        "面試中",
+        "面試後"
+      ],
+      "description": "了解營運經理的領導力和管理能力，包括對員工的指導、團隊合作和決策能力"
+    },
+    {
+      "dimension": "創新思維",
+      "stages": [
+        "面試前",
+        "面試中",
+        "面試後"
+      ],
+      "description": "評估營運經理的創新思維和對市場變化的適應能力，包括對業務發展的願景和策略"
+    },
+    {
+      "dimension": "溝通協調",
+      "stages": [
+        "面試前",
+        "面試中",
+        "面試後"
+      ],
+      "description": "評估營運經理的溝通和協調能力，包括對內部團隊和外部夥伴的溝通"
+    }
+  ]
+}

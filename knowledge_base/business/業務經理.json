@@ -1,0 +1,74 @@
+{
+  "position": "業務經理",
+  "industry": "商業",
+  "skill_areas": [
+    {
+      "area": "市場分析與策略",
+      "importance": "核心",
+      "key_concepts": [
+        "市場趨勢分析",
+        "競爭力評估",
+        "市場分段"
+      ],
+      "evaluation_points": [
+        "能夠提供具體的市場分析報告",
+        "能夠提出有效的市場策略"
+      ],
+      "example_scenarios": [
+        "公司欲進入新的市場，需要進行市場分析"
+      ]
+    },
+    {
+      "area": "客戶關係管理",
+      "importance": "重要",
+      "key_concepts": [
+        "客戶需求分析",
+        "客戶關係維護",
+        "客戶忠誠度提高"
+      ],
+      "evaluation_points": [
+        "能夠建立良好的客戶關係",
+        "能夠提供優質的客戶服務"
+      ],
+      "example_scenarios": [
+        "公司欲增加客戶忠誠度，需要進行客戶關係管理"
+      ]
+    },
+    {
+      "area": "團隊領導與管理",
+      "importance": "加分",
+      "key_concepts": [
+        "團隊建設",
+        "員工培訓",
+        "績效評估"
+      ],
+      "evaluation_points": [
+        "能夠有效率地領導團隊",
+        "能夠提供適當的員工培訓"
+      ],
+      "example_scenarios": [
+        "公司欲提高工作效率，需要進行團隊建設"
+      ]
+    }
+  ],
+  "interview_dimensions": [
+    {
+      "dimension": "業務能力",
+      "stages": [
+        "初步面試",
+        "第二輪面試",
+        "第三輪面試"
+      ],
+      "description": "評估候選人對市場分析、客戶關係管理和團隊領導的理解"
+    },
+    {
+      "dimension": "溝通技巧",
+      "stages": [
+        "初步面試",
+        "第二輪面試",
+        "第三輪面試"
+      ],
+      "description": "評估候選人對溝通技巧的掌握"
+    }
+  ]
+}

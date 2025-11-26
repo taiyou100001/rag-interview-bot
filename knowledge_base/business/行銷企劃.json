@@ -1,0 +1,80 @@
+{
+  "position": "行銷企劃",
+  "industry": "商業",
+  "skill_areas": [
+    {
+      "area": "市場分析",
+      "importance": "核心",
+      "key_concepts": [
+        "市場趨勢",
+        "競爭分析",
+        "客戶需求"
+      ],
+      "evaluation_points": [
+        "能夠準確地識別市場趨勢",
+        "能夠進行有效的競爭分析",
+        "能夠滿足客戶需求"
+      ],
+      "example_scenarios": [
+        "市場調查",
+        "競爭對手分析"
+      ]
+    },
+    {
+      "area": "行銷策略",
+      "importance": "重要",
+      "key_concepts": [
+        "品牌識別",
+        "行銷混合",
+        "數位行銷"
+      ],
+      "evaluation_points": [
+        "能夠發展出有效的品牌識別",
+        "能夠結合不同行銷渠道",
+        "能夠運用數位行銷工具"
+      ],
+      "example_scenarios": [
+        "品牌重塑",
+        "跨界行銷"
+      ]
+    },
+    {
+      "area": "內容創作",
+      "importance": "加分",
+      "key_concepts": [
+        "內容策略",
+        "創意表達",
+        "多媒體內容"
+      ],
+      "evaluation_points": [
+        "能夠發展出有效的內容策略",
+        "能夠展現創意和想像力",
+        "能夠運用不同媒介"
+      ],
+      "example_scenarios": [
+        "內容營銷",
+        "品牌故事"
+      ]
+    }
+  ],
+  "interview_dimensions": [
+    {
+      "dimension": "專業知識",
+      "stages": [
+        "基本知識",
+        "應用知識",
+        "創新知識"
+      ],
+      "description": "評估候選人的市場分析、行銷策略和內容創作的專業知識"
+    },
+    {
+      "dimension": "溝通能力",
+      "stages": [
+        "口頭溝通",
+        "書面溝通",
+        "團隊合作"
+      ],
+      "description": "評估候選人的溝通技巧和與他人合作的能力"
+    }
+  ]
+}

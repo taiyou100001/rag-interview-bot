@@ -1,0 +1,81 @@
+{
+  "position": "美容美髮師",
+  "industry": "服務業",
+  "skill_areas": [
+    {
+      "area": "客戶服務",
+      "importance": "核心",
+      "key_concepts": [
+        "溝通技巧",
+        "同理心",
+        "團隊合作"
+      ],
+      "evaluation_points": [
+        "能夠有效地與客戶溝通",
+        "能夠理解客戶的需求和意見"
+      ],
+      "example_scenarios": [
+        "面對不滿的客戶該如何處理",
+        "如何與客戶協商美容或美髮方案"
+      ]
+    },
+    {
+      "area": "美容美髮知識",
+      "importance": "重要",
+      "key_concepts": [
+        "美容美髮基本知識",
+        "最新的美容美髮趨勢"
+      ],
+      "evaluation_points": [
+        "能夠提供正確的美容或美髮建議",
+        "能夠使用最新的技術和產品"
+      ],
+      "example_scenarios": [
+        "如何為客戶選擇合適的美容或美髮方案",
+        "如何使用新款的美容或美髮產品"
+      ]
+    },
+    {
+      "area": "團隊合作",
+      "importance": "加分",
+      "key_concepts": [
+        "與同事溝通",
+        "協助同事"
+      ],
+      "evaluation_points": [
+        "能夠有效地與同事溝通和協作",
+        "能夠提供幫助和支持給同事"
+      ],
+      "example_scenarios": [
+        "如何與同事合作完成工作",
+        "如何為同事提供幫助和支持"
+      ]
+    }
+  ],
+  "interview_dimensions": [
+    {
+      "dimension": "專業知識",
+      "stages": [
+        "初步評估",
+        "深入評估"
+      ],
+      "description": "評估美容美髮師的專業知識和技能"
+    },
+    {
+      "dimension": "溝通技巧",
+      "stages": [
+        "口頭溝通",
+        "書面溝通"
+      ],
+      "description": "評估美容美髮師的溝通技巧和能力"
+    },
+    {
+      "dimension": "團隊合作",
+      "stages": [
+        "與同事合作",
+        "協助同事"
+      ],
+      "description": "評估美容美髮師的團隊合作精神和能力"
+    }
+  ]
+}
