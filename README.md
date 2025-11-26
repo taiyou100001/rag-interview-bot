@@ -15,7 +15,7 @@
 
 ## 🌟 核心功能 (Key Features)
 
-* **履歷智能分析 (Resume Analysis):**
+* **履歷分析 (Resume Analysis):**
     * 在 VR 中支援掃描/拍攝履歷。
     * 後端透過 OCR 辨識內容，並利用 LLM 自動推薦適合的面試職位。
 * **RAG 動態問答 (Dynamic Questioning):**
@@ -63,3 +63,5 @@ graph TD
     LLM <-->|Retreive| VectorDB
     LLM -->|Next Question & Audio| API
     API -->|TTS Audio & Subtitle| Interview
+```
+
