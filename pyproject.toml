@@ -1,17 +1,75 @@
 [project]
-name = "new-interview-bot"
-version = "1.0.0"
-description = "An intelligent mock interview system with Azure OCR and Multi-Agent"
+name = "vr-interview-system"           # 建議改成更明確的名字
+version = "0.1.0"
+description = "An intelligent VR mock interview system with Azure OCR, Speech, and Multi-Agent RAG"
 readme = "README.md"
-requires-python = "~=3.10"
+requires-python = ">=3.10,<3.13"       # 明確範圍
+license = {text = "MIT"}
+
+authors = [
+    {name = "你的名字", email = "you@email.com"}
+]
+
 dependencies = [
-    "ollama>=0.2.1",
-    "python-dotenv>=1.0.0",
-    # Azure OCR
-    "azure-cognitiveservices-vision-computervision>=0.9.0",
-    "msrest>=0.7.1",
-    # NLP (用於履歷結構化)
-    "spacy>=3.7.0",
+    # === 核心框架 ===
     "fastapi>=0.121.2",
     "uvicorn[standard]>=0.38.0",
+
+    # === Azure 服務 ===
+    "azure-cognitiveservices-vision-computervision>=0.9.0",
+    "msrest>=0.7.1",
+    "azure-cognitiveservices-speech>=1.40.0",        # ← 新增！Azure STT/TTS
+
+    # === LLM & RAG ===
+    "ollama>=0.3.0",
+    "sentence-transformers>=3.0.0",
+    "faiss-cpu>=1.8.0",
+    "redis>=5.0.0",
+
+    # === 資料庫 ===
+    "sqlalchemy>=2.0.35",
+    "alembic>=1.13.0",
+    "psycopg2-binary>=2.9.0",           # PostgreSQL
+    "pydantic>=2.8.0",
+    "python-dotenv>=1.0.0",
+
+    # === NLP & 履歷解析 ===
+    "spacy>=3.7.0",
+    "zh-core-web-sm @ https://github.com/explosion/spacy-models/releases/download/zh_core_web_sm-3.7.0/zh_core_web_sm-3.7.0-py3-none-any.whl",
 ]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.0",
+    "httpx>=0.27",
+    "black>=24.0",
+    "ruff>=0.6.0",
+    "uv>=0.4.0",                         # 超快套件管理器
+    "pytest-asyncio",
+]
+
+test = [
+    "pytest",
+    "httpx",
+]
+
+[project.scripts]
+dev = "uvicorn backend.main:app --reload"
+start = "python run.py"
+
+# === 工具設定（2025 標配）===
+[tool.uv]
+dev-dependencies = [
+    "black",
+    "ruff",
+    "pytest",
+]
+
+[tool.black]
+line-length = 100
+target-version = ["py310"]
+
+[tool.ruff]
+line-length = 100
+select = ["E", "W", "F", "I", "B", "UP"]
+ignore = ["E501"]  # 交給 black 處理
