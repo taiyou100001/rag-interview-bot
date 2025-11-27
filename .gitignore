@@ -1,82 +1,38 @@
-# .gitignore
 # Python
 __pycache__/
 *.py[cod]
 *$py.class
-*.so
+*.pyo
+*.pyd
 .Python
-build/
-develop-eggs/
-dist/
-downloads/
-eggs/
-.eggs/
-lib/
-lib64/
-parts/
-sdist/
-var/
-wheels/
-*.egg-info/
-.installed.cfg
-*.egg
-
-# 虛擬環境
-myenv/
-venv/
-ENV/
 env/
+venv/
 .venv/
+pip-log.txt
+pip-delete-this-directory.txt
+uv.lock               # 如果你想每次都重新生成（推薦 commit）
+# uv.lock 建議 commit！除非你用 poetry
 
-# IDE
-.vscode/
-.idea/
-*.swp
-*.swo
-*~
-
-# 環境變數（重要！包含 API 金鑰）
-bin/
+# 專案相關
 .env
-azure.env
-huggingFace.env
-
-# OCR 輸出檔案
-ocr_output*.json
-resume_structured*.json
-
-# 除錯檔案
-debug_*.html
-
-# 履歷檔案（隱私）
-resume/
-*.pdf
-*.jpg
-*.jpeg
-*.png
-
-# 爬蟲輸出
-output/
-knowledge_scraper/output/
-
-# 臨時檔案
-*.tmp
-*.log
-
-# 知識庫資料（可選：如果太大可以不上傳）
-# knowledge_base/
-
-# Scrapy
-.scrapy/
-
-# 作業系統
-.DS_Store
-Thumbs.db
-
-# 測試檔案
-test_*.py
-
-# 使用者檔案
+*.db
+*.sqlite3
 app.db
 
-api_server.py
+# 上傳與產出檔案
+uploads/
+static/audio/
+temp/
+output/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Docker
+docker-compose.override.yml
+
+# macOS
+.DS_Store
