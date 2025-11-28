@@ -73,6 +73,9 @@ class JobInferenceAgent(BaseAgent):
 
 class QuestionGeneratorAgent(BaseAgent):
     """問題生成 Agent（不使用 RAG）"""
+    def __init__(self, fixed_difficulty: str = None):
+        super().__init__()
+        self.fixed_difficulty = fixed_difficulty
     def generate_question(self, job: str, resume: str, history: list):
         """生成面試問題"""
         
@@ -86,6 +89,11 @@ class QuestionGeneratorAgent(BaseAgent):
                 history_context += f"問題：{turn['question'][:60]}\n"
                 history_context += f"回答：{turn['answer'][:60]}\n"
         
+        # 如果設定了固定難度，將難度加入 prompt
+        difficulty = None
+        if hasattr(self, 'fixed_difficulty') and self.fixed_difficulty:
+            difficulty = self.fixed_difficulty
+
         prompt = f"""你是台灣的專業面試官，請用繁體中文生成面試問題。
 
 應徵職位：{job}
@@ -102,7 +110,11 @@ class QuestionGeneratorAgent(BaseAgent):
 4. 避免使用簡體中文字詞
 
 請生成面試問題："""
-        
+
+        # 若有難度資訊，請求 LLM 產生對應難度的題目
+        if difficulty:
+            prompt = prompt.replace("請生成面試問題：", f"難度級別：{difficulty}\n\n請生成面試問題：")
+
         return self.run_llm(prompt, temperature=0.7)
     
     def _get_question_type(self, count):
@@ -120,32 +132,42 @@ class QuestionGeneratorAgent(BaseAgent):
 class KnowledgeBasedQuestionAgent(BaseAgent):
     """基於知識庫的問題生成 Agent（使用 RAG + 去重）"""
     
-    def __init__(self, knowledge_engine):
+    def __init__(self, knowledge_engine, fixed_difficulty: str = None):
         super().__init__()
         self.knowledge_engine = knowledge_engine
         self.max_retry = 2  # 最多重試次數
+        self.fixed_difficulty = fixed_difficulty  # 使用者指定的難度（None 表示自動遞進）
     
     def generate_question(self, job: str, resume: str, history: list):
-        """基於知識庫動態生成問題（含去重機制）"""
+        """基於知識庫動態生成問題（含去重機制和難度級別）"""
         
         attempts = 0
         while attempts < self.max_retry:
             # 決定考核重點
             focus = self._determine_focus(len(history))
             
-            # 從知識庫檢索相關知識（加入 Redis 錯誤容錯）
+            # 決定難度級別
+            if self.fixed_difficulty:
+                # 使用使用者指定的難度
+                difficulty = self.fixed_difficulty
+            else:
+                # 自動根據問題輪數遞進
+                difficulty = self._determine_difficulty(len(history))
+            
+            # 從知識庫檢索相關知識（根據難度級別）
             try:
-                knowledge = self.knowledge_engine.get_relevant_knowledge(
+                knowledge = self.knowledge_engine.get_relevant_knowledge_by_difficulty(
                     query=f"{job} {focus}",
                     job_title=job,
+                    difficulty=difficulty,
                     top_k=2
                 )
             except Exception as e:
                 print(f"知識庫檢索失敗（Redis 可能未啟動，已自動降級）: {e}")
                 knowledge = []  # 降級為無知識庫模式
             
-            # 建構知識上下文
-            knowledge_context = self._build_knowledge_context(knowledge)
+            # 建構知識上下文（包含難度提示）
+            knowledge_context = self._build_knowledge_context(knowledge, difficulty)
             
             # 歷史上下文
             history_context = ""
@@ -158,6 +180,7 @@ class KnowledgeBasedQuestionAgent(BaseAgent):
 
 應徵職位：{job}
 本輪考核重點：{focus}
+難度級別：{difficulty}
 
 相關知識參考：
 {knowledge_context}
@@ -172,6 +195,7 @@ class KnowledgeBasedQuestionAgent(BaseAgent):
 4. 使用繁體中文（台灣用語）
 5. 直接輸出一個問題，無前言
 6. 問題要與之前的問題不同
+7. 問題難度要符合「{difficulty}」級別
 
 請生成面試問題："""
             
@@ -194,6 +218,20 @@ class KnowledgeBasedQuestionAgent(BaseAgent):
         
         # 如果都重複，還是返回最後一個
         return question
+    
+    def _determine_difficulty(self, count):
+        """決定難度級別（根據問題輪數遞進）"""
+        difficulties = [
+            "easy",      # 第 0 題
+            "easy",      # 第 1 題
+            "medium",    # 第 2 題
+            "medium",    # 第 3 題
+            "hard",      # 第 4 題
+        ]
+        
+        if count < len(difficulties):
+            return difficulties[count]
+        return "hard"  # 之後都是 hard
     
     # === 修正點 2：新增遺失的 _simple_similarity 方法 ===
     def _simple_similarity(self, s1: str, s2: str) -> float:
@@ -222,19 +260,23 @@ class KnowledgeBasedQuestionAgent(BaseAgent):
             return focuses[count]
         return "綜合能力評估"
     
-    def _build_knowledge_context(self, knowledge_items):
-        """建構知識上下文"""
+    def _build_knowledge_context(self, knowledge_items, difficulty: str = "medium"):
+        """建構知識上下文（包含難度提示）"""
         if not knowledge_items:
             return "(無特定知識參考)"
         
         context_parts = []
         for item in knowledge_items:
             if item['type'] == 'skill':
-                context_parts.append(
-                    f"技能領域：{item['area']}\n"
-                    f"核心概念：{', '.join(item['concepts'][:3])}\n"
-                    f"評估重點：{', '.join(item['evaluation'][:2])}"
-                )
+                part = f"技能領域：{item['area']}\n"
+                part += f"核心概念：{', '.join(item['concepts'][:3])}\n"
+                part += f"評估重點：{', '.join(item['evaluation'][:2])}"
+                
+                # 如果有難度提示，加入
+                if 'difficulty_hint' in item:
+                    part += f"\n提問方向（{difficulty}）：{item['difficulty_hint']}"
+                
+                context_parts.append(part)
             else:
                 context_parts.append(
                     f"評估維度：{item['dimension']}\n"

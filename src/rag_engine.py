@@ -23,6 +23,7 @@ class KnowledgeItem(BaseModel):
     concepts: List[str] = []
     evaluation: List[str] = []
     scenarios: List[str] = []
+    difficulty_levels: Dict[str, str] = {}  # {'easy': '...', 'medium': '...', 'hard': '...'}
     dimension: str = None
     stages: List[str] = []
     description: str = None
@@ -66,12 +67,26 @@ class RAGEngine:
         ind = data.get("industry", "")
         for skill in data.get("skill_areas", []):
             try:
+                # 解析 example_scenarios，支援舊格式（陣列）和新格式（含難度級別）
+                example_scenarios_raw = skill.get("example_scenarios", [])
+                scenarios = []
+                difficulty_levels = {}
+                
+                if isinstance(example_scenarios_raw, dict):
+                    # 新格式：{"scenarios": [...], "difficulty_levels": {...}}
+                    scenarios = example_scenarios_raw.get("scenarios", [])
+                    difficulty_levels = example_scenarios_raw.get("difficulty_levels", {})
+                elif isinstance(example_scenarios_raw, list):
+                    # 舊格式：[...]
+                    scenarios = example_scenarios_raw
+                
                 items.append(KnowledgeItem(
                     type="skill", position=pos, industry=ind,
                     area=skill.get("area"), importance=skill.get("importance"),
                     concepts=skill.get("key_concepts", []),
                     evaluation=skill.get("evaluation_points", []),
-                    scenarios=skill.get("example_scenarios", [])
+                    scenarios=scenarios,
+                    difficulty_levels=difficulty_levels
                 ))
             except ValidationError as e:
                 logger.warning(f"技能驗證失敗: {e}")
@@ -112,6 +127,54 @@ class RAGEngine:
             item = self.items[idx]
             if job_title.lower() in item.position.lower() or item.position.lower() in job_title.lower():
                 results.append(item.dict())
+                if len(results) >= top_k:
+                    break
+
+        if results:
+            self.redis.setex(cache_key, self.cache_ttl, json.dumps(results))
+        return results
+    
+    def get_relevant_knowledge(self, query, job_title, top_k=2):
+        # 只是呼叫原本的 get_relevant()，以應對呼叫get_relevant_knowledge(不知道在哪) 的需求
+        return self.get_relevant(query, job_title, top_k)
+    
+    def get_relevant_knowledge_by_difficulty(self, query: str, job_title: str, difficulty: str = "medium", top_k: int = 2) -> List[Dict]:
+        """根據難度級別搜尋相關知識
+        
+        Args:
+            query: 搜尋關鍵詞
+            job_title: 職位名稱
+            difficulty: 難度級別 ('easy', 'medium', 'hard')
+            top_k: 返回結果數量
+        
+        Returns:
+            包含難度級別資訊的知識項目列表
+        """
+        cache_key = self._cache_key(f"{query}:{difficulty}")
+        cached = self.redis.get(cache_key)
+        if cached:
+            return json.loads(cached)
+
+        if not self.index:
+            return []
+
+        q_emb = self.model.encode([query])
+        D, I = self.index.search(q_emb.astype(np.float32), top_k * 3)
+
+        results = []
+        for idx, score in zip(I[0], D[0]):
+            if score < 0.3: 
+                continue
+            item = self.items[idx]
+            if job_title.lower() in item.position.lower() or item.position.lower() in job_title.lower():
+                result_dict = item.dict()
+                
+                # 如果有難度級別資訊，加入難度相關的提示
+                if item.difficulty_levels and difficulty in item.difficulty_levels:
+                    result_dict["difficulty_hint"] = item.difficulty_levels[difficulty]
+                    result_dict["current_difficulty"] = difficulty
+                
+                results.append(result_dict)
                 if len(results) >= top_k:
                     break
 
