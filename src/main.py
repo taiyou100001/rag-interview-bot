@@ -126,13 +126,34 @@ def main():
     print("=" * 60)
     print()
     
+    # 選擇難度級別（無論 RAG 與否都詢問，預設為中等）
+    difficulty = "medium"  # 預設值
+    print("\n選擇面試難度級別：")
+    print("  1. 簡單 (Easy) - 基礎概念與經驗")
+    print("  2. 中等 (Medium) - 實踐經驗與問題解決 (預設)")
+    print("  3. 困難 (Hard) - 深度技術與決策")
+
+    choice = input("\n請選擇 (1-3，直接按 Enter 選擇中等): ").strip()
+
+    difficulty_map = {
+        "1": "easy",
+        "2": "medium",
+        "3": "hard"
+    }
+
+    if choice in difficulty_map:
+        difficulty = difficulty_map[choice]
+        print(f"✓ 已選擇 {['簡單', '中等', '困難'][int(choice)-1]} 難度")
+    else:
+        print(f"✓ 使用預設難度 (中等)")
+    
     # 選擇問題生成器
     if use_rag:
         from agents import KnowledgeBasedQuestionAgent
-        question_agent = KnowledgeBasedQuestionAgent(rag_engine)
+        question_agent = KnowledgeBasedQuestionAgent(rag_engine, fixed_difficulty=difficulty)
     else:
         from agents import QuestionGeneratorAgent
-        question_agent = QuestionGeneratorAgent()
+        question_agent = QuestionGeneratorAgent(fixed_difficulty=difficulty)
     
     # 面試循環
     history = []
