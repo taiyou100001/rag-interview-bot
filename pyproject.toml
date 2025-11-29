@@ -28,6 +28,7 @@ dependencies = [
     "redis>=5.0.0",
     "sqlalchemy>=2.0.35",
     "pydantic>=2.8.0",
+    "werkzeug>=3.1.4",
 ]
 
 [project.optional-dependencies]
@@ -48,15 +49,8 @@ dev = "uvicorn backend.main:app --reload"
 start = "python run.py"
 
 # === 工具設定（2025 標配）===
-[tool.uv]
 # 移除舊的 dev-dependencies，改用 dependency-groups（未來版）
-dependency-groups = {
-    dev = [
-        "black",
-        "ruff",
-        "pytest",
-    ]
-}
+dependency-groups = {dev = ["black","ruff","pytest",]}
 
 [tool.black]
 line-length = 100
