@@ -5,7 +5,8 @@ import json
 import os
 
 class KnowledgeRAGEngine:
-    def __init__(self, data_dir="knowledge_base"):
+    # 將預設值改為 '../knowledge_base'
+    def __init__(self, data_dir="../knowledge_base"):
         self.data_dir = data_dir
         self.model = SentenceTransformer('paraphrase-multilingual-MiniLM-L12-v2')
         
