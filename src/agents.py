@@ -1,7 +1,7 @@
 # agents.py (完整增強版 - 加入問題去重)
 import ollama
 
-MODEL = "llama3.1:8b"
+MODEL = "gpt-oss:20b"
 
 class BaseAgent:
     """基礎 Agent 類別"""
@@ -145,11 +145,13 @@ class KnowledgeBasedQuestionAgent(BaseAgent):
             # 建構知識上下文
             knowledge_context = self._build_knowledge_context(knowledge)
             
-            # 歷史上下文
+            # 建議修改：傳遞最近幾輪的完整問答
             history_context = ""
-            if history and len(history) > 0:
-                last = history[-1]
-                history_context = f"\n先前討論過：{last['question'][:40]}"
+            if history:
+                recent_history = history[-2:] # 傳遞最近兩次的問答
+                history_context = "\n過去對話：\n"
+                for turn in recent_history:
+                    history_context += f"Q: {turn['question']}\nA: {turn['answer']}\n---\n"
             
             # 生成問題
             prompt = f"""你是台灣的專業面試官，請根據知識點生成原創面試問題。
@@ -160,16 +162,18 @@ class KnowledgeBasedQuestionAgent(BaseAgent):
 相關知識參考：
 {knowledge_context}
 
-履歷摘要：{resume[:300]}
+履歷摘要：{resume[:800]}
 {history_context}
 
 要求：
-1. 基於知識點設計問題，但不要直接複製
-2. 問題要具體、可評估
-3. 適合口頭回答
-4. 使用繁體中文（台灣用語）
-5. 直接輸出問題，無前言
-6. 問題要與之前的問題不同
+1. 僅生成一個問題，請勿使用編號列表 (如 1., 2. 等)
+2. 基於知識點設計問題，但不要直接複製
+3. 問題要具體、可評估
+4. 適合口頭回答
+5. 使用繁體中文（台灣用語）
+6. 直接輸出問題，無前言
+7. 問題要與之前的問題不同
+8. 如果你檢視到履歷中的經驗或先前的回答是模糊、空泛、或用戶承認是假設性的，請設計一個更深入的追問，或將問題從「你做過什麼」轉向「你會怎麼做」。
 
 請生成面試問題："""
             
