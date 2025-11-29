@@ -113,7 +113,6 @@ graph TD
     > **操作提醒：** 當系統提示 `請上傳履歷 (PDF/圖片):` 時，請輸入您的履歷檔案的**完整路徑**。
     >
     > *範例輸入:* `C:\Users\YourName\Documents\resume.pdf`
-    ```
 
 ## 專案結構與文件說明 (Project Structure)
 
