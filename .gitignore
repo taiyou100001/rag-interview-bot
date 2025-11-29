@@ -25,6 +25,9 @@ static/audio/
 temp/
 output/
 
+# 履歷範例
+test.pdf
+
 # IDE
 .idea/
 .vscode/
