@@ -109,3 +109,22 @@ graph TD
     ```bash
     uv run main.py
     ```
+
+## 專案結構與文件說明 (Project Structure)
+
+本專案採用模組化設計，以下是各主要檔案及其功能說明：
+
+| 檔案名稱 | 模組類別 | 主要功能描述 |
+| :--- | :--- | :--- |
+| `main.py` | 執行主控 | 專案的主入口點。負責初始化 RAG 引擎、處理履歷 OCR 輸入、推斷面試職位，並啟動與管理面試問答循環。 |
+| `search_engine.py` | 輔助檢索/I/O | 包含使用 **Azure OCR** 讀取履歷（並觸發結構化）、載入 JSON 格式的固定題庫，以及進行傳統**關鍵字檢索**的功能。 |
+| `resume_structurer.py` | 履歷結構化 | 使用 `spacy` 進行自然語言處理，將 OCR 輸出的非結構化文本轉換為包含姓名、技能、工作經歷等欄位的**結構化 JSON 履歷**。 |
+| `ocr_processor.py` | 履歷處理 (OCR) | 負責調用 **Azure Computer Vision 服務**進行履歷檔案（PDF/圖檔）的 OCR 辨識。並內建表格檢測、格式化及分類邏輯。 |
+| `bullet_resume_parser.py` | 履歷解析 | 輔助 `ocr_processor.py`，專注於解析條列式履歷內容，將分區標題和條目進行結構化。 |
+| `agents.py` | 核心 AI 代理 | 包含 `JobInferenceAgent`（職位推斷）和兩個問題生成器：`QuestionGeneratorAgent` (基礎模式) 及 `KnowledgeBasedQuestionAgent` (RAG 增強，含問題去重機制)。 |
+| `knowledge_rag.py` | RAG 檢索 | **RAG 核心**。使用 Sentence-Transformers 建立向量索引，負責從知識庫中檢索與當前問題和履歷最相關的知識點，並實現**語義去重**功能。 |
+| `batch_knowledge_generator.py` | 知識庫生成 | 使用 Ollama 批次生成多達 **10 個產業、100+ 個職位**的模擬面試知識庫 JSON 檔案。 |
+| `knowledge_generator.py` | 知識庫生成（精選） | 提供了精選職位清單的知識庫生成工具，用於快速建立常見職位的知識庫。 |
+| `create_test_data.py` | 測試工具 | 建立一個「後端工程師」的單一 JSON 測試知識庫，用於快速測試 RAG 引擎的功能。 |
+| `cleanup.py` | 維護工具 | 清理專案中不再需要的檔案（如舊的 `rag_engine.py`、`data/` 目錄等）。 |
+| `monitor.py` | 監控工具 | 用於監控爬蟲或批次生成進度，即時顯示已處理的資料筆數及職位統計。 |
