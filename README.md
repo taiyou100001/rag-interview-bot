@@ -87,11 +87,11 @@ graph TD
 
     > **提示：** 如果缺少任何 Python 模組，請使用 `uv add <module_name>` 安裝。
 
-2.  **配置 LLM 模型：** 確保您已透過 Ollama 下載所需模型，例如 Llama 3.1 20B：
+2.  **配置 LLM 模型：** 確保您已透過 Ollama 下載所需模型，例如 gpt-oss:20b：
 
     ```bash
     # 在新的終端機中執行
-    ollama pull llama3.1:20b
+    ollama pull gpt-oss:20b
     ```
 
 3.  **環境變數配置 (`.env`)：**
