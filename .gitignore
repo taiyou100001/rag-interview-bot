@@ -72,6 +72,3 @@ knowledge_scraper/output/
 # 作業系統
 .DS_Store
 Thumbs.db
-
-# 測試檔案
-test_*.py
