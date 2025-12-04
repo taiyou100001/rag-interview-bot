@@ -1,3 +1,4 @@
+# tests/test_ocr.py
 import pytest
 from ocr_processor import TableFormatter, OCRConfig, TextItem
 
