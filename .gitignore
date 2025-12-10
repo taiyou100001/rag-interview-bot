@@ -8,6 +8,21 @@ __pycache__/
 env/
 venv/
 .venv/
+pip-log.txt
+pip-delete-this-directory.txt
+uv.lock
+
+# 專案相關
+.env
+*.db
+*.sqlite3
+app.db
+
+# 上傳與產出檔案
+uploads/
+static/audio/
+temp/
+output/
 
 # IDE
 .idea/
