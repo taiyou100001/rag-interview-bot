@@ -1,7 +1,7 @@
 # agents.py (完整增強版 - 加入問題去重)
 import ollama
 
-MODEL = "gpt-oss:20b"
+MODEL = "llama3.1:8b"
 
 class BaseAgent:
     """基礎 Agent 類別"""
