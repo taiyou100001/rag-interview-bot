@@ -3,7 +3,13 @@ name = "new-interview-bot"
 version = "1.0.0"
 description = "An intelligent mock interview system with Azure OCR and Multi-Agent"
 readme = "README.md"
-requires-python = ">=3.11"
+requires-python = ">=3.10,<3.13"  # 已正確，3.10~3.12 穩定
+license = {text = "MIT"}  # 建議加（開源友好）
+
+authors = [
+    {name = "Your Name", email = "you@example.com"}  # 建議加（團隊專案必備）
+]
+
 dependencies = [
     "ollama>=0.2.1",
     "python-dotenv>=1.0.0",

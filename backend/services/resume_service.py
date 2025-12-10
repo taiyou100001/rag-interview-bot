@@ -1,4 +1,3 @@
-# resume_structurer.py resume_service.py
 import json
 import spacy
 nlp = spacy.load("zh_core_web_sm")
@@ -207,4 +206,3 @@ def structure_resume_from_ocr_json(ocr_json):
     if available_times:
         resume['available_times'] = available_times
     return resume
-
