@@ -115,7 +115,8 @@ class TableDetector:
             for item in current_group:
                 txt = getattr(item, 'text', '')
                 # 利用 BulletResumeParser 的標題與條列判斷
-                from bullet_resume_parser import BulletResumeParser
+                # ✅ 修改：改成從 backend.utils.bullet_parser 匯入
+                from backend.utils.bullet_parser import BulletResumeParser
                 parser = BulletResumeParser()
                 if parser._is_section_title(txt, item):
                     section_title_count += 1
