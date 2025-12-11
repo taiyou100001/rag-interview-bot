@@ -22,4 +22,6 @@ dependencies = [
     "pytest>=9.0.1",
     "pytest-mock>=3.15.1",
     "pip>=25.3",
+    "uvicorn>=0.38.0",
+    "numpy<2.0.0",
 ]
