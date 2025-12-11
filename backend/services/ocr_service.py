@@ -1,3 +1,4 @@
+# ocr_processor.py ocr_service.py
 """
 OCR 處理器模組
 提供表格檢測、格式化和 JSON 輸出功能
@@ -10,19 +11,14 @@ from typing import List, Dict, Any, Tuple
 from azure.cognitiveservices.vision.computervision import ComputerVisionClient
 from azure.cognitiveservices.vision.computervision.models import OperationStatusCodes
 from msrest.authentication import CognitiveServicesCredentials
-from dotenv import load_dotenv
-
-# 強制從 bin/azure.env 載入（相對於專案根目錄）
-project_root = os.path.dirname(os.path.abspath(__file__))  # 根目錄
-bin_path = os.path.join(project_root, 'bin', 'azure.env')
-load_dotenv(bin_path)
+from backend.config import settings
 
 class OCRConfig:
     """OCR 配置類"""
     
     def __init__(self):
-        self.subscription_key = os.getenv("AZURE_SUBSCRIPTION_KEY")
-        self.endpoint = os.getenv("AZURE_ENDPOINT")
+        self.subscription_key = settings.AZURE_SUBSCRIPTION_KEY
+        self.endpoint = settings.AZURE_ENDPOINT
         self.supported_extensions = ['.jpg', '.jpeg', '.png', '.bmp', '.tiff', '.tif', '.pdf']
         
         # 表格檢測參數
