@@ -38,5 +38,5 @@ docker-compose.override.yml
 Thumbs.db
 
 # 測試檔案
-test_audio.wav
-test_resume.pdf
+*.wav
+*.pdf
