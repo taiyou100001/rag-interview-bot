@@ -41,7 +41,10 @@ class InterviewSession(Base):
     user_id = Column(UUID(as_uuid=True), ForeignKey('users.id'), nullable=False)
     job_title = Column(String(100), nullable=False)
     resume_id = Column(UUID(as_uuid=True), ForeignKey('resumes.id'), nullable=True)
-    history = Column(JSON, nullable=False)  # [{'question': '...', 'answer': '...'}]
+    resume_text = Column(String, nullable=True)  # ✅ 新增
+    current_question = Column(String, nullable=True)  # ✅ 新增
+    question_count = Column(Integer, default=0)  # ✅ 新增
+    history = Column(JSON, nullable=False, default=list)
     started_at = Column(DateTime, default=datetime.utcnow)
     ended_at = Column(DateTime)
     feedback = Column(String(500), nullable=True)
