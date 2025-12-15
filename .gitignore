@@ -10,6 +10,7 @@ venv/
 .venv/
 pip-log.txt
 pip-delete-this-directory.txt
+<<<<<<< HEAD
 uv.lock               # 如果你想每次都重新生成（推薦 commit）
 # uv.lock 建議 commit！除非你用 poetry
 
@@ -28,6 +29,22 @@ output/
 # 履歷範例
 test.pdf
 
+=======
+uv.lock
+
+# 專案相關
+.env
+*.db
+*.sqlite3
+app.db
+
+# 上傳與產出檔案
+uploads/
+static/audio/
+temp/
+output/
+
+>>>>>>> origin/Vivi
 # IDE
 .idea/
 .vscode/
@@ -38,4 +55,13 @@ test.pdf
 docker-compose.override.yml
 
 # macOS
+<<<<<<< HEAD
 .DS_Store
+=======
+.DS_Store
+Thumbs.db
+
+# 測試檔案
+*.wav
+*.pdf
+>>>>>>> origin/Vivi

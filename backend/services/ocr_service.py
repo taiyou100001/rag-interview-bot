@@ -1,3 +1,7 @@
+<<<<<<< HEAD
+=======
+# ocr_processor.py ocr_service.py
+>>>>>>> origin/Vivi
 """
 OCR 處理器模組
 提供表格檢測、格式化和 JSON 輸出功能
@@ -10,19 +14,36 @@ from typing import List, Dict, Any, Tuple
 from azure.cognitiveservices.vision.computervision import ComputerVisionClient
 from azure.cognitiveservices.vision.computervision.models import OperationStatusCodes
 from msrest.authentication import CognitiveServicesCredentials
+<<<<<<< HEAD
 from dotenv import load_dotenv
 
 # 強制從 bin/azure.env 載入（相對於專案根目錄）
 project_root = os.path.dirname(os.path.abspath(__file__))  # 根目錄
 bin_path = os.path.join(project_root, 'bin', 'azure.env')
 load_dotenv(bin_path)
+=======
+<<<<<<<< HEAD:src/ocr_processor.py
+from dotenv import load_dotenv
+
+project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
+
+load_dotenv(os.path.join(project_root, ".env"))
+========
+from backend.config import settings
+>>>>>>>> origin/Vivi:backend/services/ocr_service.py
+>>>>>>> origin/Vivi
 
 class OCRConfig:
     """OCR 配置類"""
     
     def __init__(self):
+<<<<<<< HEAD
         self.subscription_key = os.getenv("AZURE_SUBSCRIPTION_KEY")
         self.endpoint = os.getenv("AZURE_ENDPOINT")
+=======
+        self.subscription_key = settings.AZURE_SUBSCRIPTION_KEY
+        self.endpoint = settings.AZURE_ENDPOINT
+>>>>>>> origin/Vivi
         self.supported_extensions = ['.jpg', '.jpeg', '.png', '.bmp', '.tiff', '.tif', '.pdf']
         
         # 表格檢測參數
@@ -119,7 +140,12 @@ class TableDetector:
             for item in current_group:
                 txt = getattr(item, 'text', '')
                 # 利用 BulletResumeParser 的標題與條列判斷
+<<<<<<< HEAD
                 from bullet_resume_parser import BulletResumeParser
+=======
+                # ✅ 修改：改成從 backend.utils.bullet_parser 匯入
+                from backend.utils.bullet_parser import BulletResumeParser
+>>>>>>> origin/Vivi
                 parser = BulletResumeParser()
                 if parser._is_section_title(txt, item):
                     section_title_count += 1

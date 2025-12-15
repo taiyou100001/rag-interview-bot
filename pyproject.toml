@@ -18,6 +18,7 @@ dependencies = [
     "msrest>=0.7.1",
     # NLP (用於履歷結構化)
     "spacy>=3.7.0",
+<<<<<<< HEAD
     "fastapi>=0.121.2",
     "uvicorn[standard]>=0.38.0",
     # 新增：Azure Speech（STT/TTS）
@@ -29,6 +30,22 @@ dependencies = [
     "sqlalchemy>=2.0.35",
     "pydantic>=2.8.0",
     "werkzeug>=3.1.4",
+=======
+    "sentence-transformers>=5.1.2",
+    "pytest>=9.0.1",
+    "pytest-mock>=3.15.1",
+    "pip>=25.3",
+    "uvicorn>=0.38.0",
+    "numpy<2.0.0",
+    "sqlalchemy>=2.0.45",
+    "werkzeug>=3.1.4",
+    "faiss-cpu>=1.13.1",
+    "redis>=7.1.0",
+    "pydantic-settings>=2.12.0",
+    "azure-cognitiveservices-speech>=1.47.0",
+    "fastapi>=0.124.2",
+    "python-multipart>=0.0.20",
+>>>>>>> origin/Vivi
 ]
 
 [project.optional-dependencies]
