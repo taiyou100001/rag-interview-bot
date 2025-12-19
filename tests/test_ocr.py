@@ -1,6 +1,6 @@
 # tests/test_ocr.py
 import pytest
-from ocr_processor import TableFormatter, OCRConfig, TextItem
+from ocr_service import TableFormatter, OCRConfig, TextItem
 
 class TestTableFormatter:
     @pytest.fixture
