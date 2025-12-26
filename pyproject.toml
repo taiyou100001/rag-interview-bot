@@ -18,19 +18,6 @@ dependencies = [
     "msrest>=0.7.1",
     # NLP (用於履歷結構化)
     "spacy>=3.7.0",
-<<<<<<< HEAD
-    "fastapi>=0.121.2",
-    "uvicorn[standard]>=0.38.0",
-    # 新增：Azure Speech（STT/TTS）
-    "azure-cognitiveservices-speech>=1.40.0",
-    # 新增：RAG & DB（基於你的專案）
-    "sentence-transformers>=3.0.0",
-    "faiss-cpu>=1.8.0",
-    "redis>=5.0.0",
-    "sqlalchemy>=2.0.35",
-    "pydantic>=2.8.0",
-    "werkzeug>=3.1.4",
-=======
     "sentence-transformers>=5.1.2",
     "pytest>=9.0.1",
     "pytest-mock>=3.15.1",
@@ -45,35 +32,4 @@ dependencies = [
     "azure-cognitiveservices-speech>=1.47.0",
     "fastapi>=0.124.2",
     "python-multipart>=0.0.20",
->>>>>>> origin/Vivi
 ]
-
-[project.optional-dependencies]
-dev = [  # 移到這裡（新版 uv 標準）
-    "pytest>=8.0",
-    "httpx>=0.27",
-    "black>=24.0",
-    "ruff>=0.6.0",
-    "pytest-asyncio>=0.24",
-]
-test = [
-    "pytest",
-    "httpx",
-]
-
-[project.scripts]  # 啟動腳本（可選，但方便）
-dev = "uvicorn backend.main:app --reload"
-start = "python run.py"
-
-# === 工具設定（2025 標配）===
-# 移除舊的 dev-dependencies，改用 dependency-groups（未來版）
-dependency-groups = {dev = ["black","ruff","pytest",]}
-
-[tool.black]
-line-length = 100
-target-version = ["py310", "py311", "py312"]
-
-[tool.ruff]
-line-length = 100
-select = ["E", "F", "I", "B", "UP"]  # 基本規則
-ignore = ["E501"]  # 長度交給 black
