@@ -2,6 +2,9 @@
 
 import os
 from pydantic_settings import BaseSettings
+from pydantic import Field
+print("ENV PATH:", os.path.abspath(os.path.join(os.path.dirname(os.path.dirname(__file__)), ".env")))
+print("ENV EXISTS:", os.path.exists(os.path.join(os.path.dirname(os.path.dirname(__file__)), ".env")))
 
 class Settings(BaseSettings):
     PROJECT_NAME: str = "VR Interview Bot"
@@ -12,6 +15,20 @@ class Settings(BaseSettings):
     AZURE_ENDPOINT: str
     AZURE_SPEECH_KEY: str      # 對應 .env 的語音金鑰
     AZURE_SPEECH_REGION: str   # 對應 .env 的語音區域 (如 southeastasia)
+
+    # --- OCR 前處理設定 (添加預設值) ---
+    OCR_ENABLE_PREPROCESS: int = Field(default=0)
+    OCR_PREPROCESS_UPSCALE: int = Field(default=0)
+    OCR_PREPROCESS_UNSHARP_SUB: float = Field(default=1.0)
+    OCR_PREPROCESS_ADAPTIVE_BLOCK: int = Field(default=11)
+    OCR_PREPROCESS_ADAPTIVE_C: int = Field(default=2)
+    OCR_PREPROCESS_SAVE_IMAGE: int = Field(default=0)
+    OCR_PREPROCESS_SAVE_DIR: str = Field(default="output")
+    OCR_PREPROCESS_FILENAME_SUFFIX: str = Field(default="_processed")
+    OCR_PREPROCESS_OUTPUT_FORMAT: str = Field(default="png")
+
+    # --- Gemini API Key ---
+    GEMINI_API_KEY: str
     
     # --- 路徑設定 ---
     # __file__ 是 backend/config.py
