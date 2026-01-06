@@ -2,7 +2,9 @@
 
 import os
 import shutil
-from typing import Optional
+import time
+import uuid
+from typing import Optional, Dict
 from fastapi import APIRouter, HTTPException, UploadFile, File, Form
 from backend.models.pydantic_models import QuestionResponse
 from backend.services.session_service import SessionService
@@ -18,34 +20,42 @@ speech_service = SpeechService()
 
 def process_audio_file(session_id: str, audio_file: UploadFile) -> str:
     """
-    處理音檔儲存與 STT 辨識，並確保暫存檔被刪除 (來自重構版)
+    處理音檔：儲存並執行 STT，【現在會保留檔案】
+    回傳: {"text": "辨識文字", "file_path": "儲存路徑"}
     """
     if not audio_file:
-        return ""
+        return {"text": "", "file_path": None}
     
-    temp_filename = f"temp_{session_id}.wav"
-    temp_path = os.path.join(settings.AUDIO_DIR, temp_filename)
+    # 1. 建立永久儲存目錄 (例如 saved_audio)
+    save_dir = os.path.join(settings.BASE_DIR, "saved_audio")
+    os.makedirs(save_dir, exist_ok=True)
+
+    # 2. 產生唯一檔名 (避免覆蓋)
+    # 格式範例: session123_1701234567_abcde.wav
+    unique_name = f"{session_id}_{int(time.time())}_{uuid.uuid4().hex[:5]}.wav"
+    file_path = os.path.join(save_dir, unique_name)
+    
     user_text = ""
 
     try:
-        # 儲存檔案
-        with open(temp_path, "wb") as buffer:
+        # 3. 儲存檔案 (永久保留)
+        with open(file_path, "wb") as buffer:
             shutil.copyfileobj(audio_file.file, buffer)
         
-        # 執行 STT
-        user_text = speech_service.speech_to_text(temp_path)
+        # 4. 執行 STT
+        user_text = speech_service.speech_to_text(file_path)
+        
     except Exception as e:
         print(f"STT Error: {e}")
-    finally:
-        # 清理暫存檔 (重構版優化：確保一定會刪除)
-        if os.path.exists(temp_path):
-            os.remove(temp_path)
+        # 因為要保留檔案供除錯或紀錄，這裡不刪除檔案
+    
+    # 注意：這裡移除了 finally { os.remove(...) } 區塊
             
-    return user_text
+    return {"text": user_text, "file_path": file_path}
 
 def check_voice_command(text: str) -> Optional[str]:
     """
-    檢查文字中是否包含下一題或退出的指令 (來自重構版的新功能)
+    檢查文字中是否包含下一題或退出的指令
     """
     if not text:
         return None
@@ -80,11 +90,16 @@ async def submit_answer(
     if not session:
         raise HTTPException(status_code=404, detail="Session not found")
     
-    # 2. 處理音檔 (STT) - 使用 Helper Function
-    user_text = process_audio_file(session_id, audio_file)
+    # 2. 處理音檔 (STT) - 只呼叫一次！
+    result = process_audio_file(session_id, audio_file)
+    user_text = result["text"]
+    saved_path = result["file_path"] # 這裡拿到了檔案路徑
+    
     print(f"🎤 使用者說: {user_text}")
+    if saved_path:
+        print(f"💾 音檔已儲存: {saved_path}")
 
-    # 3. 🔥 指令判斷邏輯 (合併自重構版)
+    # 3. 🔥 指令判斷邏輯
     command = check_voice_command(user_text)
 
     if command == "EXIT":
@@ -100,11 +115,12 @@ async def submit_answer(
         user_text = "（使用者要求跳過此題，請直接提供下一個不同的面試問題）"
 
     # 4. 更新歷史紀錄 (儲存使用者的回答)
-    # 注意：必須在生成下一題「之前」存入，這樣 Agent 才能讀到上下文
     if user_text:
         last_history = session.get('history', [])
         if last_history:
              last_history[-1]['answer'] = user_text
+             # 如果你的 SessionService 支援存音檔路徑，可以在這裡加入
+             # last_history[-1]['audio_path'] = saved_path
 
     # 5. 生成下一題 (AI)
     question_text = agent_service.generate_question(session_id)
