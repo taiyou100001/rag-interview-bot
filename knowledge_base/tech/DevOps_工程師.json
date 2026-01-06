@@ -14,9 +14,16 @@
         "能夠使用 Ansible 部署應用程式",
         "能夠使用 SaltStack 管理虛擬機器"
       ],
-      "example_scenarios": [
-        "情境: 使用 Ansible 部署 Kubernetes 叢集"
-      ]
+      "example_scenarios": {
+        "scenarios": [
+          "情境: 使用 Ansible 部署 Kubernetes 叢集"
+        ],
+        "difficulty_levels": {
+          "easy": "詢問 自動化工具 的基本概念或流程，例如『你在過去有相關經驗嗎？』",
+          "medium": "詢問具體情境分析，例如『情境: 使用 Ansible 部署 Kubernetes 叢集時，你會如何應對？』",
+          "hard": "要求深度決策或技術細節，例如『在複雜的 自動化工具 場景中，你會如何做出決策？』"
+        }
+      }
     },
     {
       "area": "容器化",
@@ -30,10 +37,17 @@
         "能夠使用 Docker 建置和管理容器",
         "能夠使用 Kubernetes 部署和管理叢集"
       ],
-      "example_scenarios": [
-        "情境: 使用 Docker 部署 Web 服務",
-        "情境: 使用 Kubernetes 部署微服務"
-      ]
+      "example_scenarios": {
+        "scenarios": [
+          "情境: 使用 Docker 部署 Web 服務",
+          "情境: 使用 Kubernetes 部署微服務"
+        ],
+        "difficulty_levels": {
+          "easy": "詢問 容器化 的基本概念或流程，例如『你在過去有相關經驗嗎？』",
+          "medium": "詢問具體情境分析，例如『情境: 使用 Docker 部署 Web 服務時，你會如何應對？』",
+          "hard": "要求深度決策或技術細節，例如『在複雜的 容器化 場景中，你會如何做出決策？』"
+        }
+      }
     },
     {
       "area": "持續整合與持續交付",
@@ -47,10 +61,17 @@
         "能夠使用 Jenkins 建置和管理 CI/CD 流程",
         "能夠使用 Travis CI 或 CircleCI 部署應用程式"
       ],
-      "example_scenarios": [
-        "情境: 使用 Jenkins 部署應用程式",
-        "情境: 使用 Travis CI 部署 Web 服務"
-      ]
+      "example_scenarios": {
+        "scenarios": [
+          "情境: 使用 Jenkins 部署應用程式",
+          "情境: 使用 Travis CI 部署 Web 服務"
+        ],
+        "difficulty_levels": {
+          "easy": "詢問 持續整合與持續交付 的基本概念或流程，例如『你在過去有相關經驗嗎？』",
+          "medium": "詢問具體情境分析，例如『情境: 使用 Jenkins 部署應用程式時，你會如何應對？』",
+          "hard": "要求深度決策或技術細節，例如『在複雜的 持續整合與持續交付 場景中，你會如何做出決策？』"
+        }
+      }
     }
   ],
   "interview_dimensions": [

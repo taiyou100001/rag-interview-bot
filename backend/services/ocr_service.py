@@ -1,4 +1,3 @@
-# ocr_processor.py ocr_service.py
 """
 OCR 處理器模組
 提供表格檢測、格式化和 JSON 輸出功能
@@ -25,8 +24,6 @@ from azure.cognitiveservices.vision.computervision import ComputerVisionClient
 from azure.cognitiveservices.vision.computervision.models import OperationStatusCodes
 from msrest.authentication import CognitiveServicesCredentials
 
-
-
 def _env_flag(name: str, default: bool) -> bool:
     # 先嘗試從 settings 取值，若無則 fallback 到 os.getenv
     val = getattr(settings, name, None)
@@ -44,8 +41,10 @@ def _env_flag(name: str, default: bool) -> bool:
 class OCRConfig:
     """簡化的 OCR 配置，主要用於排序容差與支援副檔名"""
     def __init__(self):
+        # 改用 settings
         self.subscription_key = settings.AZURE_SUBSCRIPTION_KEY
         self.endpoint = settings.AZURE_ENDPOINT
+        
         # 不拋錯，讓呼叫端決定是否可用
         self.supported_extensions = ['.jpg', '.jpeg', '.png', '.bmp', '.tiff', '.tif', '.pdf']
         self.y_tolerance = 16  # 群組化時的垂直容差（像素或相對單位）
@@ -246,6 +245,7 @@ class OCRProcessor:
                 if kw in line_text:
                     matched_kw = kw
                     break
+            
             if matched_kw:
                 # remove first occurrence of keyword
                 idx = line_text.find(matched_kw)
@@ -271,6 +271,32 @@ class OCRProcessor:
             pairs.append({"key": pending_key, "value": ""})
         return pairs
 
+    # 這裡還有一個隱藏的衝突：detect_tables 在 Vivi 版本中被移除了或改寫，
+    # 但這裡我保留 Vivi 版本中對 BulletResumeParser 的正確引用，並假設你可能需要這個函式。
+    # 如果 Vivi 分支本來就想刪掉 detect_tables，請自行刪除此段。
+    def detect_tables(self, groups: List[List[Any]]) -> List[Dict[str, Any]]:
+        """檢測表格結構，遇到分區標題或條列符號比例高的 group 直接略過表格判斷"""
+        tables = []
+        i = 0
+        while i < len(groups):
+            current_group = groups[i]
+            # 新增：若 group 內有多個分區標題或條列符號比例高，直接略過
+            section_title_count = 0
+            bullet_count = 0
+            for item in current_group:
+                txt = getattr(item, 'text', '')
+                # ✅ 修改：改成從 backend.utils.bullet_parser 匯入
+                from backend.utils.bullet_parser import BulletResumeParser
+                parser = BulletResumeParser()
+                if parser._is_section_title(txt, item):
+                    section_title_count += 1
+                if parser._is_bullet(txt):
+                    bullet_count += 1
+            if section_title_count >= 1 or (len(current_group) > 0 and bullet_count / len(current_group) > 0.4):
+                i += 1
+                continue
+            i += 1
+        return tables
 
     #TODO: visual layout analysis (tables, columns) can be added in future enhancements and formatting
     def _extract_compact_contact(self, rows: List[Dict[str, Any]]) -> Dict[str, str]:
