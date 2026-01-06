@@ -57,19 +57,14 @@ dev = [
     "ruff>=0.6.0",
 ]
 
-# === 腳本設定 ===
-# 注意：project.scripts 只能對應 "Python 函數"，不能直接寫 Shell 指令 (如 uvicorn main:app)
-# 如果要用類似 npm run dev 的功能，建議使用 Makefile 或 Justfile，
-# 或者在 uv 中使用 task (如果是新版 uv)。
-# 這裡示範標準 Python Entry Point 寫法：
-[project.scripts]
-start = "backend.main:start"  # 假設你在 backend/main.py 有定義 start() 函數
-
 # === 工具設定 ===
 
 [tool.black]
 line-length = 100
 target-version = ["py310", "py311", "py312"]
+
+[tool.hatch.build.targets.wheel]
+packages = ["backend"]
 
 [tool.ruff]
 line-length = 100
