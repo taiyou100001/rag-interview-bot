@@ -2,6 +2,7 @@
 
 import os
 import shutil
+from typing import Optional
 from fastapi import APIRouter, HTTPException, UploadFile, File, Form
 from backend.models.pydantic_models import QuestionResponse
 from backend.services.session_service import SessionService
