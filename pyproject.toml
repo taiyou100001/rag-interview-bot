@@ -1,73 +1,71 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
 [project]
 name = "new-interview-bot"
 version = "1.0.0"
 description = "An intelligent mock interview system with Azure OCR and Multi-Agent"
 readme = "README.md"
-requires-python = ">=3.10,<3.13"  # 已正確，3.10~3.12 穩定
-license = {text = "MIT"}  # 建議加（開源友好）
+requires-python = ">=3.10,<3.13"
+license = {text = "MIT"}
 
 authors = [
-    {name = "Your Name", email = "you@example.com"}  # 建議加（團隊專案必備）
+    {name = "Your Name", email = "you@example.com"}
 ]
 
+# === 核心依賴 (已移除重複項並修正版本) ===
 dependencies = [
-    "ollama>=0.2.1",
+    "fastapi>=0.112.0",
+    "uvicorn[standard]>=0.30.0",
     "python-dotenv>=1.0.0",
-    # Azure OCR
+    "python-multipart>=0.0.9",  # 處理檔案上傳必備
+    
+    # LLM & AI
+    "ollama>=0.2.1",
+    "sentence-transformers>=3.0.0",  # 修正：目前最新約為 3.x，5.x 不存在
+    
+    # Azure Services
     "azure-cognitiveservices-vision-computervision>=0.9.0",
     "msrest>=0.7.1",
-    # NLP (用於履歷結構化)
-    "spacy>=3.7.0",
-<<<<<<< HEAD
-    "fastapi>=0.121.2",
-    "uvicorn[standard]>=0.38.0",
-    # 新增：Azure Speech（STT/TTS）
-    "azure-cognitiveservices-speech>=1.40.0",
-    # 新增：RAG & DB（基於你的專案）
-    "sentence-transformers>=3.0.0",
+    "azure-cognitiveservices-speech>=1.37.0",
+    
+    # RAG & Vector DB
     "faiss-cpu>=1.8.0",
     "redis>=5.0.0",
-    "sqlalchemy>=2.0.35",
+    "numpy<2.0.0",  # 限制 numpy 版本以相容舊版 ML 套件
+    
+    # Database & Utils
+    "sqlalchemy>=2.0.30",
     "pydantic>=2.8.0",
-    "werkzeug>=3.1.4",
-=======
-    "sentence-transformers>=5.1.2",
-    "pytest>=9.0.1",
-    "pytest-mock>=3.15.1",
-    "pip>=25.3",
-    "uvicorn>=0.38.0",
-    "numpy<2.0.0",
-    "sqlalchemy>=2.0.45",
-    "werkzeug>=3.1.4",
-    "faiss-cpu>=1.13.1",
-    "redis>=7.1.0",
-    "pydantic-settings>=2.12.0",
-    "azure-cognitiveservices-speech>=1.47.0",
-    "fastapi>=0.124.2",
-    "python-multipart>=0.0.20",
->>>>>>> origin/Vivi
+    "pydantic-settings>=2.3.0",
+    "werkzeug>=3.0.0",
+    
+    # NLP & Spacy
+    "spacy>=3.7.0",
+    "zh-core-web-sm>=3.7.0",  # 必須在此宣告，下方 tool.uv.sources 才會生效
 ]
 
-[project.optional-dependencies]
-dev = [  # 移到這裡（新版 uv 標準）
+# === 開發依賴 (符合 uv 標準) ===
+[dependency-groups]
+dev = [
     "pytest>=8.0",
+    "pytest-asyncio>=0.24",
+    "pytest-mock>=3.14.0",
     "httpx>=0.27",
     "black>=24.0",
     "ruff>=0.6.0",
-    "pytest-asyncio>=0.24",
-]
-test = [
-    "pytest",
-    "httpx",
 ]
 
-[project.scripts]  # 啟動腳本（可選，但方便）
-dev = "uvicorn backend.main:app --reload"
-start = "python run.py"
+# === 腳本設定 ===
+# 注意：project.scripts 只能對應 "Python 函數"，不能直接寫 Shell 指令 (如 uvicorn main:app)
+# 如果要用類似 npm run dev 的功能，建議使用 Makefile 或 Justfile，
+# 或者在 uv 中使用 task (如果是新版 uv)。
+# 這裡示範標準 Python Entry Point 寫法：
+[project.scripts]
+start = "backend.main:start"  # 假設你在 backend/main.py 有定義 start() 函數
 
-# === 工具設定（2025 標配）===
-# 移除舊的 dev-dependencies，改用 dependency-groups（未來版）
-dependency-groups = {dev = ["black","ruff","pytest",]}
+# === 工具設定 ===
 
 [tool.black]
 line-length = 100
@@ -75,5 +73,9 @@ target-version = ["py310", "py311", "py312"]
 
 [tool.ruff]
 line-length = 100
-select = ["E", "F", "I", "B", "UP"]  # 基本規則
-ignore = ["E501"]  # 長度交給 black
+select = ["E", "F", "I", "B", "UP"]
+ignore = ["E501"]
+
+# === UV 特殊設定 (Spacy 模型下載) ===
+[tool.uv.sources]
+zh-core-web-sm = { url = "https://github.com/explosion/spacy-models/releases/download/zh_core_web_sm-3.7.0/zh_core_web_sm-3.7.0-py3-none-any.whl" }
