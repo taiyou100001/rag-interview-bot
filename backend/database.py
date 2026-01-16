@@ -1,95 +1,135 @@
-# database.py
+# backend/database.py
 import os
 import uuid
 from datetime import datetime
-from sqlalchemy import create_engine, Column, String, DateTime, ForeignKey, JSON
+from sqlalchemy import create_engine, Column, String, DateTime, ForeignKey, JSON, Integer, Text
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker, relationship
-from sqlalchemy.dialects.postgresql import UUID  # 支援PostgreSQL的UUID
 from werkzeug.security import generate_password_hash, check_password_hash
 
-# 資料庫配置（環境變數切換）
-DB_URL = os.getenv('DATABASE_URL', 'sqlite:///app.db')  # 預設SQLite
-engine = create_engine(DB_URL, echo=False)  # echo=True for debug
+# 資料庫配置
+DB_URL = os.getenv('DATABASE_URL', 'sqlite:///app.db')
+engine = create_engine(DB_URL, echo=False)
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
 Base = declarative_base()
 
 class User(Base):
+    """使用者資料表"""
     __tablename__ = 'users'
-    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
+    
+    id = Column(String(36), primary_key=True, default=lambda: str(uuid.uuid4()))
     username = Column(String(50), unique=True, nullable=False)
     email = Column(String(120), unique=True, nullable=False)
     password_hash = Column(String(128), nullable=False)
     created_at = Column(DateTime, default=datetime.utcnow)
     last_login = Column(DateTime)
     
-    resumes = relationship('Resume', backref='user', lazy=True)
-    sessions = relationship('InterviewSession', backref='user', lazy=True)
+    resumes = relationship('Resume', back_populates='user', lazy='dynamic')
+    sessions = relationship('InterviewSession', back_populates='user', lazy='dynamic')
 
 class Resume(Base):
+    """履歷資料表"""
     __tablename__ = 'resumes'
-    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
-    user_id = Column(UUID(as_uuid=True), ForeignKey('users.id'), nullable=False)
+    
+    id = Column(String(36), primary_key=True, default=lambda: str(uuid.uuid4()))
+    user_id = Column(String(36), ForeignKey('users.id'), nullable=False)
     filename = Column(String(255), nullable=False)
-    ocr_json = Column(JSON, nullable=True)  # 儲存OCR結果
-    structured_data = Column(JSON, nullable=True)  # 儲存結構化結果
+    ocr_json = Column(JSON, nullable=True)
+    structured_data = Column(JSON, nullable=True)
     uploaded_at = Column(DateTime, default=datetime.utcnow)
+    
+    user = relationship('User', back_populates='resumes')
 
 class InterviewSession(Base):
+    """面試會話資料表"""
     __tablename__ = 'interview_sessions'
-    id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
-    user_id = Column(UUID(as_uuid=True), ForeignKey('users.id'), nullable=False)
+    
+    id = Column(String(36), primary_key=True, default=lambda: str(uuid.uuid4()))
+    user_id = Column(String(36), ForeignKey('users.id'), nullable=False)
     job_title = Column(String(100), nullable=False)
-    resume_id = Column(UUID(as_uuid=True), ForeignKey('resumes.id'), nullable=True)
-    history = Column(JSON, nullable=False)  # [{'question': '...', 'answer': '...'}]
+    resume_id = Column(String(36), ForeignKey('resumes.id'), nullable=True)
+    
+    # Phase 1 欄位
+    resume_text = Column(Text, nullable=True)  # 改用 Text 避免長度限制
+    current_question = Column(Text, nullable=True)
+    question_count = Column(Integer, default=0)
+    
+    history = Column(JSON, nullable=False, default=list)
     started_at = Column(DateTime, default=datetime.utcnow)
-    ended_at = Column(DateTime)
-    feedback = Column(String(500), nullable=True)
+    ended_at = Column(DateTime, nullable=True)
+    feedback = Column(JSON, nullable=True)
+    
+    user = relationship('User', back_populates='sessions')
 
 def init_db():
-    """初始化資料庫（建立表格）"""
+    """初始化資料庫 (建立所有表格)"""
     Base.metadata.create_all(bind=engine)
+    print("[Database] 資料表建立完成")
 
-# CRUD 操作範例
+# ========== CRUD 操作函數 ==========
+
 def create_user(username: str, email: str, password: str):
     """註冊使用者"""
     hashed = generate_password_hash(password)
     user = User(username=username, email=email, password_hash=hashed)
+    
     with SessionLocal() as db:
         db.add(user)
         db.commit()
         db.refresh(user)
+    
     return user
 
 def authenticate_user(email: str, password: str):
     """登入驗證"""
     with SessionLocal() as db:
         user = db.query(User).filter(User.email == email).first()
+        
         if user and check_password_hash(user.password_hash, password):
             user.last_login = datetime.utcnow()
             db.commit()
             return user
+    
     return None
 
-def save_resume(user_id: uuid.UUID, filename: str, ocr_json: dict, structured_data: dict):
-    """儲存履歷"""
-    resume = Resume(user_id=user_id, filename=filename, ocr_json=ocr_json, structured_data=structured_data)
+def save_resume(user_id, filename: str, ocr_json: dict, structured_data: dict):
+    """
+    儲存履歷
+    
+    Args:
+        user_id: 可以是 str 或 uuid.UUID
+    """
+    # 統一轉為字串
+    if isinstance(user_id, uuid.UUID):
+        user_id = str(user_id)
+    
+    resume = Resume(
+        user_id=user_id,
+        filename=filename,
+        ocr_json=ocr_json,
+        structured_data=structured_data
+    )
+    
     with SessionLocal() as db:
         db.add(resume)
         db.commit()
         db.refresh(resume)
+    
     return resume
 
-def save_interview_session(user_id: uuid.UUID, job_title: str, resume_id: uuid.UUID, history: list):
-    """儲存面試會話"""
-    session = InterviewSession(user_id=user_id, job_title=job_title, resume_id=resume_id, history=history, ended_at=datetime.utcnow())
+def get_user_sessions(user_id):
+    """
+    查詢使用者面試歷史
+    
+    Args:
+        user_id: 可以是 str 或 uuid.UUID
+    """
+    # 統一轉為字串
+    if isinstance(user_id, uuid.UUID):
+        user_id = str(user_id)
+    
     with SessionLocal() as db:
-        db.add(session)
-        db.commit()
-        db.refresh(session)
-    return session
-
-def get_user_sessions(user_id: uuid.UUID):
-    """查詢使用者面試歷史"""
-    with SessionLocal() as db:
-        return db.query(InterviewSession).filter(InterviewSession.user_id == user_id).all()
+        sessions = db.query(InterviewSession).filter(
+            InterviewSession.user_id == user_id
+        ).all()
+        return sessions
