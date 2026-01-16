@@ -1,168 +1,122 @@
-# knowledge_rag.py (增強版 - 加入履歷檢索和去重) rag_services.py
+# backend/services/rag_service.py
 from sentence_transformers import SentenceTransformer
-import numpy as np
+import faiss
 import json
-import os
-from backend.config import settings
+from pathlib import Path
+import numpy as np
 
-class RagService:
-    # 將預設值改為 '../knowledge_base'
-    def __init__(self):
-        self.data_dir = os.path.join(settings.BASE_DIR, "knowledge_base")
-        self.model = SentenceTransformer('paraphrase-multilingual-MiniLM-L12-v2')
-        
-        self.knowledge_items = []
-        self.embeddings = None
-        
-        self._load_knowledge()
-        if self.knowledge_items:
-            self._build_embeddings()
+class RAGService:
+    """RAG (Retrieval-Augmented Generation) 服務"""
     
-    def _load_knowledge(self):
-        """載入知識庫"""
-        if not os.path.exists(self.data_dir):
-            print(f"知識庫目錄不存在: {self.data_dir}")
+    def __init__(self):
+        """初始化向量模型與知識庫"""
+        print("[RAG] 正在載入向量模型...")
+        self.model = SentenceTransformer('paraphrase-multilingual-MiniLM-L12-v2')
+        self.index = None
+        self.metadata = []
+        self._load_knowledge_base()
+
+    def _load_knowledge_base(self):
+        """載入知識庫並建立向量索引"""
+        path = Path("knowledge_base")
+        
+        if not path.exists():
+            print("[RAG] 警告: knowledge_base 資料夾不存在，跳過載入")
             return
         
-        for root, dirs, files in os.walk(self.data_dir):
-            for file in files:
-                if file.endswith('.json'):
-                    filepath = os.path.join(root, file)
-                    try:
-                        with open(filepath, 'r', encoding='utf-8') as f:
-                            data = json.load(f)
-                            self._parse_knowledge(data)
-                    except Exception as e:
-                        print(f"警告: 無法載入 {filepath}: {e}")
-        
-        print(f"✓ 載入 {len(self.knowledge_items)} 個知識點")
-    
-    def _parse_knowledge(self, data):
-        """解析知識庫資料"""
-        position = data.get('position', '')
-        industry = data.get('industry', '')
-        
-        # 技能領域
-        for skill in data.get('skill_areas', []):
-            self.knowledge_items.append({
-                'type': 'skill',
-                'position': position,
-                'industry': industry,
-                'area': skill.get('area', ''),
-                'importance': skill.get('importance', ''),
-                'concepts': skill.get('key_concepts', []),
-                'evaluation': skill.get('evaluation_points', []),
-                'scenarios': skill.get('example_scenarios', [])
-            })
-        
-        # 面試維度
-        for dim in data.get('interview_dimensions', []):
-            self.knowledge_items.append({
-                'type': 'dimension',
-                'position': position,
-                'industry': industry,
-                'dimension': dim.get('dimension', ''),
-                'stages': dim.get('stages', []),
-                'description': dim.get('description', '')
-            })
-    
-    def _build_embeddings(self):
-        """建立向量索引"""
         texts = []
-        for item in self.knowledge_items:
-            if item['type'] == 'skill':
-                text = f"{item['area']} {' '.join(item['concepts'])} {' '.join(item['evaluation'])}"
-            else:
-                text = f"{item['dimension']} {item['description']} {' '.join(item['stages'])}"
-            texts.append(text)
+        json_files = list(path.rglob("*.json"))
         
-        self.embeddings = self.model.encode(texts, show_progress_bar=False)
-        print(f"✓ 向量索引建立完成")
-    
-    def get_relevant_knowledge(self, query: str, job_title: str, top_k: int = 2):
-        """檢索相關知識點"""
-        if not self.knowledge_items or self.embeddings is None:
+        if not json_files:
+            print("[RAG] 警告: knowledge_base 中無 JSON 檔案")
+            return
+        
+        print(f"[RAG] 找到 {len(json_files)} 個知識庫檔案")
+        
+        for file in json_files:
+            try:
+                with open(file, 'r', encoding='utf-8') as f:
+                    data = json.load(f)
+                    
+                    # 組合文字用於向量化
+                    position = data.get('position', '')
+                    industry = data.get('industry', '')
+                    skills = []
+                    
+                    for skill_area in data.get("skill_areas", []):
+                        skills.extend(skill_area.get("key_concepts", []))
+                    
+                    text = f"{position} {industry} {' '.join(skills)}"
+                    texts.append(text)
+                    self.metadata.append(data)
+                    
+            except Exception as e:
+                print(f"[RAG] 載入 {file} 失敗: {e}")
+        
+        if not texts:
+            print("[RAG] 警告: 無有效知識庫資料")
+            return
+        
+        # 建立 FAISS 向量索引
+        print(f"[RAG] 正在建立向量索引 ({len(texts)} 筆資料)...")
+        embeddings = self.model.encode(texts)
+        dimension = embeddings.shape[1]
+        
+        self.index = faiss.IndexFlatIP(dimension)  # 使用內積 (Inner Product)
+        
+        # 正規化向量 (讓內積等同於餘弦相似度)
+        faiss.normalize_L2(embeddings)
+        self.index.add(embeddings.astype('float32'))
+        
+        print(f"[RAG] 向量索引建立完成！")
+
+    def retrieve(self, query: str, top_k: int = 3):
+        """
+        檢索相關知識
+        
+        Args:
+            query: 查詢文字 (例如: "後端工程師 Python FastAPI")
+            top_k: 回傳前 k 筆最相關資料
+            
+        Returns:
+            list: 相關知識的 metadata
+        """
+        if not self.index or not self.metadata:
+            print("[RAG] 警告: 向量索引未建立")
             return []
         
-        # 向量檢索
-        query_embedding = self.model.encode([query])[0]
-        similarities = np.dot(self.embeddings, query_embedding)
+        # 將查詢轉為向量
+        query_vec = self.model.encode([query])
+        faiss.normalize_L2(query_vec)
         
-        # 過濾職位（模糊匹配）
-        filtered = []
-        for idx, item in enumerate(self.knowledge_items):
-            pos = item['position'].lower()
-            job = job_title.lower()
-            
-            if job in pos or pos in job or self._fuzzy_match(job, pos):
-                filtered.append((idx, similarities[idx]))
+        # 搜尋最相似的向量
+        D, I = self.index.search(query_vec.astype('float32'), top_k)
         
-        # 如果沒有匹配，返回最相似的
-        if not filtered:
-            top_indices = np.argsort(similarities)[::-1][:top_k]
-            return [self.knowledge_items[idx] for idx in top_indices]
+        # 回傳對應的 metadata
+        results = []
+        for idx, score in zip(I[0], D[0]):
+            if idx < len(self.metadata):
+                result = self.metadata[idx].copy()
+                result['similarity_score'] = float(score)  # 加入相似度分數
+                results.append(result)
         
-        # 排序並返回
-        filtered.sort(key=lambda x: x[1], reverse=True)
-        top_indices = [idx for idx, _ in filtered[:top_k]]
-        
-        return [self.knowledge_items[idx] for idx in top_indices]
+        return results
     
-    def search_by_resume_content(self, resume_text: str, job_title: str, top_k: int = 3):
-        """基於履歷內容檢索最相關的知識點"""
-        if not self.knowledge_items or self.embeddings is None:
-            return []
+    def get_position_knowledge(self, position: str):
+        """
+        取得特定職位的完整知識
         
-        # 履歷向量化（取前500字避免太長）
-        resume_embedding = self.model.encode([resume_text[:500]])[0]
-        
-        # 計算相似度
-        similarities = np.dot(self.embeddings, resume_embedding)
-        
-        # 過濾職位
-        filtered = []
-        for idx, item in enumerate(self.knowledge_items):
-            pos = item['position'].lower()
-            job = job_title.lower()
-            if job in pos or pos in job:
-                filtered.append((idx, similarities[idx]))
-        
-        if not filtered:
-            top_indices = np.argsort(similarities)[::-1][:top_k]
-            return [self.knowledge_items[idx] for idx in top_indices]
-        
-        # 排序返回
-        filtered.sort(key=lambda x: x[1], reverse=True)
-        return [self.knowledge_items[idx] for idx, _ in filtered[:top_k]]
-    
-    def is_question_similar(self, new_question: str, history: list, threshold: float = 0.85) -> bool:
-        """檢查問題是否與歷史問題相似（避免重複）"""
-        if not history:
-            return False
-        
-        new_emb = self.model.encode([new_question])[0]
-        
-        for turn in history:
-            old_question = turn.get('question', '')
-            if not old_question:
-                continue
+        Args:
+            position: 職位名稱 (例如: "後端工程師")
             
-            old_emb = self.model.encode([old_question])[0]
-            
-            # 計算餘弦相似度
-            similarity = np.dot(new_emb, old_emb) / (
-                np.linalg.norm(new_emb) * np.linalg.norm(old_emb) + 1e-8
-            )
-            
-            if similarity > threshold:
-                return True
-        
-        return False
-    
-    def _fuzzy_match(self, job: str, position: str) -> bool:
-        """模糊匹配職位名稱"""
-        keywords = ['工程師', '設計師', '分析師', '管理', '企劃', '服務', '師', '員']
-        for kw in keywords:
-            if kw in job and kw in position:
-                return True
-        return False
+        Returns:
+            dict or None: 職位知識
+        """
+        for data in self.metadata:
+            if data.get('position') == position:
+                return data
+        return None
+
+
+# ✅ 重點：建立全局實例
+rag_service = RAGService()
