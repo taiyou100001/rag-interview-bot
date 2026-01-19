@@ -9,14 +9,14 @@ def open_browser():
     """延遲開啟瀏覽器"""
     time.sleep(2)  # 等待伺服器啟動
     try:
-        url = "http://127.0.0.1:8000/docs"
+        url = "http://localhost:8000/docs"  # 改為與 README 一致
         print(f"\n{'='*60}")
         print(f"🚀 正在開啟瀏覽器: {url}")
         print(f"{'='*60}\n")
         webbrowser.open(url)
     except Exception as e:
         print(f"⚠️  無法自動開啟瀏覽器: {e}")
-        print(f"請手動開啟: http://127.0.0.1:8000/docs")
+        print(f"請手動開啟: http://localhost:8000/docs")
 
 if __name__ == "__main__":
     # 檢查是否為主進程 (避免在 reload worker 中重複開啟)
