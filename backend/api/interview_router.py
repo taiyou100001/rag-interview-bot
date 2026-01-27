@@ -188,6 +188,10 @@ async def process_answer(
                 history=session.history
             )
 
+            print(f"========================================")
+            print(f" AI 生成的題目 (跳過後): {next_question}")
+            print(f"========================================")
+
         # --- 分支 C: 正常回答 ---
         else:
             # 更新對話歷史
@@ -217,6 +221,10 @@ async def process_answer(
                 history=session.history,
                 context=rag_context
             )
+
+            print(f"========================================")
+            print(f" AI 生成的題目: {next_question}")
+            print(f"========================================")
 
         # --- 共用後續處理 (更新 Session & TTS) ---
         
