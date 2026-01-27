@@ -96,7 +96,7 @@ def authenticate_user(email: str, password: str):
     
     return None
 
-def save_resume(user_id, filename: str, ocr_json: dict, structured_data: dict):
+def save_resume(user_id, filename: str, ocr_json: dict, structured_data: dict, file_path: str = None):
     """
     儲存履歷
     
