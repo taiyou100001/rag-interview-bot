@@ -19,31 +19,27 @@ dependencies = [
     "fastapi>=0.112.0",
     "uvicorn[standard]>=0.30.0",
     "python-dotenv>=1.0.0",
-    "python-multipart>=0.0.9",  # 處理檔案上傳必備
-    
+    "python-multipart>=0.0.9", # 處理檔案上傳必備
     # LLM & AI
     "ollama>=0.2.1",
-    "sentence-transformers>=3.0.0",  # 修正：目前最新約為 3.x，5.x 不存在
-    
+    "sentence-transformers>=3.0.0", # 修正：目前最新約為 3.x，5.x 不存在
     # Azure Services
     "azure-cognitiveservices-vision-computervision>=0.9.0",
     "msrest>=0.7.1",
     "azure-cognitiveservices-speech>=1.37.0",
-    
     # RAG & Vector DB
     "faiss-cpu>=1.8.0",
     "redis>=5.0.0",
-    "numpy<2.0.0",  # 限制 numpy 版本以相容舊版 ML 套件
-    
+    "numpy<2.0.0", # 限制 numpy 版本以相容舊版 ML 套件
     # Database & Utils
     "sqlalchemy>=2.0.30",
     "pydantic>=2.8.0",
     "pydantic-settings>=2.3.0",
     "werkzeug>=3.0.0",
-    
     # NLP & Spacy
     "spacy>=3.7.0",
-    "zh-core-web-sm>=3.7.0",  # 必須在此宣告，下方 tool.uv.sources 才會生效
+    "zh-core-web-sm>=3.7.0",
+    "google-genai>=1.56.0",
 ]
 
 # === 開發依賴 (符合 uv 標準) ===
