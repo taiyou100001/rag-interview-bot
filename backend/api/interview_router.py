@@ -334,7 +334,7 @@ async def interview_action(action_req: InterviewAction):
 
 @router.get("/feedback/{session_id}")
 async def get_feedback(session_id: str):
-    """取得面試回饋報告 (保持新版邏輯)"""
+    """取得面試回饋報告"""
     try:
         session = get_session(session_id)
         if not session:
@@ -353,6 +353,27 @@ async def get_feedback(session_id: str):
         }
         session.ended_at = datetime.utcnow()
         update_session(session)
+
+        # 重點 3：在終端機漂亮地列印回饋報告
+        print("\n" + "="*50)
+        print(f"📊 面試回饋報告 - {session.job_title}")
+        print("="*50)
+        print(f"🏆 總體評分: {feedback.overall_score} / 100")
+        print("-" * 30)
+        print("📈 各項維度評分:")
+        for dim, score in feedback.dimensions.items():
+            print(f"  - {dim}: {score}")
+        print("-" * 30)
+        print("👍 優點:")
+        for s in feedback.strengths:
+            print(f"  * {s}")
+        print("-" * 30)
+        print("💪 建議改進:")
+        for imp in feedback.improvements:
+            print(f"  * {imp}")
+        print("-" * 30)
+        print(f"📝 總結:\n{feedback.summary}")
+        print("="*50 + "\n")
         
         return {
             "overall_score": feedback.overall_score,

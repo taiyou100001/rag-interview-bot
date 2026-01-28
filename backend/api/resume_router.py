@@ -9,7 +9,7 @@ import shutil  # Imported for efficient file saving
 
 router = APIRouter()
 
-@router.post("/upload_resume")
+@router.post("/upload")
 async def upload_resume(
     file: UploadFile = File(...),
     user_id: str = Form(...)
