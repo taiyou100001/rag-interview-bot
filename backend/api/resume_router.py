@@ -9,25 +9,26 @@ import shutil  # Imported for efficient file saving
 
 router = APIRouter()
 
-@router.post("/upload")
+@router.post("/upload", summary="上傳履歷並進行 OCR 辨識")
 async def upload_resume(
-    file: UploadFile = File(...),
-    user_id: str = Form(...)
+    file: UploadFile = File(..., description="上傳的履歷檔案 (PDF/圖片)"),
+    user_id: str = Form(..., description="使用者 ID (字串格式)")
 ):
     """
     上傳履歷並進行 OCR 辨識
     
-    Args:
-        file: 上傳的履歷檔案 (PDF/圖片)
-        user_id: 使用者 ID (字串格式)
-        
-    Returns:
-        {
-            "resume_id": str,
-            "job_title": str,
-            "raw_text": str,
-            "message": str
-        }
+    處理流程：
+    1. 接收並儲存上傳的履歷檔案
+    2. 使用 Azure OCR 進行文字辨識
+    3. 透過 LLM 結構化履歷內容
+    4. 推斷應徵職位
+    5. 儲存至資料庫
+    
+    回傳資料：
+    - **resume_id**: 履歷的唯一識別碼
+    - **job_title**: 系統推斷的應徵職位
+    - **raw_text**: 履歷原始文字（前 200 字預覽）
+    - **message**: 處理狀態訊息
     """
     # 驗證 user_id 格式
     try:
