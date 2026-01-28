@@ -3,6 +3,7 @@ import azure.cognitiveservices.speech as speechsdk
 from backend.config import settings
 import logging
 import os
+import threading# 新增：用於等待辨識完成
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -99,27 +100,50 @@ class AzureSpeechService:
                 audio_config=audio_config
             )
             
-            # 執行辨識
-            result = recognizer.recognize_once()
+            # 用於同步等待辨識結束的旗標
+            done_event = threading.Event()
+            all_results = []
+
+            # 3. 定義回呼函式 (Callback Functions)
+            def stop_cb(evt):
+                """當 session 停止或取消時觸發"""
+                logger.info(f'[Speech] 辨識結束或取消: {evt}')
+                done_event.set()  # 解除等待
+
+            def recognized_cb(evt):
+                """每辨識完一句話觸發"""
+                if evt.result.reason == speechsdk.ResultReason.RecognizedSpeech:
+                    logger.info(f'[Speech] 辨識句段: {evt.result.text}')
+                    all_results.append(evt.result.text)
+
+            # 4. 連接事件
+            recognizer.recognized.connect(recognized_cb)
+            recognizer.session_stopped.connect(stop_cb)
+            recognizer.canceled.connect(stop_cb)
+
+            # 5. 開始連續辨識 (Continuous Recognition)
+            logger.info(f"[Speech] 開始連續辨識音檔: {audio_path}")
+            recognizer.start_continuous_recognition()
+
+            # 6. 等待辨識完成
+            # 對於檔案輸入，Azure 讀完檔案會自動觸發 session_stopped，所以我們可以一直等
+            # 這裡不設 timeout，因為如果檔案很長，30秒會不夠，改讓 Azure 自己通知結束
+            done_event.wait() 
+
+            # 7. 停止辨識並釋放資源
+            recognizer.stop_continuous_recognition()
             
-            # 處理結果
-            if result.reason == speechsdk.ResultReason.RecognizedSpeech:
-                text = result.text.strip()
-                logger.info(f"[Speech] STT 成功: {text[:50]}...")
-                return text
+            # 8. 組合結果
+            final_text = "".join(all_results)
+            
+            if not final_text:
+                logger.warning("[Speech] STT 完成但沒有辨識到文字")
                 
-            elif result.reason == speechsdk.ResultReason.NoMatch:
-                logger.warning("[Speech] STT 未偵測到語音")
-                return ""
-                
-            else:
-                logger.error(f"[Speech] STT 失敗: {result.cancellation_details}")
-                return ""
+            return final_text
                 
         except Exception as e:
-            logger.error(f"[Speech] STT 錯誤: {e}")
+            logger.error(f"[Speech] STT 發生錯誤: {e}")
             return ""
 
-
-# ✅ 重點：建立全局實例
+# ✅ 建立全局實例
 speech_service = AzureSpeechService()

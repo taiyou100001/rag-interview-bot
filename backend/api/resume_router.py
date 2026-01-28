@@ -5,6 +5,7 @@ from backend.services.resume_service import resume_service
 from backend.database import save_resume
 import uuid
 import os
+import shutil  # Imported for efficient file saving
 
 router = APIRouter()
 
@@ -38,32 +39,38 @@ async def upload_resume(
         # 不是標準 UUID，但接受任意字串作為 user_id
         pass
     
-    # 建立上傳資料夾
-    os.makedirs("uploads", exist_ok=True)
+    # 2. 建立永久儲存資料夾 (建議放在 static 下，方便前端存取)
+    SAVE_DIR = "static/resumes"
+    os.makedirs(SAVE_DIR, exist_ok=True)
     
-    # 儲存檔案
-    file_path = f"uploads/{uuid.uuid4()}_{file.filename}"
+    # 3. 產生唯一檔名並定義完整路徑
+    # 保留原始副檔名 (例如 .jpg, .png, .pdf)
+    file_ext = os.path.splitext(file.filename)[1]
+    unique_filename = f"{uuid.uuid4()}{file_ext}"
+    file_path = os.path.join(SAVE_DIR, unique_filename)
     
+    # 4. 儲存檔案 (使用 shutil，效率較高)
     try:
-        with open(file_path, "wb") as f:
-            content = await file.read()
-            f.write(content)
+        with open(file_path, "wb") as buffer:
+            shutil.copyfileobj(file.file, buffer)
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"檔案儲存失敗: {str(e)}")
 
-    # OCR 辨識
+    # 5. OCR 辨識
     success, result = ocr_service.process_file(file_path)
     if not success:
+        # 如果辨識失敗，視情況決定是否要刪除檔案，這裡先保留
         raise HTTPException(status_code=400, detail=result.get("error"))
 
-    # 結構化履歷
+    # 6. 結構化履歷
     structured = resume_service.structure_resume(result)
     
-    # 儲存到資料庫 (user_id 直接用字串)
+    # 7. 儲存到資料庫
     try:
         resume = save_resume(
-            user_id=user_id,  # 直接傳字串
+            user_id=user_id,
             filename=file.filename,
+            file_path=file_path,  # ✅ 重點：將儲存的路徑傳入資料庫
             ocr_json=result,
             structured_data=structured
         )
@@ -75,6 +82,7 @@ async def upload_resume(
     return {
         "resume_id": str(resume.id),
         "job_title": structured.get("job_title", "未知職位"),
-        "raw_text": structured.get("raw_text", "")[:200],  # 回傳前200字
+        "raw_text": structured.get("raw_text", "")[:200],
+        "file_url": f"/static/resumes/{unique_filename}", # ✅ 回傳網址給前端
         "message": "履歷上傳成功"
     }

@@ -33,7 +33,11 @@ class Resume(Base):
     
     id = Column(String(36), primary_key=True, default=lambda: str(uuid.uuid4()))
     user_id = Column(String(36), ForeignKey('users.id'), nullable=False)
+    
     filename = Column(String(255), nullable=False)
+    # 新增：儲存檔案的實體路徑 (設定長度 512 以防路徑過長)
+    file_path = Column(String(512), nullable=True)
+
     ocr_json = Column(JSON, nullable=True)
     structured_data = Column(JSON, nullable=True)
     uploaded_at = Column(DateTime, default=datetime.utcnow)
@@ -92,7 +96,7 @@ def authenticate_user(email: str, password: str):
     
     return None
 
-def save_resume(user_id, filename: str, ocr_json: dict, structured_data: dict):
+def save_resume(user_id, filename: str, ocr_json: dict, structured_data: dict, file_path: str = None):
     """
     儲存履歷
     
@@ -106,6 +110,7 @@ def save_resume(user_id, filename: str, ocr_json: dict, structured_data: dict):
     resume = Resume(
         user_id=user_id,
         filename=filename,
+        file_path=file_path,  # 這裡將路徑存入資料庫
         ocr_json=ocr_json,
         structured_data=structured_data
     )
