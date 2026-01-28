@@ -6,7 +6,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from backend.config import settings
 from backend.api import resume_router, interview_router
 
-app = FastAPI(title=settings.PROJECT_NAME)
+app = FastAPI(title=settings.PROJECT_NAME, description="沉浸式智慧模擬面試訓練平台後端服務")
 
 # --- CORS 設定 ---
 app.add_middleware(
@@ -18,11 +18,11 @@ app.add_middleware(
 )
 
 # --- 註冊路由 ---
-app.include_router(resume_router.router, prefix="/api/v1/resume", tags=["resume"])
-app.include_router(interview_router.router, prefix="/api/v1/interview", tags=["interview"])
+app.include_router(resume_router.router, prefix="/api/v1/resume", tags=["履歷功能"])
+app.include_router(interview_router.router, prefix="/api/v1/interview", tags=["面試功能"])
 # 注意：移除了 static mount 和 audio_router
 
-@app.get("/")
+@app.get("/", tags=["系統"])
 def root():
     return {"message": "VR Interview Bot API is running!"}
 

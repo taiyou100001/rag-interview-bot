@@ -12,9 +12,23 @@ from datetime import datetime
 
 router = APIRouter()
 
-@router.post("/start_interview")
+@router.post("/start_interview", summary="開始面試")
 async def start_interview(req: InterviewStartRequest):
-    """開始面試"""
+    """開始面試
+    
+    此端點會：
+    1. 建立面試會話
+    2. 根據職位與履歷生成第一題
+    3. 選擇面試官個性
+    4. 生成問題的語音檔
+    
+    參數：
+    - **user_id**: 使用者 ID
+    - **job_title**: 應徵職位
+    - **resume_text**: 履歷文字內容
+    - **personality**: 面試官個性選擇（friendly/professional/strict（預設為 'friendly'））
+    """
+
     try:
         # 驗證並轉換 user_id
         user_id_str = req.user_id
@@ -70,12 +84,21 @@ async def start_interview(req: InterviewStartRequest):
         raise HTTPException(status_code=500, detail=f"面試啟動失敗: {str(e)}")
 
 
-@router.post("/process_answer")
+@router.post("/process_answer", summary="處理求職者回答")
 async def process_answer(
-    session_id: str = Form(...),
-    audio: UploadFile = File(...)
+    session_id: str = Form(..., description="面試會話 ID"),
+    audio: UploadFile = File(..., description="求職者的回答音訊檔(wav 格式)")
 ):
-    """處理求職者回答"""
+    """
+    處理求職者回答並生成下一個問題
+    
+    流程：
+    1. 接收並儲存求職者的語音回答
+    2. 使用 STT 將語音轉文字
+    3. 透過 RAG 檢索相關內容
+    4. 使用 LLM 生成下一個面試問題
+    5. 生成問題的語音檔
+    """
     try:
         # 取得 session (用字串)
         session = get_session(session_id)
@@ -169,9 +192,15 @@ async def process_answer(
         raise HTTPException(status_code=500, detail=f"處理回答失敗: {str(e)}")
 
 
-@router.post("/interview_action")
+@router.post("/interview_action", summary="面試動作 (下一題/退出)")
 async def interview_action(action_req: InterviewAction):
-    """處理面試動作 (下一題/退出)"""
+    """
+    處理面試動作 (下一題/退出)
+
+    支援的動作：
+    - **next**: 跳過當前題目並生成下一題
+    - **exit**: 退出面試並結束會話
+    """
     try:
         session = get_session(action_req.session_id)
         if not session:
@@ -240,9 +269,17 @@ async def interview_action(action_req: InterviewAction):
         raise HTTPException(500, f"動作執行失敗: {str(e)}")
 
 
-@router.get("/feedback/{session_id}")
+@router.get("/feedback/{session_id}", summary="取得面試回饋報告")
 async def get_feedback(session_id: str):
-    """取得面試回饋報告"""
+    """
+    生成面試結束後的詳細回饋報告
+
+    回饋內容包括：
+    - 整體評分
+    - 各維度表現（專業能力、溝通技巧等）
+    - 優點與改進建議
+    - 面試統計資料
+    """
     try:
         session = get_session(session_id)
         if not session:
