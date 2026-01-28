@@ -5,8 +5,13 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from backend.config import settings
 from backend.api import resume_router, interview_router
+from backend.database import init_db
 
 app = FastAPI(title=settings.PROJECT_NAME, description="沉浸式智慧模擬面試訓練平台後端服務")
+
+# --- 資料庫初始化 ---
+# 確保所有資料表自動建立
+init_db()
 
 # --- CORS 設定 ---
 app.add_middleware(
@@ -24,8 +29,7 @@ app.include_router(interview_router.router, prefix="/api/v1/interview", tags=["�
 
 @app.get("/", tags=["系統"])
 def root():
-    return {"message": "VR Interview Bot API is running!"}
+    return {"message": "VR Interview Bot backend is running."}
 
 if __name__ == "__main__":
-    uvicorn.run("backend.main:app", host="0.0.0.0", port=8000, reload=True)
-    
+    uvicorn.run("main:app", host="0.0.0.0", port=8000, reload=True)
