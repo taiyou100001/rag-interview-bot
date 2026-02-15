@@ -88,7 +88,7 @@ async def start_interview(req: InterviewStartRequest):
     - **user_id**: 使用者 ID
     - **job_title**: 應徵職位
     - **resume_text**: 履歷文字內容
-    - **personality**: 面試官個性選擇（friendly/professional/strict（預設為 'friendly'））
+    - **personality**: 面試官個性選擇（friendly/neutral/strict/casual（預設為 'friendly'））
     """
 
     try:
