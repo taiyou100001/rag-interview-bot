@@ -86,3 +86,56 @@ async def upload_resume(
         "file_url": f"/static/resumes/{unique_filename}", # ✅ 回傳網址給前端
         "message": "履歷上傳成功"
     }
+
+@router.post("/upload_local", summary="從伺服器本地資料夾讀取履歷 (備用/測試方案)")
+async def upload_local_resume(user_id: str = Form(...)):
+    """
+    備用方案：讀取伺服器 manual_resume 資料夾內「最新」的檔案
+    """
+    local_dir = "manual_resume"
+    os.makedirs(local_dir, exist_ok=True)
+    
+    # 1. 取得資料夾內所有檔案
+    files = [f for f in os.listdir(local_dir) if os.path.isfile(os.path.join(local_dir, f))]
+    
+    if not files:
+        raise HTTPException(status_code=404, detail="伺服器的 manual_resume 資料夾內沒有檔案！")
+    
+    # 2. 🔥 核心邏輯：依照修改時間排序 (最新的在最前面)
+    files.sort(key=lambda x: os.path.getmtime(os.path.join(local_dir, x)), reverse=True)
+    
+    # 3. 永遠取最新丟進去的那個檔案
+    target_filename = files[0]
+    file_path = os.path.join(local_dir, target_filename)
+    
+    print(f"✅ 強制讀取最新履歷: {target_filename}")
+    
+    # === 以下邏輯與原本的 upload 一模一樣 ===
+    
+    # 4. OCR 辨識
+    success, result = ocr_service.process_file(file_path)
+    if not success:
+        raise HTTPException(status_code=400, detail=result.get("error"))
+
+    # 5. 結構化履歷
+    structured = resume_service.structure_resume(result)
+    
+    # 6. 儲存到資料庫
+    try:
+        resume = save_resume(
+            user_id=user_id,
+            filename=target_filename,
+            file_path=file_path,
+            ocr_json=result,
+            structured_data=structured
+        )
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"資料庫儲存失敗: {str(e)}")
+
+    return {
+        "resume_id": str(resume.id),
+        "job_title": structured.get("job_title", "未知職位"),
+        "raw_text": structured.get("raw_text", "")[:200],
+        "file_url": f"/static/resumes/{target_filename}",
+        "message": "本地履歷讀取成功"
+    }

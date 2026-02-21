@@ -21,6 +21,9 @@ app.db
 # 上傳與產出檔案
 uploads/
 static/audio/
+static/resumes/
+saved_audio/
+manual_resume/
 temp/
 output/
 
@@ -40,3 +43,5 @@ Thumbs.db
 # 測試檔案
 *.wav
 *.pdf
+*.jpg
+*.png
