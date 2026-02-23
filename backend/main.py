@@ -23,8 +23,8 @@ app.add_middleware(
 )
 
 # --- 註冊路由 ---
-app.include_router(resume_router.router, tags=["履歷功能"])
-app.include_router(interview_router.router, tags=["面試功能"])
+app.include_router(resume_router.router, prefix="/api/v1/resume", tags=["履歷功能"])
+app.include_router(interview_router.router, prefix="/api/v1/interview", tags=["面試功能"])
 # 注意：移除了 static mount 和 audio_router
 
 @app.get("/", tags=["系統"])
