@@ -324,7 +324,7 @@ class OCRProcessor:
         import time as _time
         import base64
         from google import genai
-        from genai import types
+        from google.genai import types
         
         # 檢查檔案是否為支援的圖像格式
         ext = os.path.splitext(file_path)[1].lower()
