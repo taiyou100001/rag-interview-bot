@@ -32,4 +32,5 @@ dependencies = [
     "azure-cognitiveservices-speech>=1.47.0",
     "fastapi>=0.124.2",
     "python-multipart>=0.0.20",
+    "google-genai>=1.64.0",
 ]
