@@ -146,11 +146,27 @@ async def upload_local_resume(user_id: str = Form(...)):
         )
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"資料庫儲存失敗: {str(e)}")
+    # ==========================================
+    # 🌟 補上這段：解析 Gemini 分數並印出報表
+    # ==========================================
+    gemini_data = result.get("resume_score", {}).get("gemini_score", {})
+    score = gemini_data.get("score", 0)
+    reason = gemini_data.get("reason", "無評語")
+
+    print("\n" + "="*50)
+    print(f"📄 【本地履歷解析完成】")
+    print(f"🎯 推斷職位: {structured.get('job_title', '未知職位')}")
+    print(f"⭐ AI 評分: {score} / 100")
+    print(f"💡 AI 評語: {reason}")
+    print("="*50 + "\n")
+    # ==========================================
 
     return {
         "resume_id": str(resume.id),
         "job_title": structured.get("job_title", "未知職位"),
         "raw_text": structured.get("raw_text", "")[:200],
         "file_url": f"/static/resumes/{target_filename}",
-        "message": "本地履歷讀取成功"
+        "message": "本地履歷讀取成功",
+        "resume_score": score,      # ✅ 補上回傳給 Unity 的分數
+        "resume_reason": reason
     }
