@@ -78,13 +78,20 @@ async def upload_resume(
         import traceback
         traceback.print_exc()
         raise HTTPException(status_code=500, detail=f"資料庫儲存失敗: {str(e)}")
+    
+    # 👇 新增這段：把 Gemini 的評分跟評語抓出來
+    gemini_data = result.get("resume_score", {}).get("gemini_score", {})
+    score = gemini_data.get("score", 0)
+    reason = gemini_data.get("reason", "無評語")
 
     return {
         "resume_id": str(resume.id),
         "job_title": structured.get("job_title", "未知職位"),
         "raw_text": structured.get("raw_text", "")[:200],
         "file_url": f"/static/resumes/{unique_filename}", # ✅ 回傳網址給前端
-        "message": "履歷上傳成功"
+        "message": "履歷上傳成功",
+        "resume_score": score,
+        "resume_reason": reason
     }
 
 @router.post("/upload_local", summary="從伺服器本地資料夾讀取履歷 (備用/測試方案)")
