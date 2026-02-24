@@ -20,22 +20,29 @@ class EnhancedInterviewAgent:
             "casual": "你是一位輕鬆、對話式的面試官,營造自然氛圍並從日常對話中觀察求職者。"
         }
     
-    def _build_system_prompt(self, job_title: str) -> str:
-        """建構系統提示詞"""
-        base_prompt = self.personality_prompts.get(self.personality, self.personality_prompts["friendly"])
-        return f"""{base_prompt}
+    def _build_system_prompt(self, persona: str = "neutral"):
+        base_role = (
+            "你是一位台灣的專業技術面試官，僅使用繁體中文（台灣用語）溝通。"
+            "你的職責是根據面試目標提出具體、可評估、可口頭回答的問題，並維持專業、精確、尊重的語氣。"
+        )
 
-**面試職位**: {job_title}
+        persona_map = {
+            "friendly": "風格：友善且鼓勵，會短句正向回饋，並以引導式問題協助受試者展現強項。",
+            "strict": "風格：嚴格且注重細節，偏向技術深挖與邏輯驗證，避免冗語。",
+            "neutral": "風格：中立且專業，聚焦能力評估與場景化問題。",
+            "casual": "風格：輕鬆且對話式，以自然互動引出經驗與案例。"
+        }
+        persona_desc = persona_map.get(persona, persona_map["neutral"])
 
-**對話原則**:
-1. 若求職者回答過於簡短或緊張,可先進行簡單閒聊(如興趣、最近狀況)緩解氣氛
-2. 根據履歷內容提出具體追問(例:"您提到熟悉Vue.js,請說明其生命週期...")
-3. 若求職者偏離主題,溫和引導回正題
-4. 每次回應控制在50-80字,保持自然對話感
-5. 面試結束前給予初步評價與建議
+        global_rules = (
+            "通用規範：\n"
+            "- 問題需具體、可驗證，鼓勵舉例或描述步驟、指標、取捨。\n"
+            "- 僅輸出面試問題與必要追問；不加入額外敘述或解釋。\n"
+            "- 不使用編號或列表記號；每次輸出最多兩行（主問題 + 追問）。\n"
+            "- 維持尊重與包容，避免偏見與不當問題。"
+        )
 
-**輸出格式**:
-請直接輸出下一個問題或回應,不要包含任何標記。"""
+        return f"{base_role}\n{persona_desc}\n{global_rules}"
 
     def generate_first_question(self, job_title: str, resume_text: str = "") -> str:
         """生成第一個問題(破冰)"""
@@ -94,24 +101,35 @@ class EnhancedInterviewAgent:
         last_answer = history[-1]['answer'] if history else ""
         needs_chitchat = len(last_answer) < 20 or "不太清楚" in last_answer or "不太會" in last_answer
         
-        prompt = f"""**當前情境**:
-- 職位: {job_title}
-- 已進行: {len(history)}/{self.max_questions} 輪
-- 履歷摘要: {resume_text[:800]}
+        prompt = f"""
+                [CONTEXT]
+                - 應徵職位：{job_title}
+                - 履歷摘要：{resume_text[:800]}
+                - 歷史互動： {history}
 
-**最近對話**:
-{qa_text}
+                [TASK]
+                生成一個與本輪焦點高度對齊的原創面試問題；若候選人可能給出抽象或不完整回答，請附上一句追問以促進具體化。
 
-**RAG知識庫提示**: {context[:300] if context else "無"}
+                [INSTRUCTIONS]
+                - 僅輸出面試問題與（可選）追問；不加入說明、列表、編號、前綴。
+                - 問題需包含評估維度（如指標、步驟、案例、取捨、風險）。
+                - 追問以「追問：」開頭，僅一行。
+                - 語言：繁體中文（台灣用語）。
 
-**判斷**: {"求職者似乎緊張或回答簡短,可先進行輕鬆閒聊" if needs_chitchat else "繼續深入提問"}
+                [OUTPUT FORMAT]
+                - 第一行：主問題（單行）
+                - 第二行（可選）：追問（單行，以「追問：」開頭）
 
-請生成下一個回應:
-1. 若需閒聊,可詢問興趣、近況、壓力狀況等緩解氣氛
-2. 若繼續提問,應根據履歷與前述回答進行追問
-3. 控制在60字以內,保持自然對話感
+                [EXAMPLES]
+                - 主問題：若要在 Meta Quest 3 上以 Unity 建置低延遲語音互動，你會如何在 AudioInput、前處理、串流傳輸與 FastAPI 接收端設計緩衝與重試機制？請以一個實作案例說明監控指標與瓶頸。
+                - 追問：當網路抖動導致分段丟失時，你如何在協定或緩衝策略上補償並確保語義完整？
 
-直接輸出問題/回應,無需說明。"""
+                - 主問題：在 RAG 面試系統中，如何設計檔案分塊與檢索評分，以避免知識幻覺並提升問答相關性？請描述你會追蹤的評估指標與容錯策略。
+                - 追問：若檢索結果相互矛盾，你的重排序與置信度合併策略是什麼？
+
+                [GENERATE]
+                請依照上述格式輸出。
+                """
 
         try:
             response = self.client.chat(
