@@ -84,6 +84,14 @@ async def upload_resume(
     score = gemini_data.get("score", 0)
     reason = gemini_data.get("reason", "無評語")
 
+    # 🌟 新增這段：讓後端終端機也印出漂亮的報表！
+    print("\n" + "="*50)
+    print(f"📄 【履歷解析完成】")
+    print(f"🎯 推斷職位: {structured.get('job_title', '未知職位')}")
+    print(f"⭐ AI 評分: {score} / 100")
+    print(f"💡 AI 評語: {reason}")
+    print("="*50 + "\n")
+
     return {
         "resume_id": str(resume.id),
         "job_title": structured.get("job_title", "未知職位"),
