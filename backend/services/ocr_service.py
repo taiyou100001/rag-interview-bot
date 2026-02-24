@@ -29,13 +29,25 @@ import os
 
 from backend.config import settings
 from backend.utils import normalize_text_lines
+from dotenv import load_dotenv
+
+# 強制從 bin/azure.env 載入（相對於專案根目錄）
+project_root = os.path.dirname(os.path.abspath(__file__))  # 根目錄
+bin_path = os.path.join(project_root, 'bin', 'azure.env')
+load_dotenv(bin_path)
+from dotenv import load_dotenv
+
+project_root = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
+
+load_dotenv(os.path.join(project_root, ".env"))
+from backend.config import settings
+
 
 class OCRConfig:
     """簡化的 OCR 配置，主要用於排序容差與支援副檔名"""
     def __init__(self):
-        self.subscription_key = os.getenv("AZURE_SUBSCRIPTION_KEY")
-        self.endpoint = os.getenv("AZURE_ENDPOINT")
-        # 不拋錯，讓呼叫端決定是否可用
+        self.subscription_key = settings.AZURE_SUBSCRIPTION_KEY
+        self.endpoint = settings.AZURE_ENDPOINT
         self.supported_extensions = ['.jpg', '.jpeg', '.png', '.bmp', '.tiff', '.tif', '.pdf']
         self.y_tolerance = 16  # 群組化時的垂直容差（像素或相對單位）
         # 常用關鍵字（用於 heuristics）
@@ -53,6 +65,218 @@ class TextLine:
             self.y1 = float(bbox[1])
             self.x2 = float(bbox[4]) if len(bbox) >= 6 else float(bbox[0])
             self.y2 = float(bbox[5]) if len(bbox) >= 6 else float(bbox[1])
+
+class TextItem:
+    """文字項目類"""
+    
+    def __init__(self, text: str, x1: float, y1: float, x2: float, y2: float):
+        self.text = text
+        self.x1 = x1
+        self.y1 = y1
+        self.x2 = x2
+        self.y2 = y2
+        self.width = x2 - x1
+        self.height = y2 - y1
+        self.center_x = (x1 + x2) / 2
+        self.center_y = (y1 + y2) / 2
+    
+    def to_dict(self) -> Dict[str, Any]:
+        """轉換為字典格式"""
+        return {
+            'text': self.text,
+            'x1': self.x1, 'y1': self.y1,
+            'x2': self.x2, 'y2': self.y2,
+            'width': self.width,
+            'height': self.height,
+            'center_x': self.center_x,
+            'center_y': self.center_y
+        }
+
+
+class TableDetector:
+    """表格檢測器"""
+    
+    def __init__(self, config: OCRConfig):
+        self.config = config
+    
+    def group_by_y_coordinate(self, items: List[TextItem]) -> List[List[TextItem]]:
+        """按 Y 座標分組"""
+        groups = []
+        current_group = []
+        
+        for item in items:
+            if not current_group:
+                current_group.append(item)
+            else:
+                avg_y = sum(i.y1 for i in current_group) / len(current_group)
+                if abs(item.y1 - avg_y) <= self.config.y_tolerance:
+                    current_group.append(item)
+                else:
+                    groups.append(current_group)
+                    current_group = [item]
+        
+        if current_group:
+            groups.append(current_group)
+        
+        return groups
+    
+    def has_separator_keyword(self, group: List[TextItem]) -> bool:
+        """檢查是否包含分隔關鍵詞"""
+        text_content = ' '.join([item.text for item in group])
+        return any(keyword in text_content for keyword in self.config.separator_keywords)
+    
+    def calculate_alignment(self, positions1: List[float], positions2: List[float]) -> int:
+        """計算列對齊數量"""
+        alignment_count = 0
+        for pos2 in positions2:
+            for pos1 in positions1:
+                if abs(pos2 - pos1) <= self.config.alignment_tolerance:
+                    alignment_count += 1
+                    break
+        return alignment_count
+    
+    def detect_tables(self, groups: List[List[TextItem]]) -> List[Dict[str, Any]]:
+        """檢測表格結構，遇到分區標題或條列符號比例高的 group 直接略過表格判斷"""
+        tables = []
+        i = 0
+        while i < len(groups):
+            current_group = groups[i]
+            # 新增：若 group 內有多個分區標題或條列符號比例高，直接略過
+            section_title_count = 0
+            bullet_count = 0
+            for item in current_group:
+                txt = getattr(item, 'text', '')
+                # 利用 BulletResumeParser 的標題與條列判斷
+                # ✅ 修改：改成從 backend.utils.bullet_parser 匯入
+                from backend.utils.bullet_parser import BulletResumeParser
+
+                parser = BulletResumeParser()
+                if parser._is_section_title(txt, item):
+                    section_title_count += 1
+                if parser._is_bullet(txt):
+                    bullet_count += 1
+            if section_title_count >= 1 or (len(current_group) > 0 and bullet_count / len(current_group) > 0.4):
+                i += 1
+                continue
+
+            if len(current_group) >= 1:
+                table_rows = [current_group]
+                first_row = sorted(current_group, key=lambda x: x.x1)
+                column_positions = [item.x1 for item in first_row]
+
+                j = i + 1
+                consecutive_matches = 0
+                gap_tolerance = 0
+                max_look_ahead = min(self.config.max_look_ahead, len(groups) - i)
+
+                # 掃描後續行
+                while j < len(groups) and j < i + max_look_ahead:
+                    next_group = groups[j]
+
+                    # 新增：若 group 內有多個分區標題或條列符號比例高，直接略過
+                    section_title_count2 = 0
+                    bullet_count2 = 0
+                    for item in next_group:
+                        txt = getattr(item, 'text', '')
+                        parser = BulletResumeParser()
+                        if parser._is_section_title(txt, item):
+                            section_title_count2 += 1
+                        if parser._is_bullet(txt):
+                            bullet_count2 += 1
+                    if section_title_count2 >= 1 or (len(next_group) > 0 and bullet_count2 / len(next_group) > 0.4):
+                        break
+
+                    if len(next_group) >= 1:
+                        next_row = sorted(next_group, key=lambda x: x.x1)
+                        next_positions = [item.x1 for item in next_row]
+
+                        # 檢查分隔詞
+                        if self.has_separator_keyword(next_group) and len(table_rows) >= 2:
+                            break
+
+                        # 計算對齊度
+                        alignment_count = self.calculate_alignment(column_positions, next_positions)
+                        required_alignment = max(1, len(next_positions) * self.config.alignment_ratio)
+
+                        if alignment_count >= required_alignment:
+                            # 更新列位置
+                            for next_pos in next_positions:
+                                if not any(abs(next_pos - col_pos) <= self.config.alignment_tolerance 
+                                         for col_pos in column_positions):
+                                    column_positions.append(next_pos)
+                            column_positions.sort()
+
+                            table_rows.append(next_group)
+                            consecutive_matches += 1
+                            gap_tolerance = 0
+                            j += 1
+                        else:
+                            gap_tolerance += 1
+                            if gap_tolerance <= self.config.max_gap_tolerance and consecutive_matches > 0:
+                                table_rows.append(next_group)
+                                j += 1
+                            else:
+                                break
+                    else:
+                        if consecutive_matches > 0 and gap_tolerance <= 1:
+                            gap_tolerance += 1
+                            j += 1
+                        else:
+                            break
+
+                # 判定是否為表格
+                min_rows_required = 2 if len(column_positions) >= 2 else 4
+                if len(table_rows) >= min_rows_required:
+                    tables.append({
+                        'rows': table_rows,
+                        'start_index': i,
+                        'end_index': j - 1,
+                        'column_positions': sorted(column_positions),
+                        'column_count': len(column_positions)
+                    })
+                    i = j
+                else:
+                    i += 1
+            else:
+                i += 1
+        return tables
+
+
+class TableFormatter:
+    """表格格式化器"""
+    
+    def __init__(self, config: OCRConfig):
+        self.config = config
+    
+    def find_column_boundaries(self, all_items: List[TextItem]) -> List[float]:
+        """找出列邊界 - 改進聚類算法"""
+        if not all_items:
+            return []
+        
+        # 收集所有X位置並去重
+        x_positions = []
+        for item in all_items:
+            x_positions.append(item.x1)
+        
+        # 排序並去除重複值
+        unique_x_positions = sorted(list(set(x_positions)))
+        
+        if len(unique_x_positions) <= 1:
+            return unique_x_positions
+        
+        # 使用自適應閾值找出列邊界
+        column_boundaries = [unique_x_positions[0]]
+        
+        # 計算間距分布，動態調整閾值
+        gaps = []
+        for i in range(1, len(unique_x_positions)):
+            gap = unique_x_positions[i] - unique_x_positions[i-1]
+            gaps.append(gap)
+        
+        # 使用平均間距的一定比例作為閾值
+        if gaps:
+            avg_gap = sum(gaps) / len(gaps)
+            dynamic_threshold = max(self.config.column_gap_threshold, avg_gap * 1.5)
         else:
             self.x1 = self.y1 = self.x2 = self.y2 = 0.0
         self.center_x = (self.x1 + self.x2) / 2
