@@ -265,6 +265,12 @@ class OCRProcessor:
         """呼叫 Gemini API 以 AI 給分"""
         import json as _json
         import time as _time
+        import os
+        
+        # 👇 加上這兩行！強制 Python 讀取 .env 檔案
+        from dotenv import load_dotenv
+        load_dotenv()
+
         if genai is None:
             return {"score": 0, "reason": "google-genai 套件未安裝"}
         api_key = os.getenv("GEMINI_API_KEY")
@@ -325,6 +331,11 @@ class OCRProcessor:
         import base64
         from google import genai
         from google.genai import types
+        import os
+        
+        # 👇 加上這兩行！強制 Python 讀取 .env 檔案
+        from dotenv import load_dotenv
+        load_dotenv()
         
         # 檢查檔案是否為支援的圖像格式
         ext = os.path.splitext(file_path)[1].lower()

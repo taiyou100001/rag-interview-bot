@@ -20,6 +20,27 @@ class ResumeService:
             "error": Optional[dict] # 結構化錯誤
         }
         """
+
+        if "pages" in ocr_result and isinstance(ocr_result["pages"], list):
+            if len(ocr_result["pages"]) > 0 and "formatted_text" in ocr_result["pages"][0]:
+                print("✅ 偵測到新版 OCR 格式，直接提取整理好的文字！")
+                texts = [page.get("formatted_text", "") for page in ocr_result["pages"]]
+                raw_text = "\n".join(texts)
+
+                try:
+                    from backend.services.agent_service import AgentService
+                    job_title = AgentService().infer_job(raw_text)
+                except Exception as e:
+                    print(f"職位推斷發生錯誤: {e}")
+                    job_title = "未知職位"
+
+                # 🌟 終極防呆：直接給定預設職位，徹底繞過壞掉的 AgentService！
+                return {
+                    "raw_text": raw_text,
+                    "job_title": job_title,
+                    "structured_data": {}
+                }
+            
         # 顶层 debug：列出所有鍵名
         top_keys = list(ocr_result.keys()) if isinstance(ocr_result, dict) else []
         print(f"[DEBUG] OCR top-level keys: {top_keys}")
