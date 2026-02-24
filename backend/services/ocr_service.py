@@ -658,3 +658,5 @@ class FileManager:
                     matches.append(os.path.abspath(p))
         matches.sort()
         return matches
+
+ocr_service = OCRProcessor()
