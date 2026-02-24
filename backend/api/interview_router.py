@@ -252,7 +252,7 @@ async def process_answer(
         # --- 共用後續處理 (更新 Session & TTS) ---
         
         # 判斷是否結束 (題數上限 或 AI 沒題目了)
-        if not next_question or session.question_count >= 10:
+        if not next_question or session.question_count >= 3:
              return {
                 "end": True,
                 "message": "面試已完成，正在生成回饋報告...",
@@ -372,6 +372,10 @@ async def get_feedback(session_id: str):
     - 優點與改進建議
     - 面試統計資料
      (保持新版邏輯)"""
+    
+    print(f"\n🚀 [後端接收] 收到生成回饋請求！Session ID: {session_id}")
+    print("⏳ AI (Ollama) 正在努力回顧對話並撰寫評語，這可能會花 1~3 分鐘，請耐心等候...\n")
+
     try:
         session = get_session(session_id)
         if not session:
