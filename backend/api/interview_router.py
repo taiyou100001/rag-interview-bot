@@ -107,7 +107,10 @@ async def start_interview(req: InterviewStartRequest):
         
         # 生成第一題
         question = agent.generate_first_question(req.job_title, req.resume_text or "")
-        
+        print("========================================")
+        print(f" AI 生成的第一題: {question}")
+        print("========================================")
+
         session.current_question = question
         session.question_count = 1
         update_session(session)
@@ -202,6 +205,14 @@ async def process_answer(
             })
             # 不增加 question_count，或者增加看你的邏輯，這裡假設跳過也算一題
             session.question_count += 1
+
+            # 題數上限檢查（在生成問題之前）
+            if session.question_count >= 3:
+                return {
+                    "end": True,
+                    "message": "面試已完成，正在生成回饋報告…",
+                    "question_count": session.question_count
+                }
             
             # 生成下一題 (不使用 RAG，因為沒有有效回答)
             agent = agent_factory.get_agent(session.job_title)
@@ -229,6 +240,14 @@ async def process_answer(
             })
             session.question_count += 1
 
+            # 題數上限檢查（在生成問題之前）
+            if session.question_count >= 3:
+                return {
+                    "end": True,
+                    "message": "面試已完成，正在生成回饋報告…",
+                    "question_count": session.question_count
+                }
+
             # RAG 檢索
             rag_context = ""
             if session.resume_text:
@@ -252,7 +271,7 @@ async def process_answer(
         # --- 共用後續處理 (更新 Session & TTS) ---
         
         # 判斷是否結束 (題數上限 或 AI 沒題目了)
-        if not next_question or session.question_count >= 3:
+        if not next_question:
              return {
                 "end": True,
                 "message": "面試已完成，正在生成回饋報告...",
