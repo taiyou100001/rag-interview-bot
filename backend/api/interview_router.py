@@ -1,5 +1,6 @@
 # backend/api/interview_router.py
 import os
+import random
 import shutil
 import time
 import uuid
@@ -102,7 +103,10 @@ async def start_interview(req: InterviewStartRequest):
             resume_text=req.resume_text or ""
         )
         
-        personality = req.personality if hasattr(req, 'personality') else 'friendly'
+        # 🎭 隨機選擇面試官個性(每次面試都不同)
+        personalities = ['friendly', 'neutral', 'strict', 'casual']
+        personality = random.choice(personalities)
+        logger.info(f"🎭 本次面試隨機選擇的面試官個性: {personality}")
         agent = agent_factory.get_agent(req.job_title, personality=personality)
         
         # 生成第一題
