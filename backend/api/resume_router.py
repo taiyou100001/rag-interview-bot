@@ -6,6 +6,7 @@ from backend.database import save_resume
 import uuid
 import os
 import shutil  # Imported for efficient file saving
+import time
 
 router = APIRouter()
 
@@ -124,6 +125,46 @@ async def upload_local_resume(user_id: str = Form(...)):
     file_path = os.path.join(local_dir, target_filename)
     
     print(f"✅ 強制讀取最新履歷: {target_filename}")
+
+    # 🌟 開始總計時
+    total_start = time.time()
+
+    # ==========================================
+    # ⏱️ 測試環節 1：Azure OCR + Gemini 評分
+    # ==========================================
+    t0 = time.time()
+    success, result = ocr_service.process_file(file_path)
+    t1 = time.time()
+    print(f"⏱️ [計時] 1. Azure OCR + Gemini 評分耗時: {t1 - t0:.2f} 秒")
+    
+    if not success:
+        raise HTTPException(status_code=400, detail=result.get("error"))
+
+    # ==========================================
+    # ⏱️ 測試環節 2：文字結構化 + Ollama 職位推斷
+    # ==========================================
+    structured = resume_service.structure_resume(result)
+    t2 = time.time()
+    print(f"⏱️ [計時] 2. 結構化與 Ollama 猜職位耗時: {t2 - t1:.2f} 秒")
+    
+    # ==========================================
+    # ⏱️ 測試環節 3：資料庫儲存
+    # ==========================================
+    try:
+        resume = save_resume(
+            user_id=user_id,
+            filename=target_filename,
+            file_path=file_path,
+            ocr_json=result,
+            structured_data=structured
+        )
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"資料庫儲存失敗: {str(e)}")
+    t3 = time.time()
+    print(f"⏱️ [計時] 3. 資料庫儲存耗時: {t3 - t2:.2f} 秒")
+    
+    # 🌟 總結
+    print(f"🚀 [計時總結] 履歷處理總耗時: {t3 - total_start:.2f} 秒")
     
     # === 以下邏輯與原本的 upload 一模一樣 ===
     
