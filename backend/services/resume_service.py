@@ -28,13 +28,13 @@ class ResumeService:
                 raw_text = "\n".join(texts)
 
                 try:
-                    from backend.services.agent_service import AgentService
-                    job_title = AgentService().infer_job(raw_text)
+                    # 直接去拿剛剛 Gemini 在 ocr_service 順手算好的結果
+                    gemini_data = ocr_result.get("resume_score", {}).get("gemini_score", {})
+                    job_title = gemini_data.get("job_title", "未知職位")
                 except Exception as e:
-                    print(f"職位推斷發生錯誤: {e}")
+                    print(f"職位讀取發生錯誤: {e}")
                     job_title = "未知職位"
 
-                # 🌟 終極防呆：直接給定預設職位，徹底繞過壞掉的 AgentService！
                 return {
                     "raw_text": raw_text,
                     "job_title": job_title,

@@ -287,7 +287,7 @@ class OCRProcessor:
                     "請回傳 JSON 格式，如：{\"score\": 85, \"reason\": \"內容完整，經歷豐富\"}"
                 )
                 response = client.models.generate_content(
-                    model='gemini-2.5-pro',
+                    model='gemini-2.5-flash',
                     contents=prompt,
                     config={
                         'temperature': 0.2,
@@ -385,7 +385,7 @@ class OCRProcessor:
                 )
                 
                 response = client.models.generate_content(
-                    model='gemini-3-pro-preview',
+                    model='gemini-2.5-flash',
                     contents=[
                         types.Part.from_data(data=image_data, mime_type=mime_type),
                         prompt
