@@ -484,11 +484,6 @@ class OCRProcessor:
 
         # Gemini AI 評分（OCR 文本）
         gemini_score = self._gemini_score_resume(full_text)
-        
-        # Gemini Vision API 評分（原始檔案）
-        original_file_score = {}
-        if file_path:
-            original_file_score = self._gemini_score_original_file(file_path)
 
         return {
             "gemini_score": gemini_score,
