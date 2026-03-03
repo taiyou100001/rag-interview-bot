@@ -13,33 +13,43 @@ from PIL import Image
 def generate_pdf_preview(pdf_path: str, output_folder: str) -> str:
     """
     將 PDF 的第一頁轉為 JPG 預覽圖
-    Returns: 預覽圖的相對路徑 (例如: /static/previews/xxx.jpg)
+    路徑採用相對路徑定位方式
     """
-    # 1. 確保預覽圖目錄存在
+    # 1. 自動計算 poppler 的相對路徑
+    # 從 backend/api/resume_router.py 往上跳兩層回到專案根目錄，再進入 bin 資料夾
+    current_file_path = os.path.abspath(__file__)
+    project_root = os.path.dirname(os.path.dirname(os.path.dirname(current_file_path)))
+    poppler_bin = os.path.join(project_root, "bin", "poppler", "Library", "bin")
+    
+    # 2. 確保預覽圖目錄存在 (static/resumes/previews)
     preview_dir = os.path.join(output_folder, "previews")
     os.makedirs(preview_dir, exist_ok=True)
     
-    # 2. 產生預覽圖檔名 (與原檔名對應，副檔名改 .jpg)
+    # 3. 準備輸出檔名
     base_name = os.path.basename(pdf_path)
     file_id = os.path.splitext(base_name)[0]
     preview_filename = f"prev_{file_id}.jpg"
     preview_path = os.path.join(preview_dir, preview_filename)
     
-    # 3. 如果是 PDF 則轉檔；如果是圖片則直接縮圖或複製
     ext = os.path.splitext(pdf_path)[1].lower()
     
     try:
         if ext == '.pdf':
-            # 只取第一頁 (first_page=1, last_page=1)
-            pages = convert_from_path(pdf_path, first_page=1, last_page=1)
+            # 使用相對定位後的 poppler_path
+            pages = convert_from_path(
+                pdf_path, 
+                first_page=1, 
+                last_page=1,
+                poppler_path=poppler_bin  # 👈 這裡使用了動態計算的路徑
+            )
             if pages:
                 pages[0].save(preview_path, 'JPEG')
         else:
-            # 如果原本就是圖片，我們直接開啟並另存為 jpg 預覽圖
+            # 如果是圖片則直接轉換格式存為預覽圖
             with Image.open(pdf_path) as img:
                 img.convert('RGB').save(preview_path, 'JPEG')
                 
-        # 回傳給前端使用的相對路徑
+        # 回傳前端存取的網址路徑
         return f"/static/resumes/previews/{preview_filename}"
     except Exception as e:
         print(f"預覽圖生成失敗: {e}")

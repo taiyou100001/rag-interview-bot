@@ -26,6 +26,7 @@ saved_audio/
 manual_resume/
 temp/
 output/
+bin/
 
 # IDE
 .idea/
