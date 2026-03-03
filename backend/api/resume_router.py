@@ -7,6 +7,43 @@ import uuid
 import os
 import shutil  # Imported for efficient file saving
 import time
+from pdf2image import convert_from_path
+from PIL import Image
+
+def generate_pdf_preview(pdf_path: str, output_folder: str) -> str:
+    """
+    將 PDF 的第一頁轉為 JPG 預覽圖
+    Returns: 預覽圖的相對路徑 (例如: /static/previews/xxx.jpg)
+    """
+    # 1. 確保預覽圖目錄存在
+    preview_dir = os.path.join(output_folder, "previews")
+    os.makedirs(preview_dir, exist_ok=True)
+    
+    # 2. 產生預覽圖檔名 (與原檔名對應，副檔名改 .jpg)
+    base_name = os.path.basename(pdf_path)
+    file_id = os.path.splitext(base_name)[0]
+    preview_filename = f"prev_{file_id}.jpg"
+    preview_path = os.path.join(preview_dir, preview_filename)
+    
+    # 3. 如果是 PDF 則轉檔；如果是圖片則直接縮圖或複製
+    ext = os.path.splitext(pdf_path)[1].lower()
+    
+    try:
+        if ext == '.pdf':
+            # 只取第一頁 (first_page=1, last_page=1)
+            pages = convert_from_path(pdf_path, first_page=1, last_page=1)
+            if pages:
+                pages[0].save(preview_path, 'JPEG')
+        else:
+            # 如果原本就是圖片，我們直接開啟並另存為 jpg 預覽圖
+            with Image.open(pdf_path) as img:
+                img.convert('RGB').save(preview_path, 'JPEG')
+                
+        # 回傳給前端使用的相對路徑
+        return f"/static/resumes/previews/{preview_filename}"
+    except Exception as e:
+        print(f"預覽圖生成失敗: {e}")
+        return ""
 
 router = APIRouter()
 
@@ -49,6 +86,8 @@ async def upload_resume(
     file_ext = os.path.splitext(file.filename)[1]
     unique_filename = f"{uuid.uuid4()}{file_ext}"
     file_path = os.path.join(SAVE_DIR, unique_filename)
+
+    preview_url = generate_pdf_preview(file_path, "static/resumes")
     
     # 4. 儲存檔案 (使用 shutil，效率較高)
     try:
@@ -101,7 +140,7 @@ async def upload_resume(
         "resume_id": str(resume.id),
         "job_title": structured.get("job_title", "未知職位"),
         "raw_text": structured.get("raw_text", "")[:200],
-        "file_url": f"/static/resumes/{unique_filename}", # ✅ 回傳網址給前端
+        "file_url": preview_url if preview_url else f"/static/resumes/{unique_filename}", # 優先給預覽圖
         "message": "履歷上傳成功",
         "resume_score": score,
         "resume_reason": reason
