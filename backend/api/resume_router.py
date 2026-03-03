@@ -29,7 +29,7 @@ def generate_pdf_preview(pdf_path: str, output_folder: str) -> list: # 🌟 改�
             pages = convert_from_path(
                 pdf_path, 
                 first_page=1, 
-                last_page=2, 
+                last_page=3, 
                 poppler_path=poppler_bin
             )
             for i, page in enumerate(pages):
