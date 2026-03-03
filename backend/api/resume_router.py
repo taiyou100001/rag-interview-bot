@@ -10,48 +10,45 @@ import time
 from pdf2image import convert_from_path
 from PIL import Image
 
-def generate_pdf_preview(pdf_path: str, output_folder: str) -> str:
-    """
-    將 PDF 的第一頁轉為 JPG 預覽圖，並回傳前端可存取的靜態網址
-    """
-    # 1. 自動計算 poppler 的相對路徑 (從 backend/api/ 往上跳三層到根目錄)
+def generate_pdf_preview(pdf_path: str, output_folder: str) -> list: # 🌟 改回傳 list
     current_file_path = os.path.abspath(__file__)
     project_root = os.path.dirname(os.path.dirname(os.path.dirname(current_file_path)))
     poppler_bin = os.path.join(project_root, "bin", "poppler", "Library", "bin")
     
-    # 2. 確保預覽圖目錄存在 (static/resumes/previews)
     preview_dir = os.path.join(output_folder, "previews")
     os.makedirs(preview_dir, exist_ok=True)
     
-    # 3. 準備輸出檔名 (與原檔名對應，副檔名改 .jpg)
     base_name = os.path.basename(pdf_path)
     file_id = os.path.splitext(base_name)[0]
-    preview_filename = f"prev_{file_id}.jpg"
-    preview_path = os.path.join(preview_dir, preview_filename)
-    
     ext = os.path.splitext(pdf_path)[1].lower()
     
+    urls = [] # 🌟 準備存放多張圖的網址
     try:
         if ext == '.pdf':
-            # 只取第一頁轉為 JPEG
+            # 🌟 關鍵：將 last_page 改為 2
             pages = convert_from_path(
                 pdf_path, 
                 first_page=1, 
-                last_page=1,
+                last_page=2, 
                 poppler_path=poppler_bin
             )
-            if pages:
-                pages[0].save(preview_path, 'JPEG')
+            for i, page in enumerate(pages):
+                p_filename = f"prev_{file_id}_{i+1}.jpg"
+                p_path = os.path.join(preview_dir, p_filename)
+                page.save(p_path, 'JPEG')
+                urls.append(f"/static/resumes/previews/{p_filename}")
         else:
-            # 如果是圖片 (PNG/JPG)，直接開啟並另存為預覽 JPG
+            # 圖片維持單張處理
+            p_filename = f"prev_{file_id}.jpg"
+            p_path = os.path.join(preview_dir, p_filename)
             with Image.open(pdf_path) as img:
-                img.convert('RGB').save(preview_path, 'JPEG')
+                img.convert('RGB').save(p_path, 'JPEG')
+            urls.append(f"/static/resumes/previews/{p_filename}")
                 
-        # 回傳前端對接用的相對路徑
-        return f"/static/resumes/previews/{preview_filename}"
+        return urls # 🌟 回傳清單
     except Exception as e:
-        print(f"❌ 預覽圖生成失敗: {e}")
-        return ""
+        print(f"預覽圖生成失敗: {e}")
+        return []
 
 router = APIRouter()
 
@@ -76,7 +73,7 @@ async def upload_resume(
         raise HTTPException(status_code=500, detail=f"檔案儲存失敗: {str(e)}")
 
     # 產預覽圖
-    preview_url = generate_pdf_preview(file_path, SAVE_DIR)
+    preview_urls = generate_pdf_preview(file_path, SAVE_DIR)
 
     # 執行 OCR
     success, result = ocr_service.process_file(file_path)
@@ -101,7 +98,7 @@ async def upload_resume(
         "resume_id": str(resume.id),
         "job_title": structured.get("job_title", "未知職位"),
         "raw_text": structured.get("raw_text", "")[:200],
-        "file_url": preview_url if preview_url else f"/static/resumes/{unique_filename}",
+        "file_urls": preview_urls if preview_urls else f"/static/resumes/{unique_filename}",
         "message": "履歷上傳成功",
         "resume_score": score,
         "resume_reason": reason
@@ -128,7 +125,7 @@ async def upload_local_resume(user_id: str = Form(...)):
 
     # 🌟 重點：生成預覽圖並取得 URL，解決 404 問題
     # 這會將圖片放置於 static 目錄，避開 manual_resume 無法被網頁存取的限制
-    preview_url = generate_pdf_preview(file_path, "static/resumes")
+    preview_urls = generate_pdf_preview(file_path, "static/resumes")
 
     # 2. 執行 OCR + LLM 評分
     total_start = time.time()
@@ -167,12 +164,12 @@ async def upload_local_resume(user_id: str = Form(...)):
     print(f"💡 AI 評語: {reason}")
     print("="*50 + "\n")
 
-    # 6. 回傳資料給 Unity (file_url 指向剛剛產生的預覽圖)
+    # 6. 回傳資料給 Unity (file_urls 指向剛剛產生的預覽圖)
     return {
         "resume_id": str(resume.id),
         "job_title": structured.get("job_title", "未知職位"),
         "raw_text": structured.get("raw_text", "")[:200],
-        "file_url": preview_url if preview_url else f"/static/resumes/{target_filename}", 
+        "file_urls": preview_urls if preview_urls else f"/static/resumes/{target_filename}", 
         "message": "本地履歷讀取成功",
         "resume_score": score,
         "resume_reason": reason
