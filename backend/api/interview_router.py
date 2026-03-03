@@ -383,6 +383,20 @@ async def interview_action(action_req: InterviewAction):
     except Exception as e:
         raise HTTPException(500, f"動作執行失敗: {str(e)}")
 
+# ==========================================
+# 新增：接收前端強制停止的訊號
+# ==========================================
+@router.post("/stop/{session_id}", summary="強制停止面試")
+async def stop_interview(session_id: str):
+    session = get_session(session_id)
+    if not session:
+        raise HTTPException(status_code=404, detail="找不到面試紀錄")
+    
+    # 標記結束時間
+    session.ended_at = datetime.utcnow()
+    update_session(session)
+    
+    return {"status": "success", "message": "面試已強制停止"}
 
 @router.get("/feedback/{session_id}", summary="取得面試回饋報告")
 async def get_feedback(session_id: str):
