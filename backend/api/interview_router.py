@@ -134,7 +134,7 @@ async def start_interview(req: InterviewStartRequest):
             "question": question,
             "audio_url": f"/audio/{audio_filename}",
             "question_number": 1,
-            "total_questions": 10,
+            "total_questions": 3,
             "personality": personality
         }
     
