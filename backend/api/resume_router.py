@@ -5,18 +5,16 @@ from backend.services.resume_service import resume_service
 from backend.database import save_resume
 import uuid
 import os
-import shutil  # Imported for efficient file saving
+import shutil
 import time
 from pdf2image import convert_from_path
 from PIL import Image
 
 def generate_pdf_preview(pdf_path: str, output_folder: str) -> str:
     """
-    將 PDF 的第一頁轉為 JPG 預覽圖
-    路徑採用相對路徑定位方式
+    將 PDF 的第一頁轉為 JPG 預覽圖，並回傳前端可存取的靜態網址
     """
-    # 1. 自動計算 poppler 的相對路徑
-    # 從 backend/api/resume_router.py 往上跳兩層回到專案根目錄，再進入 bin 資料夾
+    # 1. 自動計算 poppler 的相對路徑 (從 backend/api/ 往上跳三層到根目錄)
     current_file_path = os.path.abspath(__file__)
     project_root = os.path.dirname(os.path.dirname(os.path.dirname(current_file_path)))
     poppler_bin = os.path.join(project_root, "bin", "poppler", "Library", "bin")
@@ -25,7 +23,7 @@ def generate_pdf_preview(pdf_path: str, output_folder: str) -> str:
     preview_dir = os.path.join(output_folder, "previews")
     os.makedirs(preview_dir, exist_ok=True)
     
-    # 3. 準備輸出檔名
+    # 3. 準備輸出檔名 (與原檔名對應，副檔名改 .jpg)
     base_name = os.path.basename(pdf_path)
     file_id = os.path.splitext(base_name)[0]
     preview_filename = f"prev_{file_id}.jpg"
@@ -35,174 +33,113 @@ def generate_pdf_preview(pdf_path: str, output_folder: str) -> str:
     
     try:
         if ext == '.pdf':
-            # 使用相對定位後的 poppler_path
+            # 只取第一頁轉為 JPEG
             pages = convert_from_path(
                 pdf_path, 
                 first_page=1, 
                 last_page=1,
-                poppler_path=poppler_bin  # 👈 這裡使用了動態計算的路徑
+                poppler_path=poppler_bin
             )
             if pages:
                 pages[0].save(preview_path, 'JPEG')
         else:
-            # 如果是圖片則直接轉換格式存為預覽圖
+            # 如果是圖片 (PNG/JPG)，直接開啟並另存為預覽 JPG
             with Image.open(pdf_path) as img:
                 img.convert('RGB').save(preview_path, 'JPEG')
                 
-        # 回傳前端存取的網址路徑
+        # 回傳前端對接用的相對路徑
         return f"/static/resumes/previews/{preview_filename}"
     except Exception as e:
-        print(f"預覽圖生成失敗: {e}")
+        print(f"❌ 預覽圖生成失敗: {e}")
         return ""
 
 router = APIRouter()
 
+# 註：雖然您提到拍照功能已拔掉，但保留此 Endpoint 可相容未來擴充
 @router.post("/upload", summary="上傳履歷並進行 OCR 辨識")
 async def upload_resume(
-    file: UploadFile = File(..., description="上傳的履歷檔案 (PDF/圖片)"),
-    user_id: str = Form(..., description="使用者 ID (字串格式)")
+    file: UploadFile = File(...),
+    user_id: str = Form(...)
 ):
-    """
-    上傳履歷並進行 OCR 辨識
-    
-    處理流程：
-    1. 接收並儲存上傳的履歷檔案
-    2. 使用 Azure OCR 進行文字辨識
-    3. 透過 LLM 結構化履歷內容
-    4. 推斷應徵職位
-    5. 儲存至資料庫
-    
-    回傳資料：
-    - **resume_id**: 履歷的唯一識別碼
-    - **job_title**: 系統推斷的應徵職位
-    - **raw_text**: 履歷原始文字（前 200 字預覽）
-    - **message**: 處理狀態訊息
-    """
-    # 驗證 user_id 格式
-    try:
-        # 如果是 UUID 格式，轉為字串
-        if len(user_id) == 36 and '-' in user_id:
-            uuid.UUID(user_id)  # 驗證格式
-    except ValueError:
-        # 不是標準 UUID，但接受任意字串作為 user_id
-        pass
-    
-    # 2. 建立永久儲存資料夾 (建議放在 static 下，方便前端存取)
     SAVE_DIR = "static/resumes"
     os.makedirs(SAVE_DIR, exist_ok=True)
     
-    # 3. 產生唯一檔名並定義完整路徑
-    # 保留原始副檔名 (例如 .jpg, .png, .pdf)
     file_ext = os.path.splitext(file.filename)[1]
     unique_filename = f"{uuid.uuid4()}{file_ext}"
     file_path = os.path.join(SAVE_DIR, unique_filename)
 
-    preview_url = generate_pdf_preview(file_path, "static/resumes")
-    
-    # 4. 儲存檔案 (使用 shutil，效率較高)
+    # 先存檔
     try:
         with open(file_path, "wb") as buffer:
             shutil.copyfileobj(file.file, buffer)
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"檔案儲存失敗: {str(e)}")
 
-    # 5. OCR 辨識
+    # 產預覽圖
+    preview_url = generate_pdf_preview(file_path, SAVE_DIR)
+
+    # 執行 OCR
     success, result = ocr_service.process_file(file_path)
     if not success:
-        # 如果辨識失敗，視情況決定是否要刪除檔案，這裡先保留
         raise HTTPException(status_code=400, detail=result.get("error"))
 
-    # 6. 結構化履歷
     structured = resume_service.structure_resume(result)
     
-    # 7. 儲存到資料庫
-    try:
-        resume = save_resume(
-            user_id=user_id,
-            filename=file.filename,
-            file_path=file_path,  # ✅ 重點：將儲存的路徑傳入資料庫
-            ocr_json=result,
-            structured_data=structured
-        )
-    except Exception as e:
-        import traceback
-        traceback.print_exc()
-        raise HTTPException(status_code=500, detail=f"資料庫儲存失敗: {str(e)}")
+    resume = save_resume(
+        user_id=user_id,
+        filename=file.filename,
+        file_path=file_path,
+        ocr_json=result,
+        structured_data=structured
+    )
     
-    # 👇 新增這段：把 Gemini 的評分跟評語抓出來
     gemini_data = result.get("resume_score", {}).get("gemini_score", {})
     score = gemini_data.get("score", 0)
-    raw_reason = gemini_data.get("reason", "無評語")
-
-    if isinstance(raw_reason, list):
-        reason = "".join(raw_reason)
-    else:
-        reason = raw_reason
-
-    print("\n" + "="*50)
-    print(f"📄 【履歷解析完成】")
-    print(f"🎯 推斷職位: {structured.get('job_title', '未知職位')}")
-    print(f"⭐ AI 評分: {score} / 100")
-    print(f"💡 AI 評語: {reason}")
-    print("="*50 + "\n")
+    reason = "".join(gemini_data.get("reason", [])) if isinstance(gemini_data.get("reason"), list) else gemini_data.get("reason", "無評語")
 
     return {
         "resume_id": str(resume.id),
         "job_title": structured.get("job_title", "未知職位"),
         "raw_text": structured.get("raw_text", "")[:200],
-        "file_url": preview_url if preview_url else f"/static/resumes/{unique_filename}", # 優先給預覽圖
+        "file_url": preview_url if preview_url else f"/static/resumes/{unique_filename}",
         "message": "履歷上傳成功",
         "resume_score": score,
         "resume_reason": reason
     }
 
-@router.post("/upload_local", summary="從伺服器本地資料夾讀取履歷 (備用/測試方案)")
+@router.post("/upload_local", summary="從伺服器本地資料夾讀取履歷 (Unity 從電腦讀取用)")
 async def upload_local_resume(user_id: str = Form(...)):
     """
-    備用方案：讀取伺服器 manual_resume 資料夾內「最新」的檔案
+    讀取伺服器 manual_resume 資料夾內最新的檔案，並產出 Unity 可讀取的預覽圖
     """
     local_dir = "manual_resume"
     os.makedirs(local_dir, exist_ok=True)
     
-    # 1. 取得資料夾內所有檔案
+    # 1. 取得最新檔案
     files = [f for f in os.listdir(local_dir) if os.path.isfile(os.path.join(local_dir, f))]
-    
     if not files:
-        raise HTTPException(status_code=404, detail="伺服器的 manual_resume 資料夾內沒有檔案！")
+        raise HTTPException(status_code=404, detail="manual_resume 資料夾內沒有檔案！")
     
-    # 2. 🔥 核心邏輯：依照修改時間排序 (最新的在最前面)
     files.sort(key=lambda x: os.path.getmtime(os.path.join(local_dir, x)), reverse=True)
-    
-    # 3. 永遠取最新丟進去的那個檔案
     target_filename = files[0]
     file_path = os.path.join(local_dir, target_filename)
     
-    print(f"✅ 強制讀取最新履歷: {target_filename}")
+    print(f"✅ 正在處理最新本地履歷: {target_filename}")
 
-    # 🌟 開始總計時
+    # 🌟 重點：生成預覽圖並取得 URL，解決 404 問題
+    # 這會將圖片放置於 static 目錄，避開 manual_resume 無法被網頁存取的限制
+    preview_url = generate_pdf_preview(file_path, "static/resumes")
+
+    # 2. 執行 OCR + LLM 評分
     total_start = time.time()
-
-    # ==========================================
-    # ⏱️ 測試環節 1：Azure OCR + Gemini 評分
-    # ==========================================
-    t0 = time.time()
     success, result = ocr_service.process_file(file_path)
-    t1 = time.time()
-    print(f"⏱️ [計時] 1. Azure OCR + Gemini 評分耗時: {t1 - t0:.2f} 秒")
-    
     if not success:
         raise HTTPException(status_code=400, detail=result.get("error"))
 
-    # ==========================================
-    # ⏱️ 測試環節 2：文字結構化 + Ollama 職位推斷
-    # ==========================================
+    # 3. 結構化文字與職位推斷
     structured = resume_service.structure_resume(result)
-    t2 = time.time()
-    print(f"⏱️ [計時] 2. 結構化與 Ollama 猜職位耗時: {t2 - t1:.2f} 秒")
     
-    # ==========================================
-    # ⏱️ 測試環節 3：資料庫儲存
-    # ==========================================
+    # 4. 儲存資料庫
     try:
         resume = save_resume(
             user_id=user_id,
@@ -213,59 +150,30 @@ async def upload_local_resume(user_id: str = Form(...)):
         )
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"資料庫儲存失敗: {str(e)}")
-    t3 = time.time()
-    print(f"⏱️ [計時] 3. 資料庫儲存耗時: {t3 - t2:.2f} 秒")
     
-    # 🌟 總結
-    print(f"🚀 [計時總結] 履歷處理總耗時: {t3 - total_start:.2f} 秒")
-    
-    # === 以下邏輯與原本的 upload 一模一樣 ===
-    
-    # 4. OCR 辨識
-    success, result = ocr_service.process_file(file_path)
-    if not success:
-        raise HTTPException(status_code=400, detail=result.get("error"))
-
-    # 5. 結構化履歷
-    structured = resume_service.structure_resume(result)
-    
-    # 6. 儲存到資料庫
-    try:
-        resume = save_resume(
-            user_id=user_id,
-            filename=target_filename,
-            file_path=file_path,
-            ocr_json=result,
-            structured_data=structured
-        )
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=f"資料庫儲存失敗: {str(e)}")
-    # ==========================================
-    # 🌟 補上這段：解析 Gemini 分數並印出報表
-    # ==========================================
+    # 5. 解析 Gemini 分數與評語
     gemini_data = result.get("resume_score", {}).get("gemini_score", {})
     score = gemini_data.get("score", 0)
     raw_reason = gemini_data.get("reason", "無評語")
+    reason = "".join(raw_reason) if isinstance(raw_reason, list) else raw_reason
 
-    if isinstance(raw_reason, list):
-        reason = "".join(raw_reason)
-    else:
-        reason = raw_reason
-
+    # 在後端終端機顯示進度
+    print(f"🚀 履歷處理總耗時: {time.time() - total_start:.2f} 秒")
+    print(f"🎯 推斷職位: {structured.get('job_title', '未知職位')}")
     print("\n" + "="*50)
     print(f"📄 【本地履歷解析完成】")
     print(f"🎯 推斷職位: {structured.get('job_title', '未知職位')}")
     print(f"⭐ AI 評分: {score} / 100")
     print(f"💡 AI 評語: {reason}")
     print("="*50 + "\n")
-    # ==========================================
 
+    # 6. 回傳資料給 Unity (file_url 指向剛剛產生的預覽圖)
     return {
         "resume_id": str(resume.id),
         "job_title": structured.get("job_title", "未知職位"),
         "raw_text": structured.get("raw_text", "")[:200],
-        "file_url": f"/static/resumes/{target_filename}",
+        "file_url": preview_url if preview_url else f"/static/resumes/{target_filename}", 
         "message": "本地履歷讀取成功",
-        "resume_score": score,      # ✅ 補上回傳給 Unity 的分數
+        "resume_score": score,
         "resume_reason": reason
     }
