@@ -6,7 +6,9 @@ from fastapi.middleware.cors import CORSMiddleware
 from backend.config import settings
 from backend.api import resume_router, interview_router
 from backend.database import init_db
+from fastapi.staticfiles import StaticFiles
 
+app.mount("/static", StaticFiles(directory="static"), name="static")
 app = FastAPI(title=settings.PROJECT_NAME, description="沉浸式智慧模擬面試訓練平台後端服務")
 
 # --- 資料庫初始化 ---
