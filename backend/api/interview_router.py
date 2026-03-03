@@ -160,6 +160,8 @@ async def process_answer(
     5. 生成問題的語音檔
     """
     try:
+        total_start = time.time()
+
         session = get_session(session_id)
         if not session:
             raise HTTPException(404, "Session not found")
@@ -167,9 +169,14 @@ async def process_answer(
         # 1. 儲存音檔
         audio_path = save_audio_file(session_id, audio)
 
-        # 2. STT 轉文字
+        # ==========================================
+        # ⏱️ 計時 1：STT 語音轉文字
+        # ==========================================
+        stt_start = time.time()
         user_answer = speech_service.speech_to_text(audio_path)
+        stt_end = time.time()
         logger.info(f"🎤 使用者說 ({session_id}): {user_answer}")
+        logger.info(f"⏱️ [計時] 1. STT 語音轉文字耗時: {stt_end - stt_start:.2f} 秒")
         
         if not user_answer:
             return {
@@ -260,6 +267,7 @@ async def process_answer(
                     rag_context = " ".join([r.get('position', '') for r in retrieved])
 
             # 生成下一題
+            llm_start = time.time() #計時
             agent = agent_factory.get_agent(session.job_title)
             next_question = agent.generate_question(
                 job_title=session.job_title,
@@ -267,10 +275,12 @@ async def process_answer(
                 history=session.history,
                 context=rag_context
             )
+            llm_end = time.time()
 
             print(f"========================================")
             print(f" AI 生成的題目: {next_question}")
             print(f"========================================")
+            logger.info(f"⏱️ [計時] 2. LLM 生成題目耗時: {llm_end - llm_start:.2f} 秒")
 
         # --- 共用後續處理 (更新 Session & TTS) ---
         
@@ -287,6 +297,7 @@ async def process_answer(
         update_session(session)
 
         # 生成 TTS
+        tts_start = time.time() #計時
         audio_filename = f"q_{session.id}_{session.question_count}.mp3"
         audio_path_tts = os.path.join("static/audio", audio_filename)
         
@@ -297,6 +308,12 @@ async def process_answer(
 
         # 判斷是否為閒聊
         is_chitchat = any(keyword in next_question for keyword in ["最近", "興趣", "喜歡", "壓力", "休息"])
+
+        tts_end = time.time()
+        logger.info(f"⏱️ [計時] 3. TTS 文字轉語音耗時: {tts_end - tts_start:.2f} 秒")
+
+        total_end = time.time()
+        logger.info(f"🚀 [計時總結] 單題處理總耗時: {total_end - total_start:.2f} 秒\n")
 
         return {
             "question": next_question,
