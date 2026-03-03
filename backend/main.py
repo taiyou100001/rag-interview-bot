@@ -8,8 +8,8 @@ from backend.api import resume_router, interview_router
 from backend.database import init_db
 from fastapi.staticfiles import StaticFiles
 
-app.mount("/static", StaticFiles(directory="static"), name="static")
 app = FastAPI(title=settings.PROJECT_NAME, description="沉浸式智慧模擬面試訓練平台後端服務")
+app.mount("/static", StaticFiles(directory="static"), name="static")
 
 # --- 資料庫初始化 ---
 # 確保所有資料表自動建立
