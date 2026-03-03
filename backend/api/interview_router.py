@@ -93,6 +93,7 @@ async def start_interview(req: InterviewStartRequest):
     """
 
     try:
+        total_start = time.time()
         user_id_str = req.user_id
         resume_id_str = req.resume_id if req.resume_id else None
         
@@ -108,18 +109,24 @@ async def start_interview(req: InterviewStartRequest):
         personality = random.choice(personalities)
         logger.info(f"🎭 本次面試隨機選擇的面試官個性: {personality}")
         agent = agent_factory.get_agent(req.job_title, personality=personality)
+
+        llm_start = time.time()
+        question = agent.generate_first_question(req.job_title, req.resume_text or "")
+        llm_end = time.time()
         
         # 生成第一題
         question = agent.generate_first_question(req.job_title, req.resume_text or "")
         print("========================================")
         print(f" AI 生成的第一題: {question}")
         print("========================================")
+        logger.info(f"⏱️ [計時] 1. 第一題 LLM 生成耗時: {llm_end - llm_start:.2f} 秒")
 
         session.current_question = question
         session.question_count = 1
         update_session(session)
         
         # 生成 TTS
+        tts_start = time.time() #計時
         audio_filename = f"q_{session.id}_0.mp3"
         audio_path = os.path.join("static/audio", audio_filename)
         os.makedirs("static/audio", exist_ok=True)
@@ -128,6 +135,12 @@ async def start_interview(req: InterviewStartRequest):
             speech_service.text_to_speech(question, audio_path)
         except Exception as e:
             logger.warning(f"[TTS] 警告: 語音生成失敗 - {e}")
+
+        tts_end = time.time()
+        logger.info(f"⏱️ [計時] 2. 第一題 TTS 語音耗時: {tts_end - tts_start:.2f} 秒")
+
+        total_end = time.time()
+        logger.info(f"🚀 [計時總結] 第一題啟動總耗時: {total_end - total_start:.2f} 秒\n")
         
         return {
             "session_id": str(session.id),
