@@ -28,11 +28,15 @@ class ResumeService:
                 raw_text = "\n".join(texts)
 
                 try:
-                    # 直接去拿剛剛 Gemini 在 ocr_service 順手算好的結果
+                    # 從 ocr_result -> resume_score -> gemini_score 裡面挖出 job_title
                     gemini_data = ocr_result.get("resume_score", {}).get("gemini_score", {})
-                    job_title = gemini_data.get("job_title", "未知職位")
+                    job_title = gemini_data.get("job_title", "未知職位") 
+                    
+                    # 💡 雙重保險：如果 Gemini 沒給，改用原本的 JobInferenceAgent 猜
+                    if job_title == "未知職位":
+                        from backend.services.agent_service import JobInferenceAgent
+                        job_title = JobInferenceAgent().infer_job_title(raw_text)
                 except Exception as e:
-                    print(f"職位讀取發生錯誤: {e}")
                     job_title = "未知職位"
 
                 return {
