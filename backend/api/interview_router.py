@@ -147,7 +147,7 @@ async def start_interview(req: InterviewStartRequest):
             "question": question,
             "audio_url": f"/audio/{audio_filename}",
             "question_number": 1,
-            "total_questions": 3,
+            "total_questions": 6,
             "personality": personality
         }
     
@@ -231,7 +231,7 @@ async def process_answer(
             session.question_count += 1
 
             # 題數上限檢查（在生成問題之前）
-            if session.question_count >= 3:
+            if session.question_count >= 6:
                 return {
                     "end": True,
                     "message": "面試已完成，正在生成回饋報告…",
@@ -265,7 +265,7 @@ async def process_answer(
             session.question_count += 1
 
             # 題數上限檢查（在生成問題之前）
-            if session.question_count >= 3:
+            if session.question_count >= 6:
                 return {
                     "end": True,
                     "message": "面試已完成，正在生成回饋報告…",
