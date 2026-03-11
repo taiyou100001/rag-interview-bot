@@ -282,12 +282,17 @@ class OCRProcessor:
             try:
                 client = genai.Client(api_key=api_key)
                 prompt = (
-                    "請以專業人資角度，針對以下履歷內容給一個 0~100 分的分數，忽略排版與結構，只針對內容與他所應徵的職位進行綜合評分，並簡要說明約五十個字的理由：\n"
-                    f"{resume_text}\n"
-                    "請回傳 JSON 格式，如：{\"score\": 85, \"reason\": \"內容完整，經歷豐富\"}"
+                "請以專業人資角度，針對以下履歷內容進行分析。請提供：\n"
+                "1. 0~100 的評分\n"
+                "2. 簡要說明約五十個字的理由\n"
+                "3. 推斷該求職者最適合的「職位名稱」\n\n"
+                f"{resume_text}\n"
+                "請務必回傳純 JSON 格式，如下：\n"
+                "{\"score\": 85, \"reason\": \"...\", \"job_title\": \"後端工程師\"}" # 🌟 新增這項
                 )
+
                 response = client.models.generate_content(
-                    model='gemini-3-pro-preview',
+                    model='gemini-2.5-flash',
                     contents=prompt,
                     config={
                         'temperature': 0.2,
@@ -385,7 +390,7 @@ class OCRProcessor:
                 )
                 
                 response = client.models.generate_content(
-                    model='gemini-3-pro-preview',
+                    model='gemini-2.5-flash',
                     contents=[
                         types.Part.from_data(data=image_data, mime_type=mime_type),
                         prompt
@@ -484,11 +489,6 @@ class OCRProcessor:
 
         # Gemini AI 評分（OCR 文本）
         gemini_score = self._gemini_score_resume(full_text)
-        
-        # Gemini Vision API 評分（原始檔案）
-        original_file_score = {}
-        if file_path:
-            original_file_score = self._gemini_score_original_file(file_path)
 
         return {
             "gemini_score": gemini_score,

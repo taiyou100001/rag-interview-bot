@@ -93,6 +93,7 @@ async def start_interview(req: InterviewStartRequest):
     """
 
     try:
+        total_start = time.time()
         user_id_str = req.user_id
         resume_id_str = req.resume_id if req.resume_id else None
         
@@ -108,18 +109,24 @@ async def start_interview(req: InterviewStartRequest):
         personality = random.choice(personalities)
         logger.info(f"🎭 本次面試隨機選擇的面試官個性: {personality}")
         agent = agent_factory.get_agent(req.job_title, personality=personality)
+
+        llm_start = time.time()
+        question = agent.generate_first_question(req.job_title, req.resume_text or "")
+        llm_end = time.time()
         
         # 生成第一題
         question = agent.generate_first_question(req.job_title, req.resume_text or "")
         print("========================================")
         print(f" AI 生成的第一題: {question}")
         print("========================================")
+        logger.info(f"⏱️ [計時] 1. 第一題 LLM 生成耗時: {llm_end - llm_start:.2f} 秒")
 
         session.current_question = question
         session.question_count = 1
         update_session(session)
         
         # 生成 TTS
+        tts_start = time.time() #計時
         audio_filename = f"q_{session.id}_0.mp3"
         audio_path = os.path.join("static/audio", audio_filename)
         os.makedirs("static/audio", exist_ok=True)
@@ -128,13 +135,19 @@ async def start_interview(req: InterviewStartRequest):
             speech_service.text_to_speech(question, audio_path)
         except Exception as e:
             logger.warning(f"[TTS] 警告: 語音生成失敗 - {e}")
+
+        tts_end = time.time()
+        logger.info(f"⏱️ [計時] 2. 第一題 TTS 語音耗時: {tts_end - tts_start:.2f} 秒")
+
+        total_end = time.time()
+        logger.info(f"🚀 [計時總結] 第一題啟動總耗時: {total_end - total_start:.2f} 秒\n")
         
         return {
             "session_id": str(session.id),
             "question": question,
             "audio_url": f"/audio/{audio_filename}",
             "question_number": 1,
-            "total_questions": 10,
+            "total_questions": 6,
             "personality": personality
         }
     
@@ -160,6 +173,8 @@ async def process_answer(
     5. 生成問題的語音檔
     """
     try:
+        total_start = time.time()
+
         session = get_session(session_id)
         if not session:
             raise HTTPException(404, "Session not found")
@@ -167,9 +182,14 @@ async def process_answer(
         # 1. 儲存音檔
         audio_path = save_audio_file(session_id, audio)
 
-        # 2. STT 轉文字
+        # ==========================================
+        # ⏱️ 計時 1：STT 語音轉文字
+        # ==========================================
+        stt_start = time.time()
         user_answer = speech_service.speech_to_text(audio_path)
+        stt_end = time.time()
         logger.info(f"🎤 使用者說 ({session_id}): {user_answer}")
+        logger.info(f"⏱️ [計時] 1. STT 語音轉文字耗時: {stt_end - stt_start:.2f} 秒")
         
         if not user_answer:
             return {
@@ -211,7 +231,7 @@ async def process_answer(
             session.question_count += 1
 
             # 題數上限檢查（在生成問題之前）
-            if session.question_count >= 3:
+            if session.question_count >= 6:
                 return {
                     "end": True,
                     "message": "面試已完成，正在生成回饋報告…",
@@ -245,7 +265,7 @@ async def process_answer(
             session.question_count += 1
 
             # 題數上限檢查（在生成問題之前）
-            if session.question_count >= 3:
+            if session.question_count >= 6:
                 return {
                     "end": True,
                     "message": "面試已完成，正在生成回饋報告…",
@@ -260,6 +280,7 @@ async def process_answer(
                     rag_context = " ".join([r.get('position', '') for r in retrieved])
 
             # 生成下一題
+            llm_start = time.time() #計時
             agent = agent_factory.get_agent(session.job_title)
             next_question = agent.generate_question(
                 job_title=session.job_title,
@@ -267,10 +288,12 @@ async def process_answer(
                 history=session.history,
                 context=rag_context
             )
+            llm_end = time.time()
 
             print(f"========================================")
             print(f" AI 生成的題目: {next_question}")
             print(f"========================================")
+            logger.info(f"⏱️ [計時] 2. LLM 生成題目耗時: {llm_end - llm_start:.2f} 秒")
 
         # --- 共用後續處理 (更新 Session & TTS) ---
         
@@ -287,6 +310,7 @@ async def process_answer(
         update_session(session)
 
         # 生成 TTS
+        tts_start = time.time() #計時
         audio_filename = f"q_{session.id}_{session.question_count}.mp3"
         audio_path_tts = os.path.join("static/audio", audio_filename)
         
@@ -297,6 +321,12 @@ async def process_answer(
 
         # 判斷是否為閒聊
         is_chitchat = any(keyword in next_question for keyword in ["最近", "興趣", "喜歡", "壓力", "休息"])
+
+        tts_end = time.time()
+        logger.info(f"⏱️ [計時] 3. TTS 文字轉語音耗時: {tts_end - tts_start:.2f} 秒")
+
+        total_end = time.time()
+        logger.info(f"🚀 [計時總結] 單題處理總耗時: {total_end - total_start:.2f} 秒\n")
 
         return {
             "question": next_question,
@@ -383,6 +413,20 @@ async def interview_action(action_req: InterviewAction):
     except Exception as e:
         raise HTTPException(500, f"動作執行失敗: {str(e)}")
 
+# ==========================================
+# 新增：接收前端強制停止的訊號
+# ==========================================
+@router.post("/stop/{session_id}", summary="強制停止面試")
+async def stop_interview(session_id: str):
+    session = get_session(session_id)
+    if not session:
+        raise HTTPException(status_code=404, detail="找不到面試紀錄")
+    
+    # 標記結束時間
+    session.ended_at = datetime.utcnow()
+    update_session(session)
+    
+    return {"status": "success", "message": "面試已強制停止"}
 
 @router.get("/feedback/{session_id}", summary="取得面試回饋報告")
 async def get_feedback(session_id: str):
